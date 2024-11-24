@@ -282,6 +282,7 @@ class OknoJohari extends BaseController
     //$oknoModel = model(OknoModel::class);
     //$data['okna'] = $oknoModel->listOkna($wlasciciel);
     $data['okna']=$this->oknoModel->listOkna($wlasciciel);
+    $data['statystyki'] = $this->oknoModel->getStatystyki();
     return view ('header')
 
     . view ('lista_okien',$data)
