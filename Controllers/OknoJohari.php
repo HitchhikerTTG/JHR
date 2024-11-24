@@ -5,11 +5,15 @@ use Config\Services;
 
 class OknoJohari extends BaseController
 {
+    protected $oknoModel;
+    protected $session;
+    
     function __construct()
     {
 
         $this->session = \Config\Services::session();
         $this->session->start();
+        $this->oknoModel = new \App\Models\OknoModel();
 
 
     }
@@ -275,9 +279,9 @@ class OknoJohari extends BaseController
 
   public function wszystkieOkna($wlasciciel = false){
 
-    $oknoModel = model(OknoModel::class);
-    $data['okna'] = $oknoModel->listOkna($wlasciciel);
-
+    //$oknoModel = model(OknoModel::class);
+    //$data['okna'] = $oknoModel->listOkna($wlasciciel);
+    $data['okna']=$this->oknoModel->listOkna($wlasciciel);
     return view ('header')
 
     . view ('lista_okien',$data)
