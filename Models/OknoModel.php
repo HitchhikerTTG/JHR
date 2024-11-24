@@ -17,7 +17,7 @@ class OknoModel extends Model
     $builder=$this->db->table('okna o');
     $builder->select('o.*, COUNT(DISTTINCT pc.nadawca) as licznik');
     $builder->join('przypisane_cechy pc','o.hash=pc.okno_johariego','left');
-    $builder->gruopBy('o.hash');    
+    $builder->groupBy('o.hash');    
         
         //Ta funkcja ma zwrócić wszytkie okna, lub okna konkretnego właściciela 
 //        if ($wlasciciel===false){
