@@ -26,10 +26,10 @@ class Database extends Config
      */
     public array $default = [
         'DSN'          => '',
-        'hostname'     => 'localhost',
-        'username'     => '',
-        'password'     => '',
-        'database'     => '',
+        'hostname' => 'localhost',
+        'username' => 'remedium_btrd1',
+        'password' => 'A.7AXKHHzcVvC727D0v50',
+        'database' => 'remedium_btrd1',
         'DBDriver'     => 'MySQLi',
         'DBPrefix'     => '',
         'pConnect'     => false,
@@ -56,7 +56,7 @@ class Database extends Config
     //     * @var array<string, mixed>
     //     */
     //    public array $default = [
-    //        'database'    => 'database.db',
+    //        'database' => 'remedium_btrd1',
     //        'DBDriver'    => 'SQLite3',
     //        'DBPrefix'    => '',
     //        'DBDebug'     => true,
@@ -78,10 +78,10 @@ class Database extends Config
     //     */
     //    public array $default = [
     //        'DSN'        => '',
-    //        'hostname'   => 'localhost',
-    //        'username'   => 'root',
-    //        'password'   => 'root',
-    //        'database'   => 'ci4',
+    //        'hostname' => 'localhost',
+    //        'username' => 'remedium_btrd1',
+    //        'password' => 'A.7AXKHHzcVvC727D0v50',
+    //        'database' => 'remedium_btrd1',
     //        'schema'     => 'public',
     //        'DBDriver'   => 'Postgre',
     //        'DBPrefix'   => '',
@@ -105,10 +105,10 @@ class Database extends Config
     //     */
     //    public array $default = [
     //        'DSN'        => '',
-    //        'hostname'   => 'localhost',
-    //        'username'   => 'root',
-    //        'password'   => 'root',
-    //        'database'   => 'ci4',
+    //        'hostname' => 'localhost',
+    //        'username' => 'remedium_btrd1',
+    //        'password' => 'A.7AXKHHzcVvC727D0v50',
+    //        'database' => 'remedium_btrd1',
     //        'schema'     => 'dbo',
     //        'DBDriver'   => 'SQLSRV',
     //        'DBPrefix'   => '',
@@ -139,8 +139,8 @@ class Database extends Config
     //     */
     //    public array $default = [
     //        'DSN'        => 'localhost:1521/XEPDB1',
-    //        'username'   => 'root',
-    //        'password'   => 'root',
+    //        'username' => 'remedium_btrd1',
+    //        'password' => 'A.7AXKHHzcVvC727D0v50',
     //        'DBDriver'   => 'OCI8',
     //        'DBPrefix'   => '',
     //        'pConnect'   => false,
@@ -162,10 +162,10 @@ class Database extends Config
      */
     public array $tests = [
         'DSN'         => '',
-        'hostname'    => '127.0.0.1',
-        'username'    => '',
-        'password'    => '',
-        'database'    => ':memory:',
+        'hostname' => 'localhost',
+        'username' => 'remedium_btrd1',
+        'password' => 'A.7AXKHHzcVvC727D0v50',
+        'database' => 'remedium_btrd1',
         'DBDriver'    => 'SQLite3',
         'DBPrefix'    => 'db_',  // Needed to ensure we're working correctly with prefixes live. DO NOT REMOVE FOR CI DEVS
         'pConnect'    => false,
