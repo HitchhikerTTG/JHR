@@ -13,12 +13,23 @@ class OknoModel extends Model
     
     public function listOkna($wlasciciel=false)
     {
-        //Ta funkcja ma zwrócić wszytkie okna, lub okna konkretnego właściciela 
-        if ($wlasciciel===false){
-            return $this->findAll();
-        }
 
-            return $this->where(['wlasciciel'=>$wlasciciel])->findAll();
+    $builder=$this->db->table('okna o');
+    $builder->select('o.*, COUNT(DISTTINCT pc.nadawca) as licznik');
+    $builder->join('przypisane_cechy pc','o.hash=pc.okno_johariego','left');
+    $builder->gruopBy('o.hash');    
+        
+        //Ta funkcja ma zwrócić wszytkie okna, lub okna konkretnego właściciela 
+//        if ($wlasciciel===false){
+//            return $this->findAll();
+//        }
+
+//            return $this->where(['wlasciciel'=>$wlasciciel])->findAll();
+
+    if($wlasciciel !== false){
+        $builder->where(['wlasciciel'=>$wlasciciel]);
+    }
+    return $builder->get()->getResultArray();
     }
 
     public function daneOkna($wlasciciel, $hashOkna){
