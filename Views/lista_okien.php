@@ -19,7 +19,7 @@
 
 foreach ($okna as $i=>$okno){
 
-echo "<a class=\"btn btn-outline-primary\" href=".base_url()."/wyswietlOkno/".$okno['hash']."/".$okno['wlasciciel']." target=_blank>".$okno['nazwa']."</a>";
+echo "<p><a class=\"btn btn-outline-primary\" href=".base_url()."/wyswietlOkno/".$okno['hash']."/".$okno['wlasciciel']." target=_blank>".$okno['nazwa']."</a></p>";
 
 }
 
