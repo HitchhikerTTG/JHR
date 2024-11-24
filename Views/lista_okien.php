@@ -20,7 +20,7 @@
 foreach ($okna as $i=>$okno){
   $wypelnien = $okno['licznik'] ? $okno['licznik'] : 0;
 
-echo "<p><a class=\"btn btn-outline-primary\" href=".base_url()."/wyswietlOkno/".$okno['hash']."/".$okno['wlasciciel']." target=_blank>".$okno['nazwa']."<span class='badge badge-secondary'>".$wypelnien." odpowiedzi</span></a></p>";
+echo "<p><a class=\"btn btn-outline-primary\" href=".base_url()."/wyswietlOkno/".$okno['hash']."/".$okno['wlasciciel']." target=_blank>".$okno['nazwa']." | <span class='badge badge-secondary'>".$wypelnien." odpowiedzi</span></a></p>";
 
 }
 
