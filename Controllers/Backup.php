@@ -1,6 +1,5 @@
 
 <?php
-
 namespace App\Controllers;
 
 class Backup extends \CodeIgniter\Controller
