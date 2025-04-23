@@ -31,11 +31,24 @@
 
      
 
-<?php foreach ($okna as $i=>$okno){
-  $wypelnien = $okno['licznik'] ? $okno['licznik'] : 0;
+<h4>Okna z wieloma odpowiedziami:</h4>
+<?php foreach ($okna['multiple_responses'] as $okno): ?>
+  <?php $wypelnien = $okno['licznik'] ? $okno['licznik'] : 0; ?>
+  <p>
+    <a class="btn btn-outline-primary" href="<?= base_url() ?>/wyswietlOkno/<?= $okno['hash'] ?>/<?= $okno['wlasciciel'] ?>" target="_blank">
+      <?= $okno['nazwa'] ?> | <span class='badge badge-secondary'><?= $wypelnien ?> odpowiedzi</span>
+    </a>
+  </p>
+<?php endforeach; ?>
 
-echo "<p><a class=\"btn btn-outline-primary\" href=".base_url()."/wyswietlOkno/".$okno['hash']."/".$okno['wlasciciel']." target=_blank>".$okno['nazwa']." | <span class='badge badge-secondary'>".$wypelnien." odpowiedzi</span></a></p>";
-
-}
+<h4>Okna z jedną odpowiedzią:</h4>
+<?php foreach ($okna['single_response'] as $okno): ?>
+  <?php $wypelnien = $okno['licznik'] ? $okno['licznik'] : 0; ?>
+  <p>
+    <a class="btn btn-outline-primary" href="<?= base_url() ?>/wyswietlOkno/<?= $okno['hash'] ?>/<?= $okno['wlasciciel'] ?>" target="_blank">
+      <?= $okno['nazwa'] ?> | <span class='badge badge-secondary'><?= $wypelnien ?> odpowiedź</span>
+    </a>
+  </p>
+<?php endforeach; ?>
 
 ?>

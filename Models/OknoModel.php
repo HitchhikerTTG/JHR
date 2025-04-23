@@ -14,6 +14,18 @@ class OknoModel extends Model
     protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';
 
+    private function maskName($nazwa) {
+        if (strpos($nazwa, '@') !== false) {
+            $parts = explode('@', $nazwa);
+            $firstPart = $parts[0];
+            if (strlen($firstPart) > 1) {
+                $masked = $firstPart[0] . str_repeat('*', strlen($firstPart) - 1);
+                return $masked . '@' . $parts[1];
+            }
+        }
+        return $nazwa;
+    }
+
     public function listOkna($wlasciciel=false)
     {
         $builder=$this->db->table('okna o');
@@ -24,7 +36,28 @@ class OknoModel extends Model
         if($wlasciciel !== false){
             $builder->where(['wlasciciel'=>$wlasciciel]);
         }
-        return $builder->get()->getResultArray();
+        
+        $results = $builder->get()->getResultArray();
+        
+        $processed = [
+            'single_response' => [],
+            'multiple_responses' => []
+        ];
+        
+        foreach ($results as $row) {
+            $row['nazwa'] = $this->maskName($row['nazwa']);
+            $count = (int)($row['licznik'] ?? 0);
+            
+            if ($count === 1) {
+                $processed['single_response'][] = $row;
+            } else if ($count > 1) {
+                $processed['multiple_responses'][] = $row;
+            } else {
+                $processed['single_response'][] = $row; // No responses, grouping with single
+            }
+        }
+        
+        return $processed;
     }
 
     public function daneOkna($wlasciciel, $hashOkna){
