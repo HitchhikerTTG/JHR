@@ -29,6 +29,19 @@
           </div>
       </div>
 
+      <div class="row">
+          <div class="col-md-8 ml-auto mr-auto">
+              <h4>Ostatnio utworzone okna:</h4>
+              <?php foreach ($okna['latest'] as $okno): ?>
+                  <p>
+                      <a class="btn btn-outline-secondary" href="<?= base_url() ?>/wyswietlOkno/<?= $okno['hash'] ?>/<?= $okno['wlasciciel'] ?>" target="_blank">
+                          <?= $okno['nazwa'] ?>
+                      </a>
+                  </p>
+              <?php endforeach; ?>
+          </div>
+      </div>
+
      
 
 <h4>Okna z wieloma odpowiedziami:</h4>

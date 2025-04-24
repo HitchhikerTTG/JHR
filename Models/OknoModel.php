@@ -36,12 +36,19 @@ class OknoModel extends Model
         if($wlasciciel !== false){
             $builder->where(['wlasciciel'=>$wlasciciel]);
         }
+
+        // Get latest 5 windows by ID
+        $latestBuilder = $this->db->table('okna');
+        $latestBuilder->orderBy('id', 'DESC');
+        $latestBuilder->limit(5);
+        $latest = $latestBuilder->get()->getResultArray();
         
         $results = $builder->get()->getResultArray();
         
         $processed = [
             'single_response' => [],
-            'multiple_responses' => []
+            'multiple_responses' => [],
+            'latest' => $latest
         ];
         
         foreach ($results as $row) {
@@ -56,6 +63,11 @@ class OknoModel extends Model
                 $processed['single_response'][] = $row; // No responses, grouping with single
             }
         }
+        
+        // Sort multiple responses by count descending
+        usort($processed['multiple_responses'], function($a, $b) {
+            return $b['licznik'] - $a['licznik'];
+        });
         
         return $processed;
     }
