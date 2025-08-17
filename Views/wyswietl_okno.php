@@ -40,7 +40,15 @@
 if ($arena) {
 echo "<ul class=\"list-group\">";
 foreach ($arena as $cecha) {
-echo "<li class=\"list-group-item \">".$cecha[1]."</li>";
+    $nazwa = $cecha[1];
+    $czestotliwosc = $cecha[2] ?? 1;
+    
+    echo "<li class=\"list-group-item d-flex justify-content-between align-items-center\">";
+    echo $nazwa;
+    if ($czestotliwosc > 1) {
+        echo " <span class=\"badge badge-pill badge-primary\">".$czestotliwosc."&#128100;</span>";
+    }
+    echo "</li>";
 }
 echo "</ul>";
 } else {
@@ -58,11 +66,17 @@ echo "<p>Nie ma cech, które są znane wszystkim. Twoje wrażenie i wrażenie Tw
             <h5 class="card-title">Cechy, wskazane tylko przez Ciebie</h5>
               <?php 
            		if ($prywatne) {
-				
-           		
 				echo "<ul class=\"list-group\">";
 				foreach ($prywatne as $cecha) {
-				echo "<li class=\"list-group-item \">".$cecha[1]."</li>";
+				    $nazwa = $cecha[1];
+				    $czestotliwosc = $cecha[2] ?? 1;
+				    
+				    echo "<li class=\"list-group-item d-flex justify-content-between align-items-center\">";
+				    echo $nazwa;
+				    if ($czestotliwosc > 1) {
+				        echo " <span class=\"badge badge-pill badge-info\">".$czestotliwosc."&#128100;</span>";
+				    }
+				    echo "</li>";
 				}
 				echo "</ul>";
 				} else {
@@ -81,41 +95,28 @@ echo "<p>Nie ma cech, które są znane wszystkim. Twoje wrażenie i wrażenie Tw
 
               <?php 
               if ($wskazane) {
-//                $same_cechy = [];
-            foreach ($wskazane as $cecha){
-              $same_cechy[]=$cecha[1];
-            }
-
-         $policzone = array_count_values($same_cechy);
-        array_multisort(array_values($policzone), SORT_DESC, array_keys($policzone), SORT_ASC, $policzone);
-         $wymienione = array_keys($policzone);
-         /*sort($wymienione);
-
-
-
-
-
-          echo "<pre>";
-            print_r($policzone);
-            print_r($wymienione);
-            echo "</pre>";
-
-           */     
-        echo "<ul class=\"list-group\">";
-        foreach ($wymienione as $cecha) {
-                 echo "<li class=\"list-group-item d-flex justify-content-between align-items-center\" >".$cecha;
-        if ($policzone[$cecha]>1){
-          echo " <span class=\"badge badge-pill badge-warning\">".$policzone[$cecha]."&#128100;</span></li>";
-        }
-          else {
-            echo "</li>";
-          }
-
-        }
-        echo "</ul>";
-        } else {
-echo "<p>Nie ma cech, których o sobie nie wiesz. Albo wszystko się zgadza, albo nie poprosiłaś / poprosiłeś jeszcze nikogo o podzielenie się opinią</p>";
-}
+                echo "<ul class=\"list-group\">";
+                
+                // Sortujemy cechy według częstotliwości malejąco
+                usort($wskazane, function($a, $b) {
+                    return ($b[2] ?? 1) - ($a[2] ?? 1);
+                });
+                
+                foreach ($wskazane as $cecha) {
+                    $nazwa = $cecha[1];
+                    $czestotliwosc = $cecha[2] ?? 1;
+                    
+                    echo "<li class=\"list-group-item d-flex justify-content-between align-items-center\">";
+                    echo $nazwa;
+                    if ($czestotliwosc > 1) {
+                        echo " <span class=\"badge badge-pill badge-warning\">".$czestotliwosc."&#128100;</span>";
+                    }
+                    echo "</li>";
+                }
+                echo "</ul>";
+              } else {
+                echo "<p>Nie ma cech, których o sobie nie wiesz. Albo wszystko się zgadza, albo nie poprosiłaś / poprosiłeś jeszcze nikogo o podzielenie się opinią</p>";
+              }
               ?>
         </div>
     </div>
