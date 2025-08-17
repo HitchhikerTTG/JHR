@@ -30,7 +30,7 @@ class OknoJohari extends BaseController
     $szablon ="class=\"landing-page sidebar-collapse\"";
     $data['szablon'] = $szablon;
     $cechyModel = model('CechyModel');
-    $data['features'] = $cechyModel->listFeatures();
+    $data['features'] = $cechyModel->listFeatures(2); // Tylko zestaw cech 2
 
     $data['validation']=Services::validation();
     $rules=[
@@ -228,7 +228,7 @@ class OknoJohari extends BaseController
     }
 
     $data['validation']=Services::validation();
-    $data['features'] = $cechyModel->listFeatures();
+    $data['features'] = $cechyModel->listFeatures(2); // Tylko zestaw cech 2
     $data['hashOkna'] = $hashOkna;
     $szablon ="class=\"landing-page sidebar-collapse\"";
     $data['szablon'] = $szablon;
