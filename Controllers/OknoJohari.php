@@ -295,6 +295,15 @@ class OknoJohari extends BaseController
     $oknoModel = model(OknoModel::class);
     $przypisaneCechyModel = model(PrzypisaneCechyModel::class);
     $cechyModel = model(CechyModel::class);
+    
+    // Check if CechyModel was loaded properly
+    if (!$cechyModel) {
+        $data['horror'] = "Błąd wewnętrzny aplikacji - nie można załadować modelu cech";
+        return view('header')
+             . view('error', $data)
+             . view('footer');
+    }
+    
     $nazwaneCechy = $cechyModel->listFeatures();
 
 
