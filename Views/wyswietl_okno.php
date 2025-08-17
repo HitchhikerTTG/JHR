@@ -1,4 +1,3 @@
-
 <div class="page-header header-filter" data-parallax="true" style="background-image: url('<?php echo base_url()?>assets/img/puzzlen.jpg')">
   <div class="container">
     <div class="row">
@@ -42,7 +41,7 @@ echo "<ul class=\"list-group\">";
 foreach ($arena as $cecha) {
     $nazwa = $cecha[1];
     $czestotliwosc = $cecha[2] ?? 1;
-    
+
     echo "<li class=\"list-group-item d-flex justify-content-between align-items-center\">";
     echo $nazwa;
     if ($czestotliwosc > 1) {
@@ -70,7 +69,7 @@ echo "<p>Nie ma cech, które są znane wszystkim. Twoje wrażenie i wrażenie Tw
 				foreach ($prywatne as $cecha) {
 				    $nazwa = $cecha[1];
 				    $czestotliwosc = $cecha[2] ?? 1;
-				    
+
 				    echo "<li class=\"list-group-item d-flex justify-content-between align-items-center\">";
 				    echo $nazwa;
 				    if ($czestotliwosc > 1) {
@@ -96,16 +95,16 @@ echo "<p>Nie ma cech, które są znane wszystkim. Twoje wrażenie i wrażenie Tw
               <?php 
               if ($wskazane) {
                 echo "<ul class=\"list-group\">";
-                
+
                 // Sortujemy cechy według częstotliwości malejąco
                 usort($wskazane, function($a, $b) {
                     return ($b[2] ?? 1) - ($a[2] ?? 1);
                 });
-                
+
                 foreach ($wskazane as $cecha) {
                     $nazwa = $cecha[1];
                     $czestotliwosc = $cecha[2] ?? 1;
-                    
+
                     echo "<li class=\"list-group-item d-flex justify-content-between align-items-center\">";
                     echo $nazwa;
                     if ($czestotliwosc > 1) {
@@ -176,3 +175,135 @@ echo "</div>";
 /*print_r(sort($nieznane));?>	
 <?php print_r(array_count_values($nieznane)); */?>
     </div>
+</div>
+
+<?php if (isset($ma_tlumaczenie) && $ma_tlumaczenie): ?>
+<div class="section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="alert alert-info">
+                    <h4><i class="fa fa-language"></i> Wersja z nowym zestawem cech</h4>
+                    <p>To okno zostało utworzone z wykorzystaniem starszego zestawu cech. Poniżej znajduje się automatyczne tłumaczenie na nowy zestaw cech:</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Arena (publiczne cechy)</h5>
+                        <?php if ($tlumaczenie['arena']): ?>
+                            <ul class="list-group">
+                                <?php foreach ($tlumaczenie['arena'] as $cecha): ?>
+                                    <?php 
+                                    $nazwa = $cecha[1];
+                                    $czestotliwosc = $cecha[2] ?? 1;
+                                    ?>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <?= $nazwa ?>
+                                        <?php if ($czestotliwosc > 1): ?>
+                                            <span class="badge badge-pill badge-primary"><?= $czestotliwosc ?>&#128100;</span>
+                                        <?php endif; ?>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        <?php else: ?>
+                            <p>Brak cech w tej kategorii</p>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Cechy prywatne</h5>
+                        <?php if ($tlumaczenie['prywatne']): ?>
+                            <ul class="list-group">
+                                <?php foreach ($tlumaczenie['prywatne'] as $cecha): ?>
+                                    <?php 
+                                    $nazwa = $cecha[1];
+                                    $czestotliwosc = $cecha[2] ?? 1;
+                                    ?>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <?= $nazwa ?>
+                                        <?php if ($czestotliwosc > 1): ?>
+                                            <span class="badge badge-pill badge-info"><?= $czestotliwosc ?>&#128100;</span>
+                                        <?php endif; ?>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        <?php else: ?>
+                            <p>Brak cech w tej kategorii</p>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Obszar nieznany</h5>
+                        <?php if ($tlumaczenie['wskazane']): ?>
+                            <ul class="list-group">
+                                <?php 
+                                // Sortuj według częstotliwości
+                                usort($tlumaczenie['wskazane'], function($a, $b) {
+                                    return ($b[2] ?? 1) - ($a[2] ?? 1);
+                                });
+                                ?>
+                                <?php foreach ($tlumaczenie['wskazane'] as $cecha): ?>
+                                    <?php 
+                                    $nazwa = $cecha[1];
+                                    $czestotliwosc = $cecha[2] ?? 1;
+                                    ?>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <?= $nazwa ?>
+                                        <?php if ($czestotliwosc > 1): ?>
+                                            <span class="badge badge-pill badge-warning"><?= $czestotliwosc ?>&#128100;</span>
+                                        <?php endif; ?>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        <?php else: ?>
+                            <p>Brak cech w tej kategorii</p>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Pozostałe cechy</h5>
+                        <div class="row">
+                            <?php if ($tlumaczenie['pozostale']): ?>
+                                <?php 
+                                $chunks = array_chunk($tlumaczenie['pozostale'], ceil(count($tlumaczenie['pozostale'])/2));
+                                foreach ($chunks as $chunk): 
+                                ?>
+                                    <div class="col-md-6">
+                                        <ul class="list-group list-group-flush">
+                                            <?php foreach ($chunk as $cecha): ?>
+                                                <li class="list-group-item border-0 py-1 small"><?= $cecha[1] ?></li>
+                                            <?php endforeach; ?>
+                                        </ul>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <p>Wszystkie cechy zostały wykorzystane</p>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
+
+</div>

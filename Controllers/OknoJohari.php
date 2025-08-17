@@ -317,6 +317,15 @@ class OknoJohari extends BaseController
     $data['pozostale'] = $analizaCech['pozostale'];
     $data['licznik'] = $analizaCech['licznik'];
 
+    // Sprawdź czy można wygenerować przetłumaczoną wersję
+    $przetlumaczonaWersja = $oknoModel->getTranslatedWindow($hashOkna, $hashWlasciciela);
+    if ($przetlumaczonaWersja) {
+        $data['ma_tlumaczenie'] = true;
+        $data['tlumaczenie'] = $przetlumaczonaWersja;
+    } else {
+        $data['ma_tlumaczenie'] = false;
+    }
+
     return view('header')
          . view('wyswietl_okno', $data)
          . view('footer');
