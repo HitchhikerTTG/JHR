@@ -132,18 +132,32 @@ class OknoModel extends Model
         $wszystkieZapisaneCechy = $przypisaneCechyModel->cechyOkna($hashOkna);
         $nazwaneCechy = $cechyModel->listFeatures();
         
-        $prywatne = [];
-        $wskazane = [];
-        $pozostale = range(1, 139);
+        // Zliczanie częstotliwości cech
+        $cechyWlasciciela = [];
+        $cechyInnych = [];
+        $czestotliwoscCech = [];
         
-        // Kategoryzacja cech
         foreach ($wszystkieZapisaneCechy as $zapisanaCecha) {
+            $cechaId = $zapisanaCecha['cecha'];
+            
+            // Zliczamy ogólną częstotliwość
+            if (!isset($czestotliwoscCech[$cechaId])) {
+                $czestotliwoscCech[$cechaId] = 0;
+            }
+            $czestotliwoscCech[$cechaId]++;
+            
+            // Kategoryzujemy według nadawcy
             if ($zapisanaCecha['nadawca'] === $hashWlasciciela) {
-                $prywatne[] = $zapisanaCecha['cecha'];
+                $cechyWlasciciela[] = $cechaId;
             } else {
-                $wskazane[] = $zapisanaCecha['cecha'];
+                $cechyInnych[] = $cechaId;
             }
         }
+        
+        // Usuwamy duplikaty z kategorii
+        $prywatne = array_unique($cechyWlasciciela);
+        $wskazane = array_unique($cechyInnych);
+        $pozostale = range(1, 139);
         
         // Analiza przecięć i różnic
         $arena = array_intersect($prywatne, $wskazane);
@@ -151,10 +165,10 @@ class OknoModel extends Model
         $wskazane = array_diff($wskazane, $arena);
         $pozostale = array_diff($pozostale, $arena, $wskazane, $prywatne);
         
-        // Konwersja ID na nazwy
-        $arena = $this->konwertujCechyNaNazwy($arena, $nazwaneCechy);
-        $prywatne = $this->konwertujCechyNaNazwy($prywatne, $nazwaneCechy);
-        $wskazane = $this->konwertujCechyNaNazwy($wskazane, $nazwaneCechy);
+        // Konwersja ID na nazwy z częstotliwością
+        $arena = $this->konwertujCechyNaNazwyZCzestotliwoscia($arena, $nazwaneCechy, $czestotliwoscCech);
+        $prywatne = $this->konwertujCechyNaNazwyZCzestotliwoscia($prywatne, $nazwaneCechy, $czestotliwoscCech);
+        $wskazane = $this->konwertujCechyNaNazwyZCzestotliwoscia($wskazane, $nazwaneCechy, $czestotliwoscCech);
         $pozostale = $this->konwertujCechyNaNazwy($pozostale, $nazwaneCechy);
         
         return [
@@ -162,7 +176,8 @@ class OknoModel extends Model
             'prywatne' => $prywatne,
             'wskazane' => $wskazane,
             'pozostale' => $pozostale,
-            'licznik' => count($wszystkieZapisaneCechy)
+            'licznik' => count($wszystkieZapisaneCechy),
+            'czestotliwosc' => $czestotliwoscCech
         ];
     }
     
@@ -171,6 +186,20 @@ class OknoModel extends Model
         $wynik = [];
         foreach ($cechy as $cechaID) {
             $wynik[] = [$cechaID, $nazwaneCechy[$cechaID-1]['cecha_pl']];
+        }
+        return $wynik;
+    }
+    
+    private function konwertujCechyNaNazwyZCzestotliwoscia($cechy, $nazwaneCechy, $czestotliwoscCech)
+    {
+        $wynik = [];
+        foreach ($cechy as $cechaID) {
+            $czestotliwosc = $czestotliwoscCech[$cechaID] ?? 1;
+            $wynik[] = [
+                $cechaID, 
+                $nazwaneCechy[$cechaID-1]['cecha_pl'],
+                $czestotliwosc
+            ];
         }
         return $wynik;
     }
