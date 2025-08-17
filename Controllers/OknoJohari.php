@@ -298,103 +298,28 @@ class OknoJohari extends BaseController
   public function wyswietlOkno($hashOkna, $hashWlasciciela) {
 
     $oknoModel = model(\App\Models\OknoModel::class);
-    $przypisaneCechyModel = model(\App\Models\PrzypisaneCechyModel::class);
-    $cechyModel = model(\App\Models\CechyModel::class);
 
-    // Check if CechyModel was loaded properly
-    if (!$cechyModel) {
-        $data['horror'] = "Błąd wewnętrzny aplikacji - nie można załadować modelu cech";
+    $data['okno'] = $oknoModel->daneOkna($hashWlasciciela, $hashOkna);
+
+    if (empty($data['okno'])) {
+        $data['horror'] = "Błędnie podane parametry okna - nie mam czego wyświetlić. Jeśli jesteś pewien linku, z którego korzystasz, skontaktuj się ze sprawcą całego zamieszania";
         return view('header')
              . view('error', $data)
              . view('footer');
     }
 
-    $nazwaneCechy = $cechyModel->listFeatures();
+    // Delegacja analizy cech do modelu
+    $analizaCech = $oknoModel->analizyCechOkna($hashOkna, $hashWlasciciela);
+    
+    $data['arena'] = $analizaCech['arena'];
+    $data['prywatne'] = $analizaCech['prywatne'];
+    $data['wskazane'] = $analizaCech['wskazane'];
+    $data['pozostale'] = $analizaCech['pozostale'];
+    $data['licznik'] = $analizaCech['licznik'];
 
-
-    $prywatne=[];
-    $wskazane=[];
-    $pozostale=range(1,139); // To wypełnia tabelkę liczbami od 1 do 139
-
-    $data['okno']=$oknoModel->daneOkna($hashWlasciciela,$hashOkna);
-
-    if (empty($data['okno'])) {
-            $data['horror']="Błędnie podane parametry okna - nie mam czego wyświetlić. Jeśli jesteś pewien linku, z którego korzystasz, skontaktuj się ze sprawcą całego zamieszania";
-            return    view ('header')
-                    . view ('error',$data)
-                    . view ('footer');
-        }
-    else {
-
-    $wszystkieZapisaneCechy = $przypisaneCechyModel->cechyOkna($hashOkna);
-    $data['licznik']=count($wszystkieZapisaneCechy);
-
-    foreach ($wszystkieZapisaneCechy as $zapisanaCecha){
-
-        if ($zapisanaCecha['nadawca']===$hashWlasciciela) {
-            array_push($prywatne,$zapisanaCecha['cecha']);
-            //$arena[]=$zapisanaCecha['cecha']=>$nazwaneCechy['cecha'];
-            //array_push($arena, array($zapisanaCecha['cecha'],$nazwaneCechy[$zapisanaCecha['cecha']]['cecha_pl']));
-        }
-        if ($zapisanaCecha['nadawca']!=$hashWlasciciela){
-//            $wskazane[]=$zapisanaCecha['cecha']=>$nazwaneCechy['cecha'];
-            array_push($wskazane,$zapisanaCecha['cecha']);
-            //array_push($wskazane, array($zapisanaCecha['cecha'],$nazwaneCechy[$zapisanaCecha['cecha']]['cecha_pl']));
-
-        }
-
-
-    }
-            $arena=array_intersect($prywatne, $wskazane);
-            $prywatne=array_diff($prywatne, $arena);
-            $wskazane=array_diff($wskazane, $arena);
-            $pozostale=array_diff($pozostale, $arena, $wskazane, $prywatne);
-    foreach ($arena as &$cechaID){
-        $cechaID=array($cechaID,$nazwaneCechy[$cechaID-1]['cecha_pl']);        
-    }
-
-    foreach ($wskazane as &$cechaID){
-        $cechaID=array($cechaID,$nazwaneCechy[$cechaID-1]['cecha_pl']);        
-    }
-
-        foreach ($prywatne as &$cechaID){
-        $cechaID=array($cechaID,$nazwaneCechy[$cechaID-1]['cecha_pl']);        
-    }
-
-        foreach ($pozostale as &$cechaID){
-        $cechaID=array($cechaID,$nazwaneCechy[$cechaID-1]['cecha_pl']);        
-    }
-
-    $data['arena']=$arena;
-    $data['wskazane']=$wskazane;
-    $data['prywatne']=$prywatne;
-    $data['pozostale']=$pozostale;
-
-    /*echo "Arena:<br>";
-    echo "<pre>";
-    print_r($arena);
-    echo "</pre>";
-    echo "Publiczne:<br>";
-    echo "<pre>";
-    print_r($publiczne);
-    echo "</pre>";
-    echo "Niewidoczne:<br>";
-    echo "<pre>";
-    print_r($wskazane);
-    echo "</pre>";
-
-
-    echo "<pre>";
-    print_r($data);
-    echo "</pre>";
-    */
-
-    return view ('header')
-
-    . view ('wyswietl_okno',$data)
-    . view ('footer');
-
-}
+    return view('header')
+         . view('wyswietl_okno', $data)
+         . view('footer');
   }
 
     public function beta(){

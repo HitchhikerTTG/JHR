@@ -124,4 +124,55 @@ class OknoModel extends Model
         return $okno ? $okno['id_zestaw_cech'] : 1; // domyślnie zestaw 1 dla starych okien
     }
 
+    public function analizyCechOkna($hashOkna, $hashWlasciciela)
+    {
+        $przypisaneCechyModel = model(\App\Models\PrzypisaneCechyModel::class);
+        $cechyModel = model(\App\Models\CechyModel::class);
+        
+        $wszystkieZapisaneCechy = $przypisaneCechyModel->cechyOkna($hashOkna);
+        $nazwaneCechy = $cechyModel->listFeatures();
+        
+        $prywatne = [];
+        $wskazane = [];
+        $pozostale = range(1, 139);
+        
+        // Kategoryzacja cech
+        foreach ($wszystkieZapisaneCechy as $zapisanaCecha) {
+            if ($zapisanaCecha['nadawca'] === $hashWlasciciela) {
+                $prywatne[] = $zapisanaCecha['cecha'];
+            } else {
+                $wskazane[] = $zapisanaCecha['cecha'];
+            }
+        }
+        
+        // Analiza przecięć i różnic
+        $arena = array_intersect($prywatne, $wskazane);
+        $prywatne = array_diff($prywatne, $arena);
+        $wskazane = array_diff($wskazane, $arena);
+        $pozostale = array_diff($pozostale, $arena, $wskazane, $prywatne);
+        
+        // Konwersja ID na nazwy
+        $arena = $this->konwertujCechyNaNazwy($arena, $nazwaneCechy);
+        $prywatne = $this->konwertujCechyNaNazwy($prywatne, $nazwaneCechy);
+        $wskazane = $this->konwertujCechyNaNazwy($wskazane, $nazwaneCechy);
+        $pozostale = $this->konwertujCechyNaNazwy($pozostale, $nazwaneCechy);
+        
+        return [
+            'arena' => $arena,
+            'prywatne' => $prywatne,
+            'wskazane' => $wskazane,
+            'pozostale' => $pozostale,
+            'licznik' => count($wszystkieZapisaneCechy)
+        ];
+    }
+    
+    private function konwertujCechyNaNazwy($cechy, $nazwaneCechy)
+    {
+        $wynik = [];
+        foreach ($cechy as $cechaID) {
+            $wynik[] = [$cechaID, $nazwaneCechy[$cechaID-1]['cecha_pl']];
+        }
+        return $wynik;
+    }
+
 }
