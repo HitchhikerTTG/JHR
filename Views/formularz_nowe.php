@@ -23,23 +23,71 @@
 <div class="form-check">
 <div id="komunikat" class="sticky-top"><span class="komunikat">Wybierz 6 cech z poniższego zestawu</span></div>
 
-<div class="containter">
+<div class="container">
 <div class="row">
-	<div class="col"><p class="h4">h4. Bootstrap heading</p></div>
+	<div class="col-12"><p class="h4">h4. Bootstrap heading</p></div>
 </div>
 <div class="row">
-<div class="col"><input type="checkbox" id="1" name="feature_list[]" value="1"><label type="checkbox" for="1">Agresywny</label></div>
-<div class="col"><input type="checkbox" id="2" name="feature_list[]" value="2"><label type="checkbox" for="2">Arogancki</label></div>
+<div class="col-md-6 col-lg-3 mb-2">
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" id="1" name="feature_list[]" value="1">
+    <label class="form-check-label" for="1">Agresywny</label>
+  </div>
+</div>
+<div class="col-md-6 col-lg-3 mb-2">
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" id="2" name="feature_list[]" value="2">
+    <label class="form-check-label" for="2">Arogancki</label>
+  </div>
+</div>
 </div><div class="row">
-<div class="col"><input type="checkbox" id="3" name="feature_list[]" value="3"><label type="checkbox" for="3">Asertywny</label></div>
-<div class="col"><input type="checkbox" id="4" name="feature_list[]" value="4"><label type="checkbox" for="4">Atrakcyjny</label></div>
-<div class="col"><input type="checkbox" id="5" name="feature_list[]" value="5"><label type="checkbox" for="5">Bezczelny</label></div>
-<div class="col"><input type="checkbox" id="6" name="feature_list[]" value="6"><label type="checkbox" for="6">Bezinteresowny</label></div>
+<div class="col-md-6 col-lg-3 mb-2">
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" id="3" name="feature_list[]" value="3">
+    <label class="form-check-label" for="3">Asertywny</label>
+  </div>
+</div>
+<div class="col-md-6 col-lg-3 mb-2">
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" id="4" name="feature_list[]" value="4">
+    <label class="form-check-label" for="4">Atrakcyjny</label>
+  </div>
+</div>
+<div class="col-md-6 col-lg-3 mb-2">
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" id="5" name="feature_list[]" value="5">
+    <label class="form-check-label" for="5">Bezczelny</label>
+  </div>
+</div>
+<div class="col-md-6 col-lg-3 mb-2">
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" id="6" name="feature_list[]" value="6">
+    <label class="form-check-label" for="6">Bezinteresowny</label>
+  </div>
+</div>
 </div><div class="row">
-<div class="col"><input type="checkbox" id="7" name="feature_list[]" value="7"><label type="checkbox" for="7">Bezmyślny</label></div>
-<div class="col"><input type="checkbox" id="8" name="feature_list[]" value="8"><label type="checkbox" for="8">Bezpośredni</label></div>
-<div class="col"><input type="checkbox" id="9" name="feature_list[]" value="9"><label type="checkbox" for="9">Beztroski</label></div>
-<div class="col"><input type="checkbox" id="10" name="feature_list[]" value="10"><label type="checkbox" for="10">Bezwolny</label></div>
+<div class="col-md-6 col-lg-3 mb-2">
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" id="7" name="feature_list[]" value="7">
+    <label class="form-check-label" for="7">Bezmyślny</label>
+  </div>
+</div>
+<div class="col-md-6 col-lg-3 mb-2">
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" id="8" name="feature_list[]" value="8">
+    <label class="form-check-label" for="8">Bezpośredni</label>
+  </div>
+</div>
+<div class="col-md-6 col-lg-3 mb-2">
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" id="9" name="feature_list[]" value="9">
+    <label class="form-check-label" for="9">Beztroski</label>
+  </div>
+</div>
+<div class="col-md-6 col-lg-3 mb-2">
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" id="10" name="feature_list[]" value="10">
+    <label class="form-check-label" for="10">Bezwolny</label></div>
 </div><div class="row">
 <div class="col"><input type="checkbox" id="11" name="feature_list[]" value="11"><label type="checkbox" for="11">Bezwstydny</label></div>
 <div class="col"><input type="checkbox" id="12" name="feature_list[]" value="12"><label type="checkbox" for="12">Bezwzględny</label></div>

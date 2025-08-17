@@ -1,23 +1,23 @@
 <footer class="footer footer-default" >
   <div class="container">
-    <nav class="float-left">
-
-
-      <ul>
-        <li>
-          <a>autor:</a><a href="https://www.linkedin.com/in/witnirski/" target="_blank">Wit Nirski</a>
-        </li>
-        <li> <a href="https://niecodzienny.net/2019/05/zrobmy-sobie-okno-johari/" target="_blank">Dlaczego zrobiłem Okno Johari</a></li>
-        <li> <a href="https://subskrypcje.pl" target="_blank">Subskrypcje.pl - najciekawsze subskrypcje w Polsce</a></li>
-        <li><a href="https://niecodzienny.net/planowanie-tygodnia-i-roku-z-notion/" target="_blank"  class="nav-link">Mój sposób na planowanie roku</a>
-            </li>
-      </ul>
-    </nav>
-    <div class="copyright float-right" style="font-size:12px; text-transform:uppercase;" >
-        &copy;
-        <script>
-            document.write(new Date().getFullYear())
-        </script>, zbudowane na Codeigniter, w oparciu o <a href="https://www.creative-tim.com/product/material-kit" target="_blank">Material Kit</a> stworzone przez <a href="https://www.creative-tim.com/" target="blank">Creative Tim</a>
+    <div class="d-flex justify-content-between align-items-center flex-wrap">
+      <nav>
+        <ul class="mb-0">
+          <li>
+            <a>autor:</a><a href="https://www.linkedin.com/in/witnirski/" target="_blank">Wit Nirski</a>
+          </li>
+          <li> <a href="https://niecodzienny.net/2019/05/zrobmy-sobie-okno-johari/" target="_blank">Dlaczego zrobiłem Okno Johari</a></li>
+          <li> <a href="https://subskrypcje.pl" target="_blank">Subskrypcje.pl - najciekawsze subskrypcje w Polsce</a></li>
+          <li><a href="https://niecodzienny.net/planowanie-tygodnia-i-roku-z-notion/" target="_blank"  class="nav-link">Mój sposób na planowanie roku</a>
+              </li>
+        </ul>
+      </nav>
+      <div class="copyright" style="font-size:12px; text-transform:uppercase;" >
+          &copy;
+          <script>
+              document.write(new Date().getFullYear())
+          </script>, zbudowane na Codeigniter, w oparciu o <a href="https://www.creative-tim.com/product/material-kit" target="_blank">Material Kit</a> stworzone przez <a href="https://www.creative-tim.com/" target="blank">Creative Tim</a>
+      </div>
     </div>
   </div>
 </footer>
