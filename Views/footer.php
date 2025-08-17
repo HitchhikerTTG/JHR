@@ -2,7 +2,7 @@
   <div class="container">
     <nav class="float-left">
 
-      
+
       <ul>
         <li>
           <a>autor:</a><a href="https://www.linkedin.com/in/witnirski/" target="_blank">Wit Nirski</a>
@@ -11,13 +11,13 @@
         <li> <a href="https://subskrypcje.pl" target="_blank">Subskrypcje.pl - najciekawsze subskrypcje w Polsce</a></li>
         <li><a href="https://niecodzienny.net/planowanie-tygodnia-i-roku-z-notion/" target="_blank"  class="nav-link">Mój sposób na planowanie roku</a>
             </li>
-      </ul> 
+      </ul>
     </nav>
     <div class="copyright float-right" style="font-size:12px; text-transform:uppercase;" >
         &copy;
         <script>
             document.write(new Date().getFullYear())
-        </script>, zbudowane na Codeigniter, w oparciu o <a href="https://www.creative-tim.com/product/material-kit" target="_blank">Material Kit</a> stworzone przez <a href="https://www.creative-tim.com/" target="blank">Creative Tim</a> 
+        </script>, zbudowane na Codeigniter, w oparciu o <a href="https://www.creative-tim.com/product/material-kit" target="_blank">Material Kit</a> stworzone przez <a href="https://www.creative-tim.com/" target="blank">Creative Tim</a>
     </div>
   </div>
 </footer>
@@ -30,7 +30,9 @@
 <!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
 <script src="<?php echo base_url()?>/assets/js/plugins/nouislider.min.js" type="text/javascript"></script>
 <!--  Google Maps Plugin  -->
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+<?php if (getenv('GOOGLE_MAPS_API_KEY')): ?>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=<?= getenv('GOOGLE_MAPS_API_KEY') ?>"></script>
+<?php endif; ?>
 <!-- Place this tag in your head or just before your close body tag. -->
 <script async defer src="https://buttons.github.io/buttons.js"></script>
 <!-- Control Center for Material Kit: parallax effects, scripts for the example pages etc -->
