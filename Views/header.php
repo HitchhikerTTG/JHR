@@ -1,6 +1,6 @@
 <html lang="en">
   <head>
-  
+
     <title>Okno Johari - jak widzimy siebie, jak widzą nas inni</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -9,6 +9,10 @@
     <!--     Fonts and icons     -->
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+
+    <!-- Bootstrap 4 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+
     <!-- Material Kit CSS -->
     <link href="<?php echo base_url()?>/assets/css/material-kit.css?v=2.0.5" rel="stylesheet" />
     <link href="<?php echo base_url()?>/assets/css/okno.css" rel="stylesheet" />
