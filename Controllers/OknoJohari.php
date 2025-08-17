@@ -7,7 +7,7 @@ class OknoJohari extends BaseController
 {
     protected $oknoModel;
     protected $session;
-    
+
     function __construct()
     {
 
@@ -17,7 +17,7 @@ class OknoJohari extends BaseController
 
 
     }
-    
+
   public function stworzOkno()
   {
     $oknoModel = model(OknoModel::class);
@@ -25,7 +25,7 @@ class OknoJohari extends BaseController
     $PrzypisaneCechyModel = model(PrzypisaneCechyModel::class);
     $szablon ="class=\"landing-page sidebar-collapse\"";
     $data['szablon'] = $szablon;
-    $cechyModel = model(CechyModel::class);
+    $cechyModel = model('CechyModel');
     $data['features'] = $cechyModel->listFeatures();
 
     $data['validation']=Services::validation();
@@ -33,7 +33,7 @@ class OknoJohari extends BaseController
         'imie'=>'required|min_length[3]|max_length[255]',
         'email'=>'required|valid_email',
         'tytul'=>'required|min_length[5]|max_length[255]|oknoCheck[{email}]',
-    
+
     ];
     $errors=[
         'imie'=>[
@@ -52,7 +52,7 @@ class OknoJohari extends BaseController
     ];
 
        // $session = session();
-         
+
 
         //$session->setFlashdata('validator', $this->validate($rules,$errors));
         //if ($this->validate($rules,$errors)){
@@ -208,15 +208,15 @@ class OknoJohari extends BaseController
     $PrzypisaneCechyModel = model(PrzypisaneCechyModel::class);
     $cechyModel = model(CechyModel::class);
     $toOkno = $oknoModel->where('hash', $hashOkna)->first();
-    
+
     if ($toOkno['imie_wlasciciela']){
        $data['ImieWlasciciela']=$toOkno['imie_wlasciciela'];
     } else {
        $data['ImieWlasciciela']="Bezimienny";
 
     }
-    
- 
+
+
 
     if (isset($wynikZaptanieOkno)){
         $data['ImieWlasciciela']=$wynikZaptanieOkno->imie_wlasciciela;
@@ -295,7 +295,7 @@ class OknoJohari extends BaseController
     $oknoModel = model(OknoModel::class);
     $przypisaneCechyModel = model(PrzypisaneCechyModel::class);
     $cechyModel = model(CechyModel::class);
-    
+
     // Check if CechyModel was loaded properly
     if (!$cechyModel) {
         $data['horror'] = "Błąd wewnętrzny aplikacji - nie można załadować modelu cech";
@@ -303,7 +303,7 @@ class OknoJohari extends BaseController
              . view('error', $data)
              . view('footer');
     }
-    
+
     $nazwaneCechy = $cechyModel->listFeatures();
 
 
@@ -377,7 +377,7 @@ class OknoJohari extends BaseController
     echo "<pre>";
     print_r($wskazane);
     echo "</pre>";
-    
+
 
     echo "<pre>";
     print_r($data);
@@ -388,7 +388,7 @@ class OknoJohari extends BaseController
 
     . view ('wyswietl_okno',$data)
     . view ('footer');
-    
+
 }
   }
 
@@ -399,7 +399,7 @@ class OknoJohari extends BaseController
     . view('tresc',$data )
     . view('dev')
     . view('footer');
-    
+
     }
 
     public function slijMaila($adresat='wit@nirski.com', $hashOkna='35e1ae5e03a8cd91ffaebae43b7b402638bfa992'){
@@ -407,9 +407,9 @@ class OknoJohari extends BaseController
 
         $email->setFrom('okno@johari.pl', 'Okno Johari');
         $email->setTo($adresat);
-        
+
         $email->setSubject('Twoje Okno Johari - przydatne linki');
-        
+
 
 //        $this->email->from('techniczny@johari.pl', 'Okno Johari');
 //        $this->email->to($adresat);
@@ -424,8 +424,6 @@ class OknoJohari extends BaseController
 
 $message = view('email/szablon.php',$data);
 //echo $message;
-        $email->setMessage($message);
-
         $email->send();
 
 
