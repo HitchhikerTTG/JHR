@@ -64,7 +64,8 @@ class TranslatorCechModel extends Model
     
     private function translateCategoryWithFrequency($kategoria, $translationMap, $noweCechy)
     {
-        $wynik = [];
+        $agregowane = []; // [noweId => [nazwa, suma_czestotliwosci]]
+        
         foreach ($kategoria as $cecha) {
             $stareId = $cecha[0];
             $czestotliwosc = $cecha[2] ?? 1;
@@ -74,16 +75,27 @@ class TranslatorCechModel extends Model
                 $nowaNazwa = $this->findFeatureName($noweId, $noweCechy);
                 
                 if ($nowaNazwa) {
-                    $wynik[] = [$noweId, $nowaNazwa, $czestotliwosc];
+                    if (!isset($agregowane[$noweId])) {
+                        $agregowane[$noweId] = [$nowaNazwa, 0];
+                    }
+                    $agregowane[$noweId][1] += $czestotliwosc;
                 }
             }
         }
+        
+        // Konwersja na format wynikowy
+        $wynik = [];
+        foreach ($agregowane as $noweId => $dane) {
+            $wynik[] = [$noweId, $dane[0], $dane[1]];
+        }
+        
         return $wynik;
     }
     
     private function translateCategory($kategoria, $translationMap, $noweCechy)
     {
-        $wynik = [];
+        $unikalne = []; // [noweId => nazwa] - eliminuje duplikaty
+        
         foreach ($kategoria as $cecha) {
             $stareId = $cecha[0];
             
@@ -92,10 +104,17 @@ class TranslatorCechModel extends Model
                 $nowaNazwa = $this->findFeatureName($noweId, $noweCechy);
                 
                 if ($nowaNazwa) {
-                    $wynik[] = [$noweId, $nowaNazwa];
+                    $unikalne[$noweId] = $nowaNazwa;
                 }
             }
         }
+        
+        // Konwersja na format wynikowy
+        $wynik = [];
+        foreach ($unikalne as $noweId => $nazwa) {
+            $wynik[] = [$noweId, $nazwa];
+        }
+        
         return $wynik;
     }
     
@@ -115,5 +134,20 @@ class TranslatorCechModel extends Model
             'from_cecha_id_set' => $fromSetId,
             'to_cecha_id_set' => $toSetId
         ])->countAllResults() > 0;
+    }
+    
+    /**
+     * Analizuje mapowanie translacji - pokazuje ile źródłowych cech mapuje się na każdą docelową cechę
+     */
+    public function analyzeTranslationMapping($fromSetId, $toSetId)
+    {
+        $builder = $this->db->table('translator_cech');
+        $builder->select('to_cecha_id, COUNT(*) as source_count');
+        $builder->where('from_cecha_id_set', $fromSetId);
+        $builder->where('to_cecha_id_set', $toSetId);
+        $builder->groupBy('to_cecha_id');
+        $builder->orderBy('source_count', 'DESC');
+        
+        return $builder->get()->getResultArray();
     }
 }
