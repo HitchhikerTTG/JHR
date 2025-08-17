@@ -21,9 +21,8 @@
     </div>
   </div>
 </footer>
-<script src="<?php echo base_url()?>/assets/js/core/jquery.min.js" type="text/javascript"></script>
-<script src="<?php echo base_url()?>/assets/js/core/popper.min.js" type="text/javascript"></script>
-<script src="<?php echo base_url()?>/assets/js/core/bootstrap-material-design.min.js" type="text/javascript"></script>
+<!-- Bootstrap 5 JS Bundle (includes Popper) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 <script src="<?php echo base_url()?>/assets/js/plugins/moment.min.js"></script>
 <!--  Plugin for the Datepicker, full documentation here: https://github.com/Eonasdan/bootstrap-datetimepicker -->
 <script src="<?php echo base_url()?>/assets/js/plugins/bootstrap-datetimepicker.js" type="text/javascript"></script>
