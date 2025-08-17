@@ -42,3 +42,4 @@ $routes->get('wyswietlOkno/(:segment)/(:segment)','OknoJohari::wyswietlOkno/$1/$
 $routes->get('wyswietlOkno/(:segment)/(:segment)/(:num)', 'OknoJohari::wyswietlOkno/$1/$2/$3');
 $routes->get('testuje', 'Form::index');
 $routes->post('testuje', 'Form::index');
+$routes->get('/tlumaczOkno/(:segment)/(:segment)', 'OknoJohari::tlumaczOkno/$1/$2');

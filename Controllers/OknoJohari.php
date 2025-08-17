@@ -319,17 +319,9 @@ class OknoJohari extends BaseController
 
     // Sprawdź czy okno wymaga tłumaczenia (tylko zestaw cech 1)
     $zestawCech = $oknoModel->getWindowFeatureSet($hashOkna, $hashWlasciciela);
-    if ($zestawCech == 1) {
-        // Ostatnia zmiana: Kontroler teraz orkiestruje translację między modelami zamiast 
-        // delegowania tej odpowiedzialności do OknoModel - zapewnia to lepsze rozdzielenie odpowiedzialności
-        $translatorModel = model(\App\Models\TranslatorCechModel::class);
-        $przetlumaczonaWersja = $translatorModel->translateWindow($analizaCech, 1, 2);
-        
-        $data['ma_tlumaczenie'] = true;
-        $data['tlumaczenie'] = $przetlumaczonaWersja;
-    } else {
-        $data['ma_tlumaczenie'] = false;
-    }
+    $data['ma_tlumaczenie'] = ($zestawCech == 1);
+    $data['hash_okna'] = $hashOkna;
+    $data['hash_wlasciciela'] = $hashWlasciciela;
 
     return view('header')
          . view('wyswietl_okno', $data)
@@ -372,6 +364,30 @@ $message = view('email/szablon.php',$data);
 
 
     }
+    public function tlumaczOkno($hashOkna, $hashWlasciciela) {
+        // Sprawdź czy żądanie jest AJAX
+        if (!$this->request->isAJAX()) {
+            return $this->response->setStatusCode(400)->setJSON(['error' => 'Only AJAX requests allowed']);
+        }
+
+        $oknoModel = model(\App\Models\OknoModel::class);
+        
+        // Sprawdź czy okno istnieje i ma stary zestaw cech
+        $zestawCech = $oknoModel->getWindowFeatureSet($hashOkna, $hashWlasciciela);
+        if ($zestawCech != 1) {
+            return $this->response->setStatusCode(400)->setJSON(['error' => 'To okno nie wymaga tłumaczenia']);
+        }
+
+        // Pobierz analizę cech
+        $analizaCech = $oknoModel->analizyCechOkna($hashOkna, $hashWlasciciela);
+        
+        // Przetłumacz okno
+        $translatorModel = model(\App\Models\TranslatorCechModel::class);
+        $przetlumaczonaWersja = $translatorModel->translateWindow($analizaCech, 1, 2);
+        
+        return $this->response->setJSON(['tlumaczenie' => $przetlumaczonaWersja]);
+    }
+
     public function polityka(){
             $data['szablon']="class=\"profile-page sidebar-collapse\"";
             $data['title']="Polityka Prywatności Johari.pl";

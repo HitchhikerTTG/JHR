@@ -183,120 +183,59 @@ echo "</div>";
         <div class="row">
             <div class="col-md-12">
                 <div class="alert alert-info">
-                    <h4><i class="fa fa-language"></i> Wersja z nowym zestawem cech</h4>
-                    <p>To okno zostało utworzone z wykorzystaniem starszego zestawu cech. Poniżej znajduje się automatyczne tłumaczenie na nowy zestaw cech:</p>
+                    <h4><i class="fa fa-language"></i> Tłumaczenie na nowy zestaw cech</h4>
+                    <p>To okno zostało utworzone z wykorzystaniem starszego zestawu cech. Możesz przetłumaczyć je na nowy zestaw cech:</p>
+                    <button id="tlumacz-okno" class="btn btn-primary" onclick="tlumaczOkno()">
+                        <i class="fa fa-language"></i> Tłumacz okno na nowe cechy
+                    </button>
                 </div>
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Arena (publiczne cechy)</h5>
-                        <?php if ($tlumaczenie['arena']): ?>
-                            <ul class="list-group">
-                                <?php foreach ($tlumaczenie['arena'] as $cecha): ?>
-                                    <?php 
-                                    $nazwa = $cecha[1];
-                                    $czestotliwosc = $cecha[2] ?? 1;
-                                    ?>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <?= $nazwa ?>
-                                        <?php if ($czestotliwosc > 1): ?>
-                                            <span class="badge badge-pill badge-primary"><?= $czestotliwosc ?>&#128100;</span>
-                                        <?php endif; ?>
-                                    </li>
-                                <?php endforeach; ?>
-                            </ul>
-                        <?php else: ?>
-                            <p>Brak cech w tej kategorii</p>
-                        <?php endif; ?>
+        <div id="tlumaczenie-container" style="display: none;">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="alert alert-success">
+                        <h5>Przetłumaczona wersja z nowym zestawem cech:</h5>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Cechy prywatne</h5>
-                        <?php if ($tlumaczenie['prywatne']): ?>
-                            <ul class="list-group">
-                                <?php foreach ($tlumaczenie['prywatne'] as $cecha): ?>
-                                    <?php 
-                                    $nazwa = $cecha[1];
-                                    $czestotliwosc = $cecha[2] ?? 1;
-                                    ?>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <?= $nazwa ?>
-                                        <?php if ($czestotliwosc > 1): ?>
-                                            <span class="badge badge-pill badge-info"><?= $czestotliwosc ?>&#128100;</span>
-                                        <?php endif; ?>
-                                    </li>
-                                <?php endforeach; ?>
-                            </ul>
-                        <?php else: ?>
-                            <p>Brak cech w tej kategorii</p>
-                        <?php endif; ?>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Arena (publiczne cechy)</h5>
+                            <div id="tlumaczenie-arena"></div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <div class="row mt-3">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Obszar nieznany</h5>
-                        <?php if ($tlumaczenie['wskazane']): ?>
-                            <ul class="list-group">
-                                <?php 
-                                // Sortuj według częstotliwości
-                                usort($tlumaczenie['wskazane'], function($a, $b) {
-                                    return ($b[2] ?? 1) - ($a[2] ?? 1);
-                                });
-                                ?>
-                                <?php foreach ($tlumaczenie['wskazane'] as $cecha): ?>
-                                    <?php 
-                                    $nazwa = $cecha[1];
-                                    $czestotliwosc = $cecha[2] ?? 1;
-                                    ?>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <?= $nazwa ?>
-                                        <?php if ($czestotliwosc > 1): ?>
-                                            <span class="badge badge-pill badge-warning"><?= $czestotliwosc ?>&#128100;</span>
-                                        <?php endif; ?>
-                                    </li>
-                                <?php endforeach; ?>
-                            </ul>
-                        <?php else: ?>
-                            <p>Brak cech w tej kategorii</p>
-                        <?php endif; ?>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Cechy prywatne</h5>
+                            <div id="tlumaczenie-prywatne"></div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Pozostałe cechy</h5>
-                        <div class="row">
-                            <?php if ($tlumaczenie['pozostale']): ?>
-                                <?php 
-                                $chunks = array_chunk($tlumaczenie['pozostale'], ceil(count($tlumaczenie['pozostale'])/2));
-                                foreach ($chunks as $chunk): 
-                                ?>
-                                    <div class="col-md-6">
-                                        <ul class="list-group list-group-flush">
-                                            <?php foreach ($chunk as $cecha): ?>
-                                                <li class="list-group-item border-0 py-1 small"><?= $cecha[1] ?></li>
-                                            <?php endforeach; ?>
-                                        </ul>
-                                    </div>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <p>Wszystkie cechy zostały wykorzystane</p>
-                            <?php endif; ?>
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Obszar nieznany</h5>
+                            <div id="tlumaczenie-wskazane"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Pozostałe cechy</h5>
+                            <div id="tlumaczenie-pozostale"></div>
                         </div>
                     </div>
                 </div>
@@ -304,6 +243,99 @@ echo "</div>";
         </div>
     </div>
 </div>
+
+<script>
+function tlumaczOkno() {
+    const button = document.getElementById('tlumacz-okno');
+    button.disabled = true;
+    button.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Tłumaczę...';
+    
+    fetch('<?= base_url() ?>/tlumaczOkno/<?= $hash_okna ?>/<?= $hash_wlasciciela ?>', {
+        method: 'GET',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            alert('Błąd: ' + data.error);
+            return;
+        }
+        
+        const tlumaczenie = data.tlumaczenie;
+        
+        // Wypełnij arena
+        document.getElementById('tlumaczenie-arena').innerHTML = renderCechyZCzestotliwoscia(tlumaczenie.arena, 'primary');
+        
+        // Wypełnij prywatne
+        document.getElementById('tlumaczenie-prywatne').innerHTML = renderCechyZCzestotliwoscia(tlumaczenie.prywatne, 'info');
+        
+        // Wypełnij wskazane (sortowane według częstotliwości)
+        tlumaczenie.wskazane.sort((a, b) => (b[2] || 1) - (a[2] || 1));
+        document.getElementById('tlumaczenie-wskazane').innerHTML = renderCechyZCzestotliwoscia(tlumaczenie.wskazane, 'warning');
+        
+        // Wypełnij pozostałe
+        document.getElementById('tlumaczenie-pozostale').innerHTML = renderCechyBezCzestotliwosci(tlumaczenie.pozostale);
+        
+        // Pokaż kontener z tłumaczeniem
+        document.getElementById('tlumaczenie-container').style.display = 'block';
+        
+        // Ukryj przycisk
+        button.style.display = 'none';
+    })
+    .catch(error => {
+        console.error('Błąd:', error);
+        alert('Wystąpił błąd podczas tłumaczenia okna');
+        button.disabled = false;
+        button.innerHTML = '<i class="fa fa-language"></i> Tłumacz okno na nowe cechy';
+    });
+}
+
+function renderCechyZCzestotliwoscia(cechy, badgeType) {
+    if (!cechy || cechy.length === 0) {
+        return '<p>Brak cech w tej kategorii</p>';
+    }
+    
+    let html = '<ul class="list-group">';
+    cechy.forEach(cecha => {
+        const nazwa = cecha[1];
+        const czestotliwosc = cecha[2] || 1;
+        
+        html += '<li class="list-group-item d-flex justify-content-between align-items-center">';
+        html += nazwa;
+        if (czestotliwosc > 1) {
+            html += ` <span class="badge badge-pill badge-${badgeType}">${czestotliwosc}&#128100;</span>`;
+        }
+        html += '</li>';
+    });
+    html += '</ul>';
+    return html;
+}
+
+function renderCechyBezCzestotliwosci(cechy) {
+    if (!cechy || cechy.length === 0) {
+        return '<p>Wszystkie cechy zostały wykorzystane</p>';
+    }
+    
+    const chunksSize = Math.ceil(cechy.length / 2);
+    const chunks = [];
+    for (let i = 0; i < cechy.length; i += chunksSize) {
+        chunks.push(cechy.slice(i, i + chunksSize));
+    }
+    
+    let html = '<div class="row">';
+    chunks.forEach(chunk => {
+        html += '<div class="col-md-6"><ul class="list-group list-group-flush">';
+        chunk.forEach(cecha => {
+            html += `<li class="list-group-item border-0 py-1 small">${cecha[1]}</li>`;
+        });
+        html += '</ul></div>';
+    });
+    html += '</div>';
+    return html;
+}
+</script>
 <?php endif; ?>
 
 </div>
