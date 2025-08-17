@@ -29,17 +29,17 @@ $cechy = $cechyModel->getFeaturesForNewWindows();
 
 $counter = 0;
 foreach ($cechy as $cecha): 
-    if ($counter % 4 == 0): // Nowy rząd co 4 cechy
+    if ($counter % 6 == 0): // Nowy rząd co 6 cech (jak w oryginale)
 ?>
 <div class="row">
 <?php endif; ?>
-    <div class="col">
+    <div class="col-6 col-md-2">
         <input type="checkbox" id="cecha_<?= $cecha['id'] ?>" name="feature_list[]" value="<?= $cecha['id'] ?>">
-        <label for="cecha_<?= $cecha['id'] ?>"><?= esc($cecha['cecha_pl']) ?></label>
+        <label for="cecha_<?= $cecha['id'] ?>" type="checkbox"><?= esc($cecha['cecha_pl']) ?></label>
     </div>
 <?php 
     $counter++;
-    if ($counter % 4 == 0 || $counter == count($cechy)): // Zamknij rząd
+    if ($counter % 6 == 0 || $counter == count($cechy)): // Zamknij rząd (6 na rząd jak w oryginale)
 ?>
 </div>
 <?php 
@@ -48,9 +48,9 @@ endforeach;
 ?>
 
 </div>
-<div> 
-  <button type="submit" class="btn btn-primary enableOnInput" disabled="disabled">Prześlij</button>
-</div>
+<div class="row"><div class="col">
+  <button type="submit" class="btn btn-primary btn-round enableOnInput btn-block" disabled="disabled"><i class="material-icons">forward</i> Stwórz swoje okno Johari</button>
+</div></div>
 
 </div>
 </form>
