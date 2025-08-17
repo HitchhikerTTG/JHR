@@ -89,6 +89,14 @@ class TranslatorCechModel extends Model
             $wynik[] = [$noweId, $dane[0], $dane[1]];
         }
         
+        // Sortowanie według częstotliwości malejąco, potem alfabetycznie według nazwy
+        usort($wynik, function($a, $b) {
+            if ($a[2] == $b[2]) {
+                return strcmp($a[1], $b[1]); // alfabetycznie według nazwy
+            }
+            return $b[2] - $a[2]; // częstotliwość malejąco
+        });
+        
         return $wynik;
     }
     
@@ -114,6 +122,11 @@ class TranslatorCechModel extends Model
         foreach ($unikalne as $noweId => $nazwa) {
             $wynik[] = [$noweId, $nazwa];
         }
+        
+        // Sortowanie alfabetyczne według nazwy
+        usort($wynik, function($a, $b) {
+            return strcmp($a[1], $b[1]);
+        });
         
         return $wynik;
     }
