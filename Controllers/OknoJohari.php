@@ -317,9 +317,13 @@ class OknoJohari extends BaseController
     $data['pozostale'] = $analizaCech['pozostale'];
     $data['licznik'] = $analizaCech['licznik'];
 
-    // Sprawdź czy można wygenerować przetłumaczoną wersję
-    $przetlumaczonaWersja = $oknoModel->getTranslatedWindow($hashOkna, $hashWlasciciela);
-    if ($przetlumaczonaWersja) {
+    // Sprawdź czy okno wymaga tłumaczenia (tylko zestaw cech 1)
+    $zestawCech = $oknoModel->getWindowFeatureSet($hashOkna, $hashWlasciciela);
+    if ($zestawCech == 1) {
+        // Kontroler orkiestruje translację między modelami
+        $translatorModel = model(\App\Models\TranslatorCechModel::class);
+        $przetlumaczonaWersja = $translatorModel->translateWindow($analizaCech, 1, 2);
+        
         $data['ma_tlumaczenie'] = true;
         $data['tlumaczenie'] = $przetlumaczonaWersja;
     } else {

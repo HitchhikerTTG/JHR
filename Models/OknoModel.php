@@ -204,22 +204,6 @@ class OknoModel extends Model
         return $wynik;
     }
 
-    public function getTranslatedWindow($hashOkna, $hashWlasciciela)
-    {
-        // Sprawdź czy okno używa zestawu cech ID 1
-        $zestawCech = $this->getWindowFeatureSet($hashOkna, $hashWlasciciela);
-        
-        if ($zestawCech != 1) {
-            return null; // Okno nie wymaga tłumaczenia
-        }
-        
-        // Pobierz analizę cech dla oryginalnego okna
-        $analizaCech = $this->analizyCechOkna($hashOkna, $hashWlasciciela);
-        
-        // Użyj dedykowanego modelu do translacji
-        $translatorModel = model(\App\Models\TranslatorCechModel::class);
-        
-        return $translatorModel->translateWindow($analizaCech, 1, 2);
-    }
+    
 
 }
