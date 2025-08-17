@@ -320,7 +320,8 @@ class OknoJohari extends BaseController
     // Sprawdź czy okno wymaga tłumaczenia (tylko zestaw cech 1)
     $zestawCech = $oknoModel->getWindowFeatureSet($hashOkna, $hashWlasciciela);
     if ($zestawCech == 1) {
-        // Kontroler orkiestruje translację między modelami
+        // Ostatnia zmiana: Kontroler teraz orkiestruje translację między modelami zamiast 
+        // delegowania tej odpowiedzialności do OknoModel - zapewnia to lepsze rozdzielenie odpowiedzialności
         $translatorModel = model(\App\Models\TranslatorCechModel::class);
         $przetlumaczonaWersja = $translatorModel->translateWindow($analizaCech, 1, 2);
         
