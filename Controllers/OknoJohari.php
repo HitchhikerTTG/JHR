@@ -2,6 +2,10 @@
 
 namespace App\Controllers;
 use Config\Services;
+use App\Models\CechyModel;
+use App\Models\OknoModel;
+use App\Models\UzytkownicyModel;
+use App\Models\PrzypisaneCechyModel;
 
 class OknoJohari extends BaseController
 {
@@ -292,9 +296,9 @@ class OknoJohari extends BaseController
 
   public function wyswietlOkno($hashOkna, $hashWlasciciela) {
 
-    $oknoModel = model(OknoModel::class);
-    $przypisaneCechyModel = model(PrzypisaneCechyModel::class);
-    $cechyModel = model(CechyModel::class);
+    $oknoModel = model(\App\Models\OknoModel::class);
+    $przypisaneCechyModel = model(\App\Models\PrzypisaneCechyModel::class);
+    $cechyModel = model(\App\Models\CechyModel::class);
 
     // Check if CechyModel was loaded properly
     if (!$cechyModel) {
