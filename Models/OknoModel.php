@@ -216,105 +216,10 @@ class OknoModel extends Model
         // Pobierz analizę cech dla oryginalnego okna
         $analizaCech = $this->analizyCechOkna($hashOkna, $hashWlasciciela);
         
-        // Przetłumacz cechy z zestawu 1 na zestaw 2
-        $cechyModel = model(\App\Models\CechyModel::class);
+        // Użyj dedykowanego modelu do translacji
+        $translatorModel = model(\App\Models\TranslatorCechModel::class);
         
-        // Zbierz wszystkie ID cech z oryginalnej analizy
-        $oryginalneCechyIds = [];
-        
-        foreach ($analizaCech['arena'] as $cecha) {
-            $oryginalneCechyIds[] = $cecha[0];
-        }
-        foreach ($analizaCech['prywatne'] as $cecha) {
-            $oryginalneCechyIds[] = $cecha[0];
-        }
-        foreach ($analizaCech['wskazane'] as $cecha) {
-            $oryginalneCechyIds[] = $cecha[0];
-        }
-        foreach ($analizaCech['pozostale'] as $cecha) {
-            $oryginalneCechyIds[] = $cecha[0];
-        }
-        
-        // Przetłumacz cechy
-        $przetlumaczoneCechyIds = $cechyModel->translateFeatures(1, 2, $oryginalneCechyIds);
-        
-        // Pobierz nazwy dla nowego zestawu
-        $noweCechy = $cechyModel->listFeatures(2);
-        
-        // Stwórz mapowanie starych ID na nowe
-        $translationMap = [];
-        $oryginalneIds = array_unique($oryginalneCechyIds);
-        $przetlumaczoneIds = $cechyModel->translateFeatures(1, 2, $oryginalneIds);
-        
-        for ($i = 0; $i < count($oryginalneIds); $i++) {
-            if (isset($przetlumaczoneIds[$i])) {
-                $translationMap[$oryginalneIds[$i]] = $przetlumaczoneIds[$i];
-            }
-        }
-        
-        // Przetłumacz kategorie zachowując częstotliwość
-        $przetlumaczonaAnaliza = [
-            'arena' => $this->translateCategoryWithFrequency($analizaCech['arena'], $translationMap, $noweCechy),
-            'prywatne' => $this->translateCategoryWithFrequency($analizaCech['prywatne'], $translationMap, $noweCechy),
-            'wskazane' => $this->translateCategoryWithFrequency($analizaCech['wskazane'], $translationMap, $noweCechy),
-            'pozostale' => $this->translateCategory($analizaCech['pozostale'], $translationMap, $noweCechy),
-            'licznik' => $analizaCech['licznik']
-        ];
-        
-        return $przetlumaczonaAnaliza;
-    }
-    
-    private function translateCategoryWithFrequency($kategoria, $translationMap, $noweCechy)
-    {
-        $wynik = [];
-        foreach ($kategoria as $cecha) {
-            $stareId = $cecha[0];
-            $nazwa = $cecha[1];
-            $czestotliwosc = $cecha[2] ?? 1;
-            
-            if (isset($translationMap[$stareId])) {
-                $noweId = $translationMap[$stareId];
-                // Znajdź nową nazwę
-                $nowaNazwa = '';
-                foreach ($noweCechy as $nowaCecha) {
-                    if ($nowaCecha['id'] == $noweId) {
-                        $nowaNazwa = $nowaCecha['cecha_pl'];
-                        break;
-                    }
-                }
-                
-                if ($nowaNazwa) {
-                    $wynik[] = [$noweId, $nowaNazwa, $czestotliwosc];
-                }
-            }
-        }
-        return $wynik;
-    }
-    
-    private function translateCategory($kategoria, $translationMap, $noweCechy)
-    {
-        $wynik = [];
-        foreach ($kategoria as $cecha) {
-            $stareId = $cecha[0];
-            $nazwa = $cecha[1];
-            
-            if (isset($translationMap[$stareId])) {
-                $noweId = $translationMap[$stareId];
-                // Znajdź nową nazwę
-                $nowaNazwa = '';
-                foreach ($noweCechy as $nowaCecha) {
-                    if ($nowaCecha['id'] == $noweId) {
-                        $nowaNazwa = $nowaCecha['cecha_pl'];
-                        break;
-                    }
-                }
-                
-                if ($nowaNazwa) {
-                    $wynik[] = [$noweId, $nowaNazwa];
-                }
-            }
-        }
-        return $wynik;
+        return $translatorModel->translateWindow($analizaCech, 1, 2);
     }
 
 }
