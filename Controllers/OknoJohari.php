@@ -91,6 +91,7 @@ class OknoJohari extends BaseController
         'wlasciciel'=>  hash('ripemd160', $this->request->getPost('email')),
         'nazwa'=>$this->request->getPost('tytul'),
         'imie_wlasciciela' => $this->request->getPost('imie'),
+        'id_zestaw_cech' => 2, // Nowe okna używają zestawu 2
         ]);
         $emailTworcy=$this->request->getPost('email');
         $hashOkna=hash('ripemd160', $this->request->getPost('tytul').$this->request->getPost('email'));

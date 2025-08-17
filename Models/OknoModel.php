@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class OknoModel extends Model
 {
     protected $table = 'okna';
-    protected $allowedFields = ['hash', 'wlasciciel', 'nazwa', 'imie_wlasciciela', 'created_at', 'updated_at'];
+    protected $allowedFields = ['hash', 'wlasciciel', 'nazwa', 'imie_wlasciciela', 'id_zestaw_cech', 'created_at', 'updated_at'];
     protected $primaryKey = "id";
     protected $useTimestamps = true;
     protected $dateFormat = 'datetime';
@@ -116,6 +116,12 @@ class OknoModel extends Model
             'najwiecej' => $najwiecej,
             'srednia' => round($srednia, 2)
         ];
+    }
+
+    public function getWindowFeatureSet($hashOkna, $hashWlasciciela)
+    {
+        $okno = $this->where(['hash' => $hashOkna, 'wlasciciel' => $hashWlasciciela])->first();
+        return $okno ? $okno['id_zestaw_cech'] : 1; // domyślnie zestaw 1 dla starych okien
     }
 
 }

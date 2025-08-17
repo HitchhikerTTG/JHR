@@ -12,7 +12,7 @@ $routes->get('/', 'Home::index');
  * Router Setup
  * --------------------------------------------------------------------
  */
- 
+
 $routes->setDefaultNamespace('App\Controllers');
 $routes->setDefaultController('OknoJohari');
 $routes->setDefaultMethod('index');
@@ -39,5 +39,6 @@ $routes->get('beta', 'OknoJohari::beta');
 $routes->get('listaOkien/(:segment)','OknoJohari::wszystkieOkna/$1');
 $routes->get('listaOkien', 'OknoJohari::wszystkieOkna');
 $routes->get('wyswietlOkno/(:segment)/(:segment)','OknoJohari::wyswietlOkno/$1/$2');
+$routes->get('wyswietlOkno/(:segment)/(:segment)/(:num)', 'OknoJohari::wyswietlOkno/$1/$2/$3');
 $routes->get('testuje', 'Form::index');
 $routes->post('testuje', 'Form::index');
