@@ -1,28 +1,29 @@
 <footer class="footer footer-default" >
   <div class="container">
-    <div class="d-flex justify-content-between align-items-center flex-wrap">
-      <nav>
-        <ul class="mb-0">
-          <li>
-            <a>autor:</a><a href="https://www.linkedin.com/in/witnirski/" target="_blank">Wit Nirski</a>
-          </li>
-          <li> <a href="https://niecodzienny.net/2019/05/zrobmy-sobie-okno-johari/" target="_blank">Dlaczego zrobiłem Okno Johari</a></li>
-          <li> <a href="https://subskrypcje.pl" target="_blank">Subskrypcje.pl - najciekawsze subskrypcje w Polsce</a></li>
-          <li><a href="https://niecodzienny.net/planowanie-tygodnia-i-roku-z-notion/" target="_blank"  class="nav-link">Mój sposób na planowanie roku</a>
-              </li>
-        </ul>
-      </nav>
-      <div class="copyright" style="font-size:12px; text-transform:uppercase;" >
-          &copy;
-          <script>
-              document.write(new Date().getFullYear())
-          </script>, zbudowane na Codeigniter, w oparciu o <a href="https://www.creative-tim.com/product/material-kit" target="_blank">Material Kit</a> stworzone przez <a href="https://www.creative-tim.com/" target="blank">Creative Tim</a>
-      </div>
+    <nav class="float-left">
+
+
+      <ul>
+        <li>
+          <a>autor:</a><a href="https://www.linkedin.com/in/witnirski/" target="_blank">Wit Nirski</a>
+        </li>
+        <li> <a href="https://niecodzienny.net/2019/05/zrobmy-sobie-okno-johari/" target="_blank">Dlaczego zrobiłem Okno Johari</a></li>
+        <li> <a href="https://subskrypcje.pl" target="_blank">Subskrypcje.pl - najciekawsze subskrypcje w Polsce</a></li>
+        <li><a href="https://niecodzienny.net/planowanie-tygodnia-i-roku-z-notion/" target="_blank"  class="nav-link">Mój sposób na planowanie roku</a>
+            </li>
+      </ul>
+    </nav>
+    <div class="copyright float-right" style="font-size:12px; text-transform:uppercase;" >
+        &copy;
+        <script>
+            document.write(new Date().getFullYear())
+        </script>, zbudowane na Codeigniter, w oparciu o <a href="https://www.creative-tim.com/product/material-kit" target="_blank">Material Kit</a> stworzone przez <a href="https://www.creative-tim.com/" target="blank">Creative Tim</a>
     </div>
   </div>
 </footer>
-<!-- Bootstrap 5 JS Bundle (includes Popper) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+<script src="<?php echo base_url()?>/assets/js/core/jquery.min.js" type="text/javascript"></script>
+<script src="<?php echo base_url()?>/assets/js/core/popper.min.js" type="text/javascript"></script>
+<script src="<?php echo base_url()?>/assets/js/core/bootstrap-material-design.min.js" type="text/javascript"></script>
 <script src="<?php echo base_url()?>/assets/js/plugins/moment.min.js"></script>
 <!--  Plugin for the Datepicker, full documentation here: https://github.com/Eonasdan/bootstrap-datetimepicker -->
 <script src="<?php echo base_url()?>/assets/js/plugins/bootstrap-datetimepicker.js" type="text/javascript"></script>
