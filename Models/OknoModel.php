@@ -187,6 +187,12 @@ class OknoModel extends Model
         foreach ($cechy as $cechaID) {
             $wynik[] = [$cechaID, $nazwaneCechy[$cechaID-1]['cecha_pl']];
         }
+        
+        // Sortowanie alfabetyczne według nazwy
+        usort($wynik, function($a, $b) {
+            return strcmp($a[1], $b[1]);
+        });
+        
         return $wynik;
     }
     
@@ -201,6 +207,15 @@ class OknoModel extends Model
                 $czestotliwosc
             ];
         }
+        
+        // Sortowanie według częstotliwości malejąco, potem alfabetycznie według nazwy
+        usort($wynik, function($a, $b) {
+            if ($a[2] == $b[2]) {
+                return strcmp($a[1], $b[1]); // alfabetycznie według nazwy
+            }
+            return $b[2] - $a[2]; // częstotliwość malejąco
+        });
+        
         return $wynik;
     }
 
