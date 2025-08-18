@@ -1,0 +1,469 @@
+<html lang="en"><head>
+<script type="text/javascript" async="" src="https://www.google-analytics.com/analytics.js"></script><script type="text/javascript" async="" src="https://www.googletagmanager.com/gtag/js?id=G-T9HH0QJJER&amp;cx=c&amp;gtm=457e58d1za200&amp;tag_exp=101509157~103116026~103200004~103233427~104684208~104684211~105033763~105033765~105103161~105103163~105231383~105231385"></script><script type="text/javascript" id="debugbar_loader" data-time="1755460003" src="https://johari.pl/?debugbar"></script><script type="text/javascript" id="debugbar_dynamic_script"></script><style type="text/css" id="debugbar_dynamic_style"></style><script class="kint-rich-script">void 0===window.kintShared&&(window.kintShared=function(){"use strict";var e={dedupe:function(e,n){return[].forEach.call(document.querySelectorAll(e),function(e){e!==(n=!n||!n.ownerDocument.contains(n)?e:n)&&e.parentNode.removeChild(e)}),n},runOnce:function(e){"complete"===document.readyState?e():window.addEventListener("load",e)}};return window.addEventListener("click",function(e){var n;e.target.classList.contains("kint-ide-link")&&((n=new XMLHttpRequest).open("GET",e.target.href),n.send(null),e.preventDefault())}),e}());
+void 0===window.kintRich&&(window.kintRich=function(){"use strict";var i={selectText:function(e){var t=window.getSelection(),a=document.createRange();a.selectNodeContents(e),t.removeAllRanges(),t.addRange(a)},each:function(e,t){Array.prototype.slice.call(document.querySelectorAll(e),0).forEach(t)},hasClass:function(e,t){return!!e.classList&&e.classList.contains(t=void 0===t?"kint-show":t)},addClass:function(e,t){e.classList.add(t=void 0===t?"kint-show":t)},removeClass:function(e,t){return e.classList.remove(t=void 0===t?"kint-show":t),e},toggle:function(e,t){var a=i.getChildren(e);a&&((t=void 0===t?i.hasClass(e):t)?i.removeClass(e):i.addClass(e),1===a.childNodes.length&&(a=a.childNodes[0].childNodes[0])&&i.hasClass(a,"kint-parent")&&i.toggle(a,t))},toggleChildren:function(e,t){var a=i.getChildren(e);if(a){var o=a.getElementsByClassName("kint-parent"),r=o.length;for(void 0===t&&(t=!i.hasClass(e));r--;)i.toggle(o[r],t)}},toggleAll:function(e){for(var t=document.getElementsByClassName("kint-parent"),a=t.length,o=!i.hasClass(e.parentNode);a--;)i.toggle(t[a],o)},switchTab:function(e){var t=e.previousSibling,a=0;for(i.removeClass(e.parentNode.getElementsByClassName("kint-active-tab")[0],"kint-active-tab"),i.addClass(e,"kint-active-tab");t;)1===t.nodeType&&a++,t=t.previousSibling;for(var o=e.parentNode.nextSibling.childNodes,r=0;r<o.length;r++)r===a?(i.addClass(o[r]),1===o[r].childNodes.length&&(t=o[r].childNodes[0].childNodes[0])&&i.hasClass(t,"kint-parent")&&i.toggle(t,!1)):i.removeClass(o[r])},mktag:function(e){return"<"+e+">"},openInNewWindow:function(e){var t=window.open();t&&(t.document.open(),t.document.write(i.mktag("html")+i.mktag("head")+i.mktag("title")+"Kint ("+(new Date).toISOString()+")"+i.mktag("/title")+i.mktag('meta charset="utf-8"')+document.getElementsByClassName("kint-rich-script")[0].outerHTML+document.getElementsByClassName("kint-rich-style")[0].outerHTML+i.mktag("/head")+i.mktag("body")+'<input style="width: 100%" placeholder="Take some notes!"><div class="kint-rich">'+e.parentNode.outerHTML+"</div>"+i.mktag("/body")),t.document.close())},sortTable:function(e,a){var t=e.tBodies[0];[].slice.call(e.tBodies[0].rows).sort(function(e,t){if(e=e.cells[a].textContent.trim().toLocaleLowerCase(),t=t.cells[a].textContent.trim().toLocaleLowerCase(),isNaN(e)||isNaN(t)){if(isNaN(e)&&!isNaN(t))return 1;if(isNaN(t)&&!isNaN(e))return-1}else e=parseFloat(e),t=parseFloat(t);return e<t?-1:t<e?1:0}).forEach(function(e){t.appendChild(e)})},showAccessPath:function(e){for(var t=e.childNodes,a=0;a<t.length;a++)if(i.hasClass(t[a],"access-path"))return void(i.hasClass(t[a],"kint-show")?i.removeClass(t[a]):(i.addClass(t[a]),i.selectText(t[a])))},showSearchBox:function(e){var t=e.querySelector(".kint-search");t&&(i.hasClass(t)?(i.removeClass(t),i.removeClass(e.parentNode,"kint-search-root")):(i.addClass(e),i.addClass(t),t.focus(),t.select(),i.search(e.parentNode,t.value)))},search:function(e,t){var a=e.querySelectorAll(".kint-search-match");[].forEach.call(a,function(e){i.removeClass(e,"kint-search-match")}),i.removeClass(e,"kint-search-match"),t.length?(i.addClass(e,"kint-search-root"),i.findMatches(e,t)):i.removeClass(e,"kint-search-root")},findMatches:function(e,t){var a,o,r,s=e.cloneNode(!0);if(s.querySelectorAll(".access-path").forEach(function(e){e.remove()}),-1!=s.textContent.toUpperCase().indexOf(t.toUpperCase())){for(n in i.addClass(e,"kint-search-match"),e.childNodes)if("DD"==e.childNodes[n].tagName){a=e.childNodes[n];break}if(a)if([].forEach.call(a.childNodes,function(e){"DL"==e.tagName?i.findMatches(e,t):"UL"==e.tagName&&(i.hasClass(e,"kint-tabs")?o=e.childNodes:i.hasClass(e,"kint-tab-contents")&&(r=e.childNodes))}),o&&r&&o.length==r.length)for(var n=0;n<o.length;n++){var l=!1;-1!=o[n].textContent.toUpperCase().indexOf(t.toUpperCase())?l=!0:((s=r[n].cloneNode(!0)).querySelectorAll(".access-path").forEach(function(e){e.remove()}),-1!=s.textContent.toUpperCase().indexOf(t.toUpperCase())&&(l=!0)),l&&(i.addClass(o[n],"kint-search-match"),[].forEach.call(r[n].childNodes,function(e){"DL"==e.tagName&&i.findMatches(e,t)}))}}},getParentByClass:function(e,t){for(void 0===t&&(t="kint-rich");(e=e.parentNode)&&!i.hasClass(e,t););return e},getParentHeader:function(e,t){for(var a=e.nodeName.toLowerCase();"dd"!==a&&"dt"!==a&&i.getParentByClass(e);)a=(e=e.parentNode).nodeName.toLowerCase();return i.getParentByClass(e)?(e="dd"===a&&t?e.previousElementSibling:e)&&"dt"===e.nodeName.toLowerCase()&&i.hasClass(e,"kint-parent")?e:void 0:null},getChildren:function(e){for(;(e=e.nextElementSibling)&&"dd"!==e.nodeName.toLowerCase(););return e},isFolderOpen:function(){if(i.folder&&i.folder.querySelector("dd.kint-foldout"))return i.hasClass(i.folder.querySelector("dd.kint-foldout").previousSibling)},initLoad:function(){i.style=window.kintShared.dedupe("style.kint-rich-style",i.style),i.script=window.kintShared.dedupe("script.kint-rich-script",i.script),i.folder=window.kintShared.dedupe(".kint-rich.kint-folder",i.folder);var t,e=document.querySelectorAll("input.kint-search");[].forEach.call(e,function(t){function e(e){window.clearTimeout(a),t.value!==o&&(a=window.setTimeout(function(){o=t.value,i.search(t.parentNode.parentNode,o)},500))}var a=null,o=null;t.removeEventListener("keyup",e),t.addEventListener("keyup",e)}),i.folder&&(t=i.folder.querySelector("dd"),[].forEach.call(document.querySelectorAll(".kint-rich.kint-file"),function(e){e.parentNode!==i.folder&&t.appendChild(e)}),document.body.appendChild(i.folder),i.addClass(i.folder))},keyboardNav:{targets:[],target:0,active:!1,fetchTargets:function(){var e=i.keyboardNav.targets[i.keyboardNav.target];i.keyboardNav.targets=[],i.each(".kint-rich nav, .kint-tabs>li:not(.kint-active-tab)",function(e){i.isFolderOpen()&&!i.folder.contains(e)||0===e.offsetWidth&&0===e.offsetHeight||i.keyboardNav.targets.push(e)}),e&&-1!==i.keyboardNav.targets.indexOf(e)&&(i.keyboardNav.target=i.keyboardNav.targets.indexOf(e))},sync:function(e){var t=document.querySelector(".kint-focused");t&&i.removeClass(t,"kint-focused"),i.keyboardNav.active&&(t=i.keyboardNav.targets[i.keyboardNav.target],i.addClass(t,"kint-focused"),e||i.keyboardNav.scroll(t))},scroll:function(e){var t,a;e!==i.folder.querySelector("dt > nav")&&(a=(t=function(e){return e.offsetTop+(e.offsetParent?t(e.offsetParent):0)})(e),i.isFolderOpen()?(e=i.folder.querySelector("dd.kint-foldout")).scrollTo(0,a-e.clientHeight/2):window.scrollTo(0,a-window.innerHeight/2))},moveCursor:function(e){for(i.keyboardNav.target+=e;i.keyboardNav.target<0;)i.keyboardNav.target+=i.keyboardNav.targets.length;for(;i.keyboardNav.target>=i.keyboardNav.targets.length;)i.keyboardNav.target-=i.keyboardNav.targets.length;i.keyboardNav.sync()},setCursor:function(e){if(i.isFolderOpen()&&!i.folder.contains(e))return!1;i.keyboardNav.fetchTargets();for(var t=0;t<i.keyboardNav.targets.length;t++)if(e===i.keyboardNav.targets[t])return i.keyboardNav.target=t,!0;return!1}},mouseNav:{lastClickTarget:null,lastClickTimer:null,lastClickCount:0,renewLastClick:function(){window.clearTimeout(i.mouseNav.lastClickTimer),i.mouseNav.lastClickTimer=window.setTimeout(function(){i.mouseNav.lastClickTarget=null,i.mouseNav.lastClickTimer=null,i.mouseNav.lastClickCount=0},250)}},style:null,script:null,folder:null};return window.addEventListener("click",function(e){var t=e.target,a=t.nodeName.toLowerCase();if(i.mouseNav.lastClickTarget&&i.mouseNav.lastClickTimer&&i.mouseNav.lastClickCount)return t=i.mouseNav.lastClickTarget,void(1===i.mouseNav.lastClickCount?(i.toggleChildren(t.parentNode),i.keyboardNav.setCursor(t),i.keyboardNav.sync(!0),i.mouseNav.lastClickCount++,i.mouseNav.renewLastClick()):(i.toggleAll(t),i.keyboardNav.setCursor(t),i.keyboardNav.sync(!0),i.keyboardNav.scroll(t),window.clearTimeout(i.mouseNav.lastClickTimer),i.mouseNav.lastClickTarget=null,i.mouseNav.lastClickTarget=null,i.mouseNav.lastClickCount=0));if(i.getParentByClass(t)){if("dfn"===a)i.selectText(t);else if("th"===a)return void(e.ctrlKey||i.sortTable(t.parentNode.parentNode.parentNode,t.cellIndex));if((t=i.getParentHeader(t))&&(i.keyboardNav.setCursor(t.querySelector("nav")),i.keyboardNav.sync(!0)),t=e.target,"li"===a&&"kint-tabs"===t.parentNode.className)"kint-active-tab"!==t.className&&i.switchTab(t),(t=i.getParentHeader(t,!0))&&(i.keyboardNav.setCursor(t.querySelector("nav")),i.keyboardNav.sync(!0));else if("nav"===a)"footer"===t.parentNode.nodeName.toLowerCase()?(i.keyboardNav.setCursor(t),i.keyboardNav.sync(!0),t=t.parentNode,i.hasClass(t)?i.removeClass(t):i.addClass(t)):(i.toggle(t.parentNode),i.keyboardNav.fetchTargets(),i.mouseNav.lastClickCount=1,i.mouseNav.lastClickTarget=t,i.mouseNav.renewLastClick());else if(i.hasClass(t,"kint-popup-trigger")){var o=t.parentNode;if("footer"===o.nodeName.toLowerCase())o=o.previousSibling;else for(;o&&!i.hasClass(o,"kint-parent");)o=o.parentNode;i.openInNewWindow(o)}else i.hasClass(t,"kint-access-path-trigger")?i.showAccessPath(t.parentNode):i.hasClass(t,"kint-search-trigger")?i.showSearchBox(t.parentNode):i.hasClass(t,"kint-search")||("pre"===a&&3===e.detail?i.selectText(t):i.getParentByClass(t,"kint-source")&&3===e.detail?i.selectText(i.getParentByClass(t,"kint-source")):i.hasClass(t,"access-path")?i.selectText(t):"a"!==a&&(t=i.getParentHeader(t))&&(i.toggle(t),i.keyboardNav.fetchTargets()))}},!0),window.addEventListener("keydown",function(e){if(e.target===document.body&&!e.altKey&&!e.ctrlKey){if(68===e.keyCode){if(i.keyboardNav.active)i.keyboardNav.active=!1;else if(i.keyboardNav.active=!0,i.keyboardNav.fetchTargets(),0===i.keyboardNav.targets.length)return void(i.keyboardNav.active=!1);return i.keyboardNav.sync(),void e.preventDefault()}if(i.keyboardNav.active){if(9===e.keyCode)return i.keyboardNav.moveCursor(e.shiftKey?-1:1),void e.preventDefault();if(38===e.keyCode||75===e.keyCode)return i.keyboardNav.moveCursor(-1),void e.preventDefault();if(40===e.keyCode||74===e.keyCode)return i.keyboardNav.moveCursor(1),void e.preventDefault();var t,a,o=i.keyboardNav.targets[i.keyboardNav.target];if("li"===o.nodeName.toLowerCase()){if(32===e.keyCode||13===e.keyCode)return i.switchTab(o),i.keyboardNav.fetchTargets(),i.keyboardNav.sync(),void e.preventDefault();if(39===e.keyCode||76===e.keyCode)return i.keyboardNav.moveCursor(1),void e.preventDefault();if(37===e.keyCode||72===e.keyCode)return i.keyboardNav.moveCursor(-1),void e.preventDefault()}o=o.parentNode,65===e.keyCode?(i.showAccessPath(o),e.preventDefault()):"footer"===o.nodeName.toLowerCase()&&i.hasClass(o.parentNode,"kint-rich")?32===e.keyCode||13===e.keyCode?(i.hasClass(o)?i.removeClass(o):i.addClass(o),e.preventDefault()):37===e.keyCode||72===e.keyCode?(i.removeClass(o),e.preventDefault()):39!==e.keyCode&&76!==e.keyCode||(i.addClass(o),e.preventDefault()):32===e.keyCode||13===e.keyCode?(i.toggle(o),i.keyboardNav.fetchTargets(),e.preventDefault()):39!==e.keyCode&&76!==e.keyCode&&37!==e.keyCode&&72!==e.keyCode||(t=37===e.keyCode||72===e.keyCode,i.hasClass(o)?i.toggleChildren(o,t):!t||(a=i.getParentHeader(o.parentNode.parentNode,!0))&&(i.keyboardNav.setCursor((o=a).querySelector("nav")),i.keyboardNav.sync()),i.toggle(o,t),i.keyboardNav.fetchTargets(),e.preventDefault())}}},!0),i}()),window.kintShared.runOnce(window.kintRich.initLoad);
+void 0===window.kintMicrotimeInitialized&&(window.kintMicrotimeInitialized=1,window.addEventListener("load",function(){"use strict";var a={},t=Array.prototype.slice.call(document.querySelectorAll("[data-kint-microtime-group]"),0);t.forEach(function(t){var i,e;t.querySelector(".kint-microtime-lap")&&(i=t.getAttribute("data-kint-microtime-group"),e=parseFloat(t.querySelector(".kint-microtime-lap").innerHTML),t=parseFloat(t.querySelector(".kint-microtime-avg").innerHTML),void 0===a[i]&&(a[i]={}),(void 0===a[i].min||a[i].min>e)&&(a[i].min=e),(void 0===a[i].max||a[i].max<e)&&(a[i].max=e),a[i].avg=t)}),t.forEach(function(t){var i,e,r,o,n=t.querySelector(".kint-microtime-lap");null!==n&&(i=parseFloat(n.textContent),o=t.dataset.kintMicrotimeGroup,e=a[o].avg,r=a[o].max,o=a[o].min,i===(t.querySelector(".kint-microtime-avg").textContent=e)&&i===o&&i===r||(n.style.background=e<i?"hsl("+(40-40*((i-e)/(r-e)))+", 100%, 65%)":"hsl("+(40+80*(e===o?0:(e-i)/(e-o)))+", 100%, 65%)"))})}));
+</script><style class="kint-rich-style">.kint-rich{font-size:13px;overflow-x:auto;white-space:nowrap;background:rgba(255,255,255,0.9)}.kint-rich.kint-folder{position:fixed;bottom:0;left:0;right:0;z-index:999999;width:100%;margin:0;display:block}.kint-rich.kint-folder dd.kint-foldout{max-height:calc(100vh - 100px);padding-right:8px;overflow-y:scroll;display:none}.kint-rich.kint-folder dd.kint-foldout.kint-show{display:block}.kint-rich::selection,.kint-rich::-moz-selection,.kint-rich::-webkit-selection{background:#aaa;color:#1d1e1e}.kint-rich .kint-focused{box-shadow:0 0 3px 2px red}.kint-rich,.kint-rich::before,.kint-rich::after,.kint-rich *,.kint-rich *::before,.kint-rich *::after{box-sizing:border-box;border-radius:0;color:#1d1e1e;float:none !important;font-family:Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;line-height:15px;margin:0;padding:0;text-align:left}.kint-rich{margin:8px 0}.kint-rich dt,.kint-rich dl{width:auto}.kint-rich dt,.kint-rich div.access-path{background:#f8f8f8;border:1px solid #d7d7d7;color:#1d1e1e;display:block;font-weight:bold;list-style:none outside none;overflow:auto;padding:4px}.kint-rich dt:hover,.kint-rich div.access-path:hover{border-color:#aaa}.kint-rich>dl dl{padding:0 0 0 12px}.kint-rich dt.kint-parent>nav,.kint-rich>footer>nav{background:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMCAxNTAiPjxwYXRoIGQ9Ik02IDdoMThsLTkgMTV6bTAgMzBoMThsLTkgMTV6bTAgNDVoMThsLTktMTV6bTAgMzBoMThsLTktMTV6bTAgMTJsMTggMThtLTE4IDBsMTgtMTgiIGZpbGw9IiM1NTUiLz48cGF0aCBkPSJNNiAxMjZsMTggMThtLTE4IDBsMTgtMTgiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlPSIjNTU1Ii8+PC9zdmc+") no-repeat scroll 0 0/15px 75px transparent;cursor:pointer;display:inline-block;height:15px;width:15px;margin-right:3px;vertical-align:middle}.kint-rich dt.kint-parent:hover>nav,.kint-rich>footer>nav:hover{background-position:0 25%}.kint-rich dt.kint-parent.kint-show>nav,.kint-rich>footer.kint-show>nav{background-position:0 50%}.kint-rich dt.kint-parent.kint-show:hover>nav,.kint-rich>footer.kint-show>nav:hover{background-position:0 75%}.kint-rich dt.kint-parent.kint-locked>nav{background-position:0 100%}.kint-rich dt.kint-parent+dd{display:none;border-left:1px dashed #d7d7d7}.kint-rich dt.kint-parent.kint-show+dd{display:block}.kint-rich var,.kint-rich var a{color:#06f;font-style:normal}.kint-rich dt:hover var,.kint-rich dt:hover var a{color:red}.kint-rich dfn{font-style:normal;font-family:monospace;color:#1d1e1e}.kint-rich pre{color:#1d1e1e;margin:0 0 0 12px;padding:5px;overflow-y:hidden;border-top:0;border:1px solid #d7d7d7;background:#f8f8f8;display:block;word-break:normal}.kint-rich .kint-popup-trigger,.kint-rich .kint-access-path-trigger,.kint-rich .kint-search-trigger{background:rgba(29,30,30,0.8);border-radius:3px;height:16px;font-size:16px;margin-left:5px;font-weight:bold;width:16px;text-align:center;float:right !important;cursor:pointer;color:#f8f8f8;position:relative;overflow:hidden;line-height:17.6px}.kint-rich .kint-popup-trigger:hover,.kint-rich .kint-access-path-trigger:hover,.kint-rich .kint-search-trigger:hover{color:#1d1e1e;background:#f8f8f8}.kint-rich dt.kint-parent>.kint-popup-trigger{line-height:19.2px}.kint-rich .kint-search-trigger{font-size:20px}.kint-rich input.kint-search{display:none;border:1px solid #d7d7d7;border-top-width:0;border-bottom-width:0;padding:4px;float:right !important;margin:-4px 0;color:#1d1e1e;background:#f8f8f8;height:24px;width:160px;position:relative;z-index:100}.kint-rich input.kint-search.kint-show{display:block}.kint-rich .kint-search-root ul.kint-tabs>li:not(.kint-search-match){background:#f8f8f8;opacity:0.5}.kint-rich .kint-search-root dl:not(.kint-search-match){opacity:0.5}.kint-rich .kint-search-root dl:not(.kint-search-match)>dt{background:#f8f8f8}.kint-rich .kint-search-root dl:not(.kint-search-match) dl,.kint-rich .kint-search-root dl:not(.kint-search-match) ul.kint-tabs>li:not(.kint-search-match){opacity:1}.kint-rich div.access-path{background:#f8f8f8;display:none;margin-top:5px;padding:4px;white-space:pre}.kint-rich div.access-path.kint-show{display:block}.kint-rich footer{padding:0 3px 3px;font-size:9px;background:transparent}.kint-rich footer>.kint-popup-trigger{background:transparent;color:#1d1e1e}.kint-rich footer nav{height:10px;width:10px;background-size:10px 50px}.kint-rich footer>ol{display:none;margin-left:32px}.kint-rich footer.kint-show>ol{display:block}.kint-rich a{color:#1d1e1e;text-shadow:none;text-decoration:underline}.kint-rich a:hover{color:#1d1e1e;border-bottom:1px dotted #1d1e1e}.kint-rich ul{list-style:none;padding-left:12px}.kint-rich ul:not(.kint-tabs) li{border-left:1px dashed #d7d7d7}.kint-rich ul:not(.kint-tabs) li>dl{border-left:none}.kint-rich ul.kint-tabs{margin:0 0 0 12px;padding-left:0;background:#f8f8f8;border:1px solid #d7d7d7;border-top:0}.kint-rich ul.kint-tabs>li{background:#f8f8f8;border:1px solid #d7d7d7;cursor:pointer;display:inline-block;height:24px;margin:2px;padding:0 12px;vertical-align:top}.kint-rich ul.kint-tabs>li:hover,.kint-rich ul.kint-tabs>li.kint-active-tab:hover{border-color:#aaa;color:red}.kint-rich ul.kint-tabs>li.kint-active-tab{background:#f8f8f8;border-top:0;margin-top:-1px;height:27px;line-height:24px}.kint-rich ul.kint-tabs>li:not(.kint-active-tab){line-height:20px}.kint-rich ul.kint-tabs li+li{margin-left:0}.kint-rich ul.kint-tab-contents>li{display:none}.kint-rich ul.kint-tab-contents>li.kint-show{display:block}.kint-rich dt:hover+dd>ul>li.kint-active-tab{border-color:#aaa;color:red}.kint-rich dt>.kint-color-preview{width:16px;height:16px;display:inline-block;vertical-align:middle;margin-left:10px;border:1px solid #d7d7d7;background-color:#ccc;background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2 2"><path fill="%23FFF" d="M0 0h1v2h1V1H0z"/></svg>');background-size:100%}.kint-rich dt>.kint-color-preview:hover{border-color:#aaa}.kint-rich dt>.kint-color-preview>div{width:100%;height:100%}.kint-rich table{border-collapse:collapse;empty-cells:show;border-spacing:0}.kint-rich table *{font-size:12px}.kint-rich table dt{background:none;padding:2px}.kint-rich table dt .kint-parent{min-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.kint-rich table td,.kint-rich table th{border:1px solid #d7d7d7;padding:2px;vertical-align:center}.kint-rich table th{cursor:alias}.kint-rich table td:first-child,.kint-rich table th{font-weight:bold;background:#f8f8f8;color:#1d1e1e}.kint-rich table td{background:#f8f8f8;white-space:pre}.kint-rich table td>dl{padding:0}.kint-rich table pre{border-top:0;border-right:0}.kint-rich table thead th:first-child{background:none;border:0}.kint-rich table tr:hover>td{box-shadow:0 0 1px 0 #aaa inset}.kint-rich table tr:hover var{color:red}.kint-rich table ul.kint-tabs li.kint-active-tab{height:20px;line-height:17px}.kint-rich pre.kint-source{margin-left:-1px}.kint-rich pre.kint-source[data-kint-filename]:before{display:block;content:attr(data-kint-filename);margin-bottom:4px;padding-bottom:4px;border-bottom:1px solid #f8f8f8}.kint-rich pre.kint-source>div:before{display:inline-block;content:counter(kint-l);counter-increment:kint-l;border-right:1px solid #aaa;padding-right:8px;margin-right:8px}.kint-rich pre.kint-source>div.kint-highlight{background:#f8f8f8}.kint-rich .kint-microtime-lap{text-shadow:-1px 0 #aaa,0 1px #aaa,1px 0 #aaa,0 -1px #aaa;color:#f8f8f8;font-weight:bold}.kint-rich .kint-focused{box-shadow:0 0 3px 2px red}.kint-rich dt{font-weight:normal}.kint-rich dt.kint-parent{margin-top:4px}.kint-rich dl dl{margin-top:4px;padding-left:25px;border-left:none}.kint-rich>dl>dt{background:#f8f8f8}.kint-rich ul{margin:0;padding-left:0}.kint-rich ul:not(.kint-tabs)>li{border-left:0}.kint-rich ul.kint-tabs{background:#f8f8f8;border:1px solid #d7d7d7;border-width:0 1px 1px 1px;padding:4px 0 0 12px;margin-left:-1px;margin-top:-1px}.kint-rich ul.kint-tabs li,.kint-rich ul.kint-tabs li+li{margin:0 0 0 4px}.kint-rich ul.kint-tabs li{border-bottom-width:0;height:25px}.kint-rich ul.kint-tabs li:first-child{margin-left:0}.kint-rich ul.kint-tabs li.kint-active-tab{border-top:1px solid #d7d7d7;background:#fff;font-weight:bold;padding-top:0;border-bottom:1px solid #fff !important;margin-bottom:-1px}.kint-rich ul.kint-tabs li.kint-active-tab:hover{border-bottom:1px solid #fff}.kint-rich ul>li>pre{border:1px solid #d7d7d7}.kint-rich dt:hover+dd>ul{border-color:#aaa}.kint-rich pre{background:#fff;margin-top:4px;margin-left:25px}.kint-rich .kint-source{margin-left:-1px}.kint-rich .kint-source .kint-highlight{background:#cfc}.kint-rich .kint-parent.kint-show>.kint-search{border-bottom-width:1px}.kint-rich table td{background:#fff}.kint-rich table td>dl{padding:0;margin:0}.kint-rich table td>dl>dt.kint-parent{margin:0}.kint-rich table td:first-child,.kint-rich table td,.kint-rich table th{padding:2px 4px}.kint-rich table dd,.kint-rich table dt{background:#fff}.kint-rich table tr:hover>td{box-shadow:none;background:#cfc}
+</style>
+
+  
+    <title>Okno Johari - jak widzimy siebie, jak widzą nas inni</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <!--     Fonts and icons     -->
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+    <!-- Material Kit CSS -->
+    <link href="https://johari.pl/assets/css/material-kit.css?v=2.0.5" rel="stylesheet">
+    <link href="https://johari.pl/assets/css/okno.css" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+  <script type="text/javascript" charset="UTF-8" src="https://maps.googleapis.com/maps-api-v3/api/js/61/14/intl/pl_ALL/common.js"></script><script type="text/javascript" charset="UTF-8" src="https://maps.googleapis.com/maps-api-v3/api/js/61/14/intl/pl_ALL/util.js"></script></head>
+<!-- DEBUG-VIEW ENDED 1 APPPATH/Views/header.php -->
+<!-- DEBUG-VIEW START 2 APPPATH/Views/tresc.php -->
+<body class="landing-page sidebar-collapse"> <nav class="navbar navbar-color-on-scroll navbar-transparent fixed-top navbar-expand-lg" color-on-scroll="100">
+  <div class="container">
+      <div class="navbar-translate">
+        <a class="navbar-brand" href="https://johari.pl">
+          Twoje Okno Johari </a>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="sr-only">Nawigacja</span>
+            <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
+
+      <div class="collapse navbar-collapse">
+          <ul class="navbar-nav ml-auto">
+
+            <li class="nav-item">
+              <a href="https://johari.pl/beta" class="nav-link">
+                  <i class="material-icons">build</i> Dalszy rozwój Okna Johari
+              </a>
+            </li>
+          </ul>
+      </div>
+  </div>
+</nav>
+
+
+
+
+<!-- DEBUG-VIEW ENDED 2 APPPATH/Views/tresc.php -->
+<!-- DEBUG-VIEW START 3 APPPATH/Views/ococho.php -->
+<div class="page-header header-filter" data-parallax="true" style="background-image: url('https://johari.pl/assets/img/puzzle.jpg')">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 ml-auto mr-auto">
+        <div class="brand text-center">
+          <h1>Okno Johari</h1>
+      	</div>
+      </div>
+  </div>
+  <div class="row">
+  	<div class="col-md-8 ml-auto mr-auto">
+  		<div class="brand text-justify">
+          <p class="lead">Okno Johari to dość proste narzędzie, które pozwala na szybkie zebranie i zaprezentowanie feedbacku, pomocnego w ocenie swoich mocnych cech, zrozumienia jak widzą na inni oraz wskazania obszaru do rozwoju.</p>
+    	</div>
+    </div>
+</div>
+
+  <div class="row">
+    <div class="col-md-8 ml-auto mr-auto">
+      <div class="brand text-center">
+
+             <h3 class="lead strong"><a class="btn btn-dark" href="https://johari.pl/wyswietlOkno/f38f26832a1e6910e12c4624cc20e97eac812d0b/876f8b926f216eb8ee99e532d1e1ea7ca79e3ef8" target="_blank" title="Przykładowe okno Johari"><i class="material-icons">assignment</i>Zobacz przykładowe Okno Johari »</a></h3>
+    </div>
+
+    </div>
+</div>
+
+</div>
+    </div>
+
+
+
+
+<!-- DEBUG-VIEW ENDED 3 APPPATH/Views/ococho.php -->
+<!-- DEBUG-VIEW START 4 APPPATH/Views/opis_nowe.php -->
+<div class="main main-raised">
+    <div class="container">
+      <div class="section text-center">
+      	<div class="row">
+          <div class="col-md-8 ml-auto mr-auto">
+            <h3 class="title">Jak to działa?</h3>
+            <p>Z zestawu cech wybierasz 8, które Twoim zdaniem najlepiej Cię opisują, a następnie o to samo prosisz znajomych. W ten sposób uzyskujesz zestaw cech podzielony między obszary znane Tobie i inny.</p>
+            <p>To od Ciebie zależy, na ile efektywnym narzędziem okaże się okno Johari. Ważne jest, kogo i jak zaprosisz do tego ćwiczenia. Może się też okazać, że warto stworzyć osobne okna na potrzeby badania siebie pod kątem zawodowym i siebie pod kątem prywatnym.</p>
+
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-8 ml-auto mr-auto">
+            <h3>Obszary okna:</h3>            
+          </div>
+        </div>
+		<div class="features">
+          <div class="row">
+            <div class="col-md-3">
+              <div class="info">
+              	<div class="icon icon-info">
+                  <i class="material-icons">people_outline</i>
+                </div>
+             	<h4 class="info-title">Arena</h4>
+                <p>Cechy, które są znane i Tobie i Twojemu otoczeniu.</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="info">
+              	<div class="icon icon-info">
+                  <i class="material-icons">person</i>
+                </div>
+                <h4 class="info-title">Obszar prywatny</h4>
+                <p>Cechy, które znasz Ty, ale których nie wskazali Twoi znajomi.</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="info">
+              	<div class="icon icon-info">
+                  <i class="material-icons">new_releases</i>
+                </div>
+                <h4 class="info-title">Obszar ślepy</h4>
+                <p>Cechy, które wskazali Twoi znajomi, ale Ty nie.</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="info">
+              	<div class="icon icon-info">
+                  <i class="material-icons">not_interested</i>
+                </div>
+                <h4 class="info-title">Obszar nieznany</h4>
+                <p>Cechy, które nikt nie wskazał</p>
+              </div>
+            </div>
+          </div>
+        </div>
+		<div class="row">
+          <div class="col-md-8 ml-auto mr-auto">
+            <h3 class="title">Jak stworzyć swoje okno:</h3>
+        	<div class="features">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="info">
+              	<div class="icon icon-info">
+                  <i class="material-icons">looks_one</i>
+                </div>
+             	<h4 class="info-title">Wypełnij formularz</h4>
+                <p>Podaj swoje imię, email i podaj nazwę okna. Imię - dla wygody, email - dla kontaktu, nazwę - dla odróżnienia (i na wypadek gdybyś chciał stworzyć więcej niż jedno okno). Następnie wybierz 8 cech, które Twoim zdaniem najlepiej do Ciebie pasują i prześlij formularz.</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="info">
+              	<div class="icon icon-info">
+                  <i class="material-icons">looks_two</i>
+                </div>
+                <h4 class="info-title">Zaproś znajomych do wskazania Twoich cech</h4>
+                <p>Wybierz 7 osób, z którymi podzielisz się linkiem (będzie na podstronie oraz w mailu) i których poprosisz o wskazanie 8 cech, które są do Ciebie najlepiej dopasowane. Kiedy to zrobią, Twoje okno zacznie się wypełniać. Oczywiście, możesz zaprosić wiecej niż 7 osób, ale moim zdaniem to dobry początek. </p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="info">
+              	<div class="icon icon-info">
+                  <i class="material-icons">looks_3</i>
+                </div>
+                <h4 class="info-title">Sprawdź wyniki</h4>
+                <p>Dowiedz się, jakie cechy Cię charakteryzują i jak postrzegają Cię inni. Poświęć chwilę na przyglądnięcię się wynikom, sprawdź czy przypadkiem nie lekceważysz lub nie pomijasz jakiegoś swojego atutu. Przy każdej cesze w nawiasie będziesz miał informację o tym, jak wielu ludzi ją wskazało.</p>
+              </div>
+            </div>
+          </div>    
+		</div> 
+        </div>
+	  </div>
+    </div>
+
+    	
+
+<!-- tu komentuję, bo to jest pod formularz do domknięcia
+    </div>
+  </div> -->
+<!-- DEBUG-VIEW ENDED 4 APPPATH/Views/opis_nowe.php -->
+<!-- DEBUG-VIEW START 5 APPPATH/Views/formularzyk.php -->
+
+
+
+
+
+
+
+<div class="section">
+	
+	<form action="https://johari.pl/stworzOkno" method="post" accept-charset="utf-8">
+	<input type="hidden" name="csrf_test_name" value="ea55363903fe5936e3175e50cb7b88c9">
+		  <div class="row">
+        <div class="col"><h3 class="text-center">Stwórz swoje okno</h3></div>
+      </div>
+    	<div class="form-row">
+
+		<div class="form-group col-md-6 bmd-form-group">
+			<label class="bmd-label-floating">Twoje imię</label>
+			<input type="text" class="form-control" name="imie" id="ImieAutora" value="">
+			
+
+    		<small id="nameHelp" class="form-text text-muted">Żeby łatwiej się do Ciebie zwracać ;-)</small>
+		</div>
+		<div class="form-group col-md-6 bmd-form-group">
+			<label class="bmd-label-floating">Twój email</label>
+  			<input type="email" class="form-control" name="email" id="Email" aria-describedby="emailHelp" value="">
+			
+  			<small id="emailHelp" class="form-text text-muted">Którego nie zamierzam nikomu udostępniać, a nam może ułatwić komunikację</small>
+  		</div>
+  	</div>
+  	<div class="form-row">
+  		<div class="form-group col-md-8 bmd-form-group">
+  				<label class="bmd-label-floating">Nazwa Twojego okna</label>
+  			<input type="text" class="form-control" name="tytul" id="TytulOkna" value="">
+									
+  			<small id="titleHelp" class="form-text text-muted">Przyda się, na wypadek gdybyś chciał / chciała mieć więcej niż jedno okno, będziemy je rozróżniać po nazwie właśnie.</small>
+  		</div>
+</div>
+		<div class="form-check">
+			<div id="komunikat" class="sticky-top"><span id="info">Wybierz 8 cech z poniższego zestawu</span></div>
+				<div class="containter">
+				
+
+					<div class="row">
+
+<div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="1" value="1">
+    <label for="1" type="checkbox">Asertywny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="2" value="2">
+    <label for="2" type="checkbox">Agresywny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="3" value="3">
+    <label for="3" type="checkbox">Ambitny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="4" value="4">
+    <label for="4" type="checkbox">Arogancki</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="5" value="5">
+    <label for="5" type="checkbox">Bezczelny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="6" value="6">
+    <label for="6" type="checkbox">Bezinteresowny</label></div></div><div class="row"><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="7" value="7">
+    <label for="7" type="checkbox">Bezmyślny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="8" value="8">
+    <label for="8" type="checkbox">Bezpośredni</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="9" value="9">
+    <label for="9" type="checkbox">Beztroski</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="10" value="10">
+    <label for="10" type="checkbox">Bezwstydny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="11" value="11">
+    <label for="11" type="checkbox">Bezwzględny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="12" value="12">
+    <label for="12" type="checkbox">Błyskotliwy</label></div></div><div class="row"><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="13" value="13">
+    <label for="13" type="checkbox">Bojaźliwy</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="14" value="14">
+    <label for="14" type="checkbox">Chciwy</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="15" value="15">
+    <label for="15" type="checkbox">Chytry</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="16" value="16">
+    <label for="16" type="checkbox">Cierpliwy</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="17" value="17">
+    <label for="17" type="checkbox">Cyniczny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="18" value="18">
+    <label for="18" type="checkbox">Czuły</label></div></div><div class="row"><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="19" value="19">
+    <label for="19" type="checkbox">Delikatny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="20" value="20">
+    <label for="20" type="checkbox">Despotyczny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="21" value="21">
+    <label for="21" type="checkbox">Dobroduszny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="22" value="22">
+    <label for="22" type="checkbox">Dociekliwy</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="23" value="23">
+    <label for="23" type="checkbox">Dojrzały</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="24" value="24">
+    <label for="24" type="checkbox">Dokładny</label></div></div><div class="row"><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="25" value="25">
+    <label for="25" type="checkbox">Dumny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="26" value="26">
+    <label for="26" type="checkbox">Dyskretny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="27" value="27">
+    <label for="27" type="checkbox">Egocentryczny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="28" value="28">
+    <label for="28" type="checkbox">Egoista</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="29" value="29">
+    <label for="29" type="checkbox">Ekstrawertyczny </label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="30" value="30">
+    <label for="30" type="checkbox">Elokwentny</label></div></div><div class="row"><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="31" value="31">
+    <label for="31" type="checkbox">Emocjonalny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="32" value="32">
+    <label for="32" type="checkbox">Empatyczny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="33" value="33">
+    <label for="33" type="checkbox">Fałszywy</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="34" value="34">
+    <label for="34" type="checkbox">Gadatliwy</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="35" value="35">
+    <label for="35" type="checkbox">Gwałtowny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="36" value="36">
+    <label for="36" type="checkbox">Hałaśliwy</label></div></div><div class="row"><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="37" value="37">
+    <label for="37" type="checkbox">Hojny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="38" value="38">
+    <label for="38" type="checkbox">Honorowy</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="39" value="39">
+    <label for="39" type="checkbox">Impulsywny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="40" value="40">
+    <label for="40" type="checkbox">Inteligentny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="41" value="41">
+    <label for="41" type="checkbox">Introwertyczny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="42" value="42">
+    <label for="42" type="checkbox">Kapryśny</label></div></div><div class="row"><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="43" value="43">
+    <label for="43" type="checkbox">Kłótliwy</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="44" value="44">
+    <label for="44" type="checkbox">Kobieca</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="45" value="45">
+    <label for="45" type="checkbox">Komunikatywny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="46" value="46">
+    <label for="46" type="checkbox">Konsekwentny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="47" value="47">
+    <label for="47" type="checkbox">Leniwy</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="48" value="48">
+    <label for="48" type="checkbox">Lojalny</label></div></div><div class="row"><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="49" value="49">
+    <label for="49" type="checkbox">Lubieżny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="50" value="50">
+    <label for="50" type="checkbox">Małostkowy</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="51" value="51">
+    <label for="51" type="checkbox">Męski</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="52" value="52">
+    <label for="52" type="checkbox">Mściwy</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="53" value="53">
+    <label for="53" type="checkbox">Naiwny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="54" value="54">
+    <label for="54" type="checkbox">Niecierpliwy</label></div></div><div class="row"><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="55" value="55">
+    <label for="55" type="checkbox">Nieczuły</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="56" value="56">
+    <label for="56" type="checkbox">Nielojalny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="57" value="57">
+    <label for="57" type="checkbox">Niesłowny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="58" value="58">
+    <label for="58" type="checkbox">Nietaktowny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="59" value="59">
+    <label for="59" type="checkbox">Nietolerancyjny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="60" value="60">
+    <label for="60" type="checkbox">Nieuczciwy</label></div></div><div class="row"><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="61" value="61">
+    <label for="61" type="checkbox">Niezależny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="62" value="62">
+    <label for="62" type="checkbox">Odpowiedzialny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="63" value="63">
+    <label for="63" type="checkbox">Odważny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="64" value="64">
+    <label for="64" type="checkbox">Okrutny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="65" value="65">
+    <label for="65" type="checkbox">Opanowany</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="66" value="66">
+    <label for="66" type="checkbox">Opiekuńczy</label></div></div><div class="row"><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="67" value="67">
+    <label for="67" type="checkbox">Opryskliwy</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="68" value="68">
+    <label for="68" type="checkbox">Optymistyczny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="69" value="69">
+    <label for="69" type="checkbox">Oschły</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="70" value="70">
+    <label for="70" type="checkbox">Oszczędny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="71" value="71">
+    <label for="71" type="checkbox">Otwarty</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="72" value="72">
+    <label for="72" type="checkbox">Oziębły</label></div></div><div class="row"><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="73" value="73">
+    <label for="73" type="checkbox">Pedantyczny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="74" value="74">
+    <label for="74" type="checkbox">Perfekcjonista</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="75" value="75">
+    <label for="75" type="checkbox">Perfidny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="76" value="76">
+    <label for="76" type="checkbox">Pesymista</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="77" value="77">
+    <label for="77" type="checkbox">Pewny siebie</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="78" value="78">
+    <label for="78" type="checkbox">Pilny</label></div></div><div class="row"><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="79" value="79">
+    <label for="79" type="checkbox">Podejrzliwy</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="80" value="80">
+    <label for="80" type="checkbox">Podły</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="81" value="81">
+    <label for="81" type="checkbox">Pogardliwy</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="82" value="82">
+    <label for="82" type="checkbox">Pogodny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="83" value="83">
+    <label for="83" type="checkbox">Pomocny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="84" value="84">
+    <label for="84" type="checkbox">Pomysłowy</label></div></div><div class="row"><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="85" value="85">
+    <label for="85" type="checkbox">Pracowity</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="86" value="86">
+    <label for="86" type="checkbox">Praworządny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="87" value="87">
+    <label for="87" type="checkbox">Pruderyjny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="88" value="88">
+    <label for="88" type="checkbox">Punktualny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="89" value="89">
+    <label for="89" type="checkbox">Pyszny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="90" value="90">
+    <label for="90" type="checkbox">Refleksyjny</label></div></div><div class="row"><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="91" value="91">
+    <label for="91" type="checkbox">Rozsądny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="92" value="92">
+    <label for="92" type="checkbox">Roztargniony</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="93" value="93">
+    <label for="93" type="checkbox">Samochwała</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="94" value="94">
+    <label for="94" type="checkbox">Samodzielny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="95" value="95">
+    <label for="95" type="checkbox">Sarkastyczny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="96" value="96">
+    <label for="96" type="checkbox">Serdeczny</label></div></div><div class="row"><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="97" value="97">
+    <label for="97" type="checkbox">Skąpy</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="98" value="98">
+    <label for="98" type="checkbox">Skromny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="99" value="99">
+    <label for="99" type="checkbox">Skrupulatny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="100" value="100">
+    <label for="100" type="checkbox">Skuteczny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="101" value="101">
+    <label for="101" type="checkbox">Snobistyczny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="102" value="102">
+    <label for="102" type="checkbox">Solidny</label></div></div><div class="row"><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="103" value="103">
+    <label for="103" type="checkbox">Spokojny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="104" value="104">
+    <label for="104" type="checkbox">Spontaniczny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="105" value="105">
+    <label for="105" type="checkbox">Spostrzegawczy</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="106" value="106">
+    <label for="106" type="checkbox">Sprytny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="107" value="107">
+    <label for="107" type="checkbox">Stanowczy</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="108" value="108">
+    <label for="108" type="checkbox">Sumienny</label></div></div><div class="row"><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="109" value="109">
+    <label for="109" type="checkbox">Systematyczny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="110" value="110">
+    <label for="110" type="checkbox">Szczery</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="111" value="111">
+    <label for="111" type="checkbox">Taktowny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="112" value="112">
+    <label for="112" type="checkbox">Tolerancyjny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="113" value="113">
+    <label for="113" type="checkbox">Troskliwy</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="114" value="114">
+    <label for="114" type="checkbox">Uczciwy</label></div></div><div class="row"><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="115" value="115">
+    <label for="115" type="checkbox">Uczynny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="116" value="116">
+    <label for="116" type="checkbox">Uległy</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="117" value="117">
+    <label for="117" type="checkbox">Umiejący słuchać</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="118" value="118">
+    <label for="118" type="checkbox">Uprzejmy</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="119" value="119">
+    <label for="119" type="checkbox">Wesoły</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="120" value="120">
+    <label for="120" type="checkbox">Wiarygodny</label></div></div><div class="row"><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="121" value="121">
+    <label for="121" type="checkbox">Wrażliwy</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="122" value="122">
+    <label for="122" type="checkbox">Wspierający</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="123" value="123">
+    <label for="123" type="checkbox">Wścibski</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="124" value="124">
+    <label for="124" type="checkbox">Wulgarny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="125" value="125">
+    <label for="125" type="checkbox">Wyrachowany</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="126" value="126">
+    <label for="126" type="checkbox">Wyrozumiały</label></div></div><div class="row"><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="127" value="127">
+    <label for="127" type="checkbox">Wytrwały</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="128" value="128">
+    <label for="128" type="checkbox">Zachłanny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="129" value="129">
+    <label for="129" type="checkbox">Zaradny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="130" value="130">
+    <label for="130" type="checkbox">Zarozumiały</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="131" value="131">
+    <label for="131" type="checkbox">Zawistny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="132" value="132">
+    <label for="132" type="checkbox">Zawzięty</label></div></div><div class="row"><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="133" value="133">
+    <label for="133" type="checkbox">Zazdrosny</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="134" value="134">
+    <label for="134" type="checkbox">Zdecydowany</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="135" value="135">
+    <label for="135" type="checkbox">Złośliwy</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="136" value="136">
+    <label for="136" type="checkbox">Zrównoważony</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="137" value="137">
+    <label for="137" type="checkbox">Zrzędliwy</label></div><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="138" value="138">
+    <label for="138" type="checkbox">Zuchwały</label></div></div><div class="row"><div class="col-6 col-md-2">    <input type="checkbox" name="feature_list[]" id="139" value="139">
+    <label for="139" type="checkbox">Życzliwy</label></div>    </div><div class="row"><div class="col">
+      <button type="submit" class="btn btn-primary btn-round enableOnInput btn-block" disabled="disabled"><i class="material-icons">forward</i> Stwórz swoje okno Johari</button> 
+</div></div>
+<div class="mt-2">
+<p>Tworząc swoje okno Johari akceptujesz <a href="https://johari.pl//polityka" tareget="_blank">politykę prywatności serwisu</a>, w której jest napisane, że Twoja dana osobowa (mail) będzie wykorzystywana wyłącznie do identyfikowania Twojego okna, oraz to, że na Twój mail zostanie wysłana wiadomość z linkami do okna dla Ciebie i dla Twoich znajomych.  Na tym zakończone zostanie przetwarzanie Twoich danych. </p>
+</div>
+<script>
+$( document.body )
+  .click(function() {
+   // $( document.body ).append( $( "<div>" ) );
+    var n = $('input[type="checkbox"]:checked').length;
+    var roznica = 8-n;
+     
+    if (roznica==0){
+        $( "span#info" ).text( "Świetnie. Jeśli jesteś zadowolony z wybranych cech, stwórz swoje okno"); 
+    $('.enableOnInput').prop('disabled', false);
+    } else {
+        if (roznica>0){
+        $( "span#info" ).text( "Zaznaczyłeś / zaznaczyłaś już " + n + " cech. Zostało Ci do zaznaczenia jeszcze "+ roznica); }
+        else {
+        $( "span#info" ).text( "Zaznaczyłeś / zaznaczyłaś za dużo cech. Musisz odznaczyć  "+ (-roznica));
+        }
+            
+         $('.enableOnInput').prop('disabled', true);
+    } 
+
+  })
+
+</script>
+<!-- DEBUG-VIEW ENDED 5 APPPATH/Views/formularzyk.php -->
+<!-- DEBUG-VIEW START 6 APPPATH/Views/footer.php -->
+<footer class="footer footer-default">
+  <div class="container">
+    <nav class="float-left">
+
+      
+      <ul>
+        <li>
+          <a>autor:</a><a href="https://www.linkedin.com/in/witnirski/" target="_blank">Wit Nirski</a>
+        </li>
+        <li> <a href="https://niecodzienny.net/2019/05/zrobmy-sobie-okno-johari/" target="_blank">Dlaczego zrobiłem Okno Johari</a></li>
+        <li> <a href="https://subskrypcje.pl" target="_blank">Subskrypcje.pl - najciekawsze subskrypcje w Polsce</a></li>
+        <li><a href="https://niecodzienny.net/planowanie-tygodnia-i-roku-z-notion/" target="_blank" class="nav-link">Mój sposób na planowanie roku</a>
+            </li>
+      </ul> 
+    </nav>
+    <div class="copyright float-right" style="font-size:12px; text-transform:uppercase;">
+        ©
+        <script>
+            document.write(new Date().getFullYear())
+        </script>2025, zbudowane na Codeigniter, w oparciu o <a href="https://www.creative-tim.com/product/material-kit" target="_blank">Material Kit</a> stworzone przez <a href="https://www.creative-tim.com/" target="blank">Creative Tim</a> 
+    </div>
+  </div>
+</footer>
+<script src="https://johari.pl/assets/js/core/jquery.min.js" type="text/javascript"></script>
+<script src="https://johari.pl/assets/js/core/popper.min.js" type="text/javascript"></script>
+<script src="https://johari.pl/assets/js/core/bootstrap-material-design.min.js" type="text/javascript"></script>
+<script src="https://johari.pl/assets/js/plugins/moment.min.js"></script>
+<!--  Plugin for the Datepicker, full documentation here: https://github.com/Eonasdan/bootstrap-datetimepicker -->
+<script src="https://johari.pl/assets/js/plugins/bootstrap-datetimepicker.js" type="text/javascript"></script>
+<!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
+<script src="https://johari.pl/assets/js/plugins/nouislider.min.js" type="text/javascript"></script>
+<!--  Google Maps Plugin  -->
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+<!-- Place this tag in your head or just before your close body tag. -->
+<script async="" defer="" src="https://buttons.github.io/buttons.js"></script>
+<!-- Control Center for Material Kit: parallax effects, scripts for the example pages etc -->
+<script src="https://johari.pl/assets/js/material-kit.js?v=2.0.5" type="text/javascript"></script>
+
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-46469483-6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-46469483-6');
+</script>
+<script type="text/javascript">
+   window.onload = function() {
+       var komunikaty = document.getElementById('komunikaty');
+
+       //auto scroll only if section#errors exist
+       if(komunikaty) { //this also do I assumed, errors.length > 0
+           komunikaty.scrollIntoView(true);
+       }
+   }
+</script>
+
+
+</div></div></form></div></div></div></body><!-- Global site tag (gtag.js) - Google Analytics --></html>

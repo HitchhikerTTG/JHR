@@ -5,8 +5,6 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
-$routes->get('/', 'Home::index');
-
 /*
  * --------------------------------------------------------------------
  * Router Setup
@@ -15,7 +13,7 @@ $routes->get('/', 'Home::index');
 
 $routes->setDefaultNamespace('App\Controllers');
 $routes->setDefaultController('OknoJohari');
-$routes->setDefaultMethod('index');
+$routes->setDefaultMethod('stworzOkno');
 $routes->setTranslateURIDashes(false);
 $routes->set404Override();
 $routes->setAutoRoute(true);
@@ -32,8 +30,9 @@ $routes->match(['get', 'post'], 'form/create', 'Form::create');
 $routes->match(['get', 'post'], 'form/index', 'Form::index');
 $routes->match(['get','post'], 'stworzOkno','OknoJohari::stworzOkno');
 $routes->match(['get','post'], 'okno/(:segment)','OknoJohari::dodajDoOkna/$1');
+$routes->get('/', 'Home::index');
+$routes->post('stworzOkno', 'OknoJohari::stworzOkno');
 $routes->get('okno','OknoJohari::stworzOkno');
-$routes->get('/','OknoJohari::stworzOkno');
 $routes->get('polityka','OknoJohari::polityka');
 $routes->get('beta', 'OknoJohari::beta');
 $routes->get('listaOkien/(:segment)','OknoJohari::wszystkieOkna/$1');
@@ -42,3 +41,4 @@ $routes->get('wyswietlOkno/(:segment)/(:segment)','OknoJohari::wyswietlOkno/$1/$
 $routes->get('wyswietlOkno/(:segment)/(:segment)/(:num)', 'OknoJohari::wyswietlOkno/$1/$2/$3');
 $routes->get('testuje', 'Form::index');
 $routes->post('testuje', 'Form::index');
+$routes->match(['get', 'post'], '/tlumaczOkno/(:segment)/(:segment)', 'OknoJohari::tlumaczOkno/$1/$2');

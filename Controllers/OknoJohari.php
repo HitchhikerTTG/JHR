@@ -30,7 +30,7 @@ class OknoJohari extends BaseController
     $szablon ="class=\"landing-page sidebar-collapse\"";
     $data['szablon'] = $szablon;
     $cechyModel = model('CechyModel');
-    $data['features'] = $cechyModel->listFeatures();
+    $data['features'] = $cechyModel->listFeatures(2); // Tylko zestaw cech 2
 
     $data['validation']=Services::validation();
     $rules=[
@@ -205,6 +205,109 @@ class OknoJohari extends BaseController
     . view ('footer');
   }
 
+  public function stworzOkno()
+  {
+    $cechyModel = model(CechyModel::class);
+    $oknoModel = model(OknoModel::class);
+    $uzytkownikModel = model(UzytkownicyModel::class);
+    $przypisaneCechyModel = model(PrzypisaneCechyModel::class);
+
+    $rules = [
+        'imie' => 'required|min_length[2]',
+        'email' => 'required|valid_email',
+        'tytul' => 'required|min_length[3]',
+        'feature_list' => 'required',
+        'feature_list.*' => 'is_natural_no_zero'
+    ];
+
+    $errors = [
+        'imie' => [
+            'required' => 'Imię jest wymagane',
+            'min_length' => 'Imię musi mieć co najmniej 2 znaki'
+        ],
+        'email' => [
+            'required' => 'Email jest wymagany',
+            'valid_email' => 'Podaj poprawny adres email'
+        ],
+        'tytul' => [
+            'required' => 'Nazwa okna jest wymagana',
+            'min_length' => 'Nazwa okna musi mieć co najmniej 3 znaki'
+        ],
+        'feature_list' => [
+            'required' => 'Musisz wybrać dokładnie 8 cech'
+        ]
+    ];
+
+    // Dodatkowa walidacja dla liczby cech
+    $featureList = $this->request->getPost('feature_list');
+    if ($featureList && count($featureList) !== 8) {
+        $this->validator->setError('feature_list', 'Musisz wybrać dokładnie 8 cech');
+    }
+
+    if (!$this->validate($rules, $errors) || (is_array($featureList) && count($featureList) !== 8)) {
+        $data['features'] = $cechyModel->getFeaturesForNewWindows();
+        $data['validation'] = $this->validator;
+        $data['post_url'] = '#komunikaty';
+        
+        return view('header')
+            . view('tresc', $data)
+            . view('ococho')
+            . view('opis_nowe')
+            . view('formularzyk', $data)
+            . view('footer');
+    }
+
+    // Dane są poprawne - zapisujemy okno
+    $imie = $this->request->getPost('imie');
+    $email = $this->request->getPost('email');
+    $tytul = $this->request->getPost('tytul');
+    
+    $hashAutora = hash('ripemd160', $email);
+    $hashOkna = hash('ripemd160', $tytul . $email);
+
+    // Sprawdź czy użytkownik już istnieje
+    $existingUser = $uzytkownikModel->where('email', $email)->first();
+    if (!$existingUser) {
+        $uzytkownikModel->save([
+            'imie' => $imie,
+            'email' => $email,
+            'hash' => $hashAutora
+        ]);
+        $userId = $uzytkownikModel->getInsertID();
+    } else {
+        $userId = $existingUser['id'];
+    }
+
+    // Zapisz okno
+    $oknoModel->save([
+        'nazwa' => $tytul,
+        'hash' => $hashOkna,
+        'id_wlasciciela' => $userId,
+        'imie_wlasciciela' => $imie
+    ]);
+
+    // Zapisz wybrane cechy
+    foreach ($featureList as $cechaId) {
+        $przypisaneCechyModel->save([
+            'hash_okna' => $hashOkna,
+            'id_cechy' => $cechaId,
+            'hash_nadawcy' => $hashAutora
+        ]);
+    }
+
+    $zapisywaneOkno = [
+        'imie' => $imie,
+        'tytul' => $tytul,
+        'email' => $email,
+        'hash_okna' => $hashOkna,
+        'hash_autora' => $hashAutora
+    ];
+
+    return view('header')
+        . view('formularz_nowe_okno_sukces', $zapisywaneOkno)
+        . view('footer');
+  }
+
   public function dodajDoOkna($hashOkna=false){
     // co zrobić, kiedy nie mam takiego okna - komunikat o błędzie - nie ma takiego okna i np. stwórz własne
 
@@ -228,7 +331,7 @@ class OknoJohari extends BaseController
     }
 
     $data['validation']=Services::validation();
-    $data['features'] = $cechyModel->listFeatures();
+    $data['features'] = $cechyModel->listFeatures(2); // Tylko zestaw cech 2
     $data['hashOkna'] = $hashOkna;
     $szablon ="class=\"landing-page sidebar-collapse\"";
     $data['szablon'] = $szablon;
@@ -319,17 +422,9 @@ class OknoJohari extends BaseController
 
     // Sprawdź czy okno wymaga tłumaczenia (tylko zestaw cech 1)
     $zestawCech = $oknoModel->getWindowFeatureSet($hashOkna, $hashWlasciciela);
-    if ($zestawCech == 1) {
-        // Ostatnia zmiana: Kontroler teraz orkiestruje translację między modelami zamiast 
-        // delegowania tej odpowiedzialności do OknoModel - zapewnia to lepsze rozdzielenie odpowiedzialności
-        $translatorModel = model(\App\Models\TranslatorCechModel::class);
-        $przetlumaczonaWersja = $translatorModel->translateWindow($analizaCech, 1, 2);
-        
-        $data['ma_tlumaczenie'] = true;
-        $data['tlumaczenie'] = $przetlumaczonaWersja;
-    } else {
-        $data['ma_tlumaczenie'] = false;
-    }
+    $data['ma_tlumaczenie'] = ($zestawCech == 1);
+    $data['hash_okna'] = $hashOkna;
+    $data['hash_wlasciciela'] = $hashWlasciciela;
 
     return view('header')
          . view('wyswietl_okno', $data)
@@ -372,6 +467,30 @@ $message = view('email/szablon.php',$data);
 
 
     }
+    public function tlumaczOkno($hashOkna, $hashWlasciciela) {
+        // Sprawdź czy żądanie jest AJAX
+        if (!$this->request->isAJAX()) {
+            return $this->response->setStatusCode(400)->setJSON(['error' => 'Only AJAX requests allowed']);
+        }
+
+        $oknoModel = model(\App\Models\OknoModel::class);
+        
+        // Sprawdź czy okno istnieje i ma stary zestaw cech
+        $zestawCech = $oknoModel->getWindowFeatureSet($hashOkna, $hashWlasciciela);
+        if ($zestawCech != 1) {
+            return $this->response->setStatusCode(400)->setJSON(['error' => 'To okno nie wymaga tłumaczenia']);
+        }
+
+        // Pobierz analizę cech
+        $analizaCech = $oknoModel->analizyCechOkna($hashOkna, $hashWlasciciela);
+        
+        // Przetłumacz okno
+        $translatorModel = model(\App\Models\TranslatorCechModel::class);
+        $przetlumaczonaWersja = $translatorModel->translateWindow($analizaCech, 1, 2);
+        
+        return $this->response->setJSON(['tlumaczenie' => $przetlumaczonaWersja]);
+    }
+
     public function polityka(){
             $data['szablon']="class=\"profile-page sidebar-collapse\"";
             $data['title']="Polityka Prywatności Johari.pl";
