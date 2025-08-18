@@ -45,26 +45,12 @@ class JSLogger extends BaseController
             $userAgent
         );
 
-        // Zapisz log do pliku
-        $logDir = WRITEPATH . 'logs/js/';
+        // Zapisz do głównego logu CodeIgniter
+        log_message($logLevel, '[JS-LOG] ' . $message . ' | URL: ' . $url . ' | UA: ' . $userAgent);
         
-        // Sprawdź i utwórz katalog z lepszą obsługą błędów
-        if (!is_dir($logDir)) {
-            if (!mkdir($logDir, 0777, true)) {
-                // Spróbuj zapisać do głównego katalogu logs jako fallback
-                $logDir = WRITEPATH . 'logs/';
-                $logFile = $logDir . 'javascript-fallback-' . date('Y-m-d') . '.log';
-                if (!file_put_contents($logFile, $logLine, FILE_APPEND | LOCK_EX)) {
-                    return $this->failServer('Cannot create directory or write to fallback log');
-                }
-                return $this->response->setJSON(['status' => 'logged', 'fallback' => true]);
-            }
-        }
-
-        $logFile = $logDir . 'javascript-' . date('Y-m-d') . '.log';
-        if (file_put_contents($logFile, $logLine, FILE_APPEND | LOCK_EX) === false) {
-            return $this->failServer('Failed to write to log file');
-        }
+        // Opcjonalnie zapisz też do osobnego pliku w głównym katalogu logs
+        $logFile = WRITEPATH . 'logs/javascript-' . date('Y-m-d') . '.log';
+        file_put_contents($logFile, $logLine, FILE_APPEND | LOCK_EX);
 
         // Można opcjonalnie też zapisać do logów CI4
         // log_message($logLevel, '[JS-LOG] ' . $message);
