@@ -30,6 +30,9 @@ class OknoJohari extends BaseController
     $oknoModel = model(OknoModel::class);
     $uzytkownikModel = model(UzytkownicyModel::class);
     $przypisaneCechyModel = model(PrzypisaneCechyModel::class);
+    
+    $szablon = "class=\"landing-page sidebar-collapse\"";
+    $data['szablon'] = $szablon;
 
     $rules = [
         'imie' => 'required|min_length[2]',
