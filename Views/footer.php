@@ -66,7 +66,7 @@ function logToFile(message, level = 'debug') {
         url: window.location.href,
         userAgent: navigator.userAgent
     };
-    
+
     // Wysyłaj asynchronicznie, nie blokuj działania strony
     fetch('<?= base_url() ?>/log-js', {
         method: 'POST',
@@ -83,7 +83,7 @@ function logToFile(message, level = 'debug') {
 
 $(document).ready(function() {
     logToFile('JavaScript załadowany');
-    
+
     $('input[name="feature_list[]"]').on('change', function() {
         var n = $('input[name="feature_list[]"]:checked').length;
         logToFile('Liczba wybranych cech: ' + n);
@@ -113,7 +113,7 @@ $(document).ready(function() {
         logToFile('Przycisk disabled: ' + $(this).prop('disabled'));
         logToFile('Przycisk attr disabled: ' + $(this).attr('disabled'));
         logToFile('Liczba wybranych cech: ' + $('input[name="feature_list[]"]:checked').length);
-        
+
         if ($(this).prop('disabled')) {
             logToFile('Przycisk jest disabled - blokujemy wysyłanie', 'warning');
             e.preventDefault();
@@ -121,14 +121,14 @@ $(document).ready(function() {
         }
         logToFile('Przycisk nie jest disabled - formularz powinien się wysłać');
     });
-    
+
     // DEBUG: Sprawdź wysyłanie formularza
     $('form').on('submit', function(e) {
         logToFile('Formularz submit event!');
         logToFile('Action: ' + $(this).attr('action'));
         logToFile('Method: ' + $(this).attr('method'));
         logToFile('Liczba wybranych cech: ' + $('input[name="feature_list[]"]:checked').length);
-        
+
         var checkedCount = $('input[name="feature_list[]"]:checked').length;
         if (checkedCount !== 8) {
             logToFile('Nieprawidłowa liczba cech - blokujemy wysyłanie', 'error');
