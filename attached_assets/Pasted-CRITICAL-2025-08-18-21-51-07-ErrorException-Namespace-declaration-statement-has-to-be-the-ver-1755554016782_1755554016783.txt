@@ -1,0 +1,78 @@
+CRITICAL - 2025-08-18 21:51:07 --> ErrorException: Namespace declaration statement has to be the very first statement or after any declare call in the script
+[Method: POST, Route: log-js]
+in APPPATH/Controllers/JSLogger.php on line 4.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+INFO - 2025-08-18 21:51:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-08-18 21:51:07 --> Session: Sessions is enabled, and one exists. Please don't $session->start();
+CRITICAL - 2025-08-18 21:51:07 --> ErrorException: Namespace declaration statement has to be the very first statement or after any declare call in the script
+[Method: POST, Route: log-js]
+in APPPATH/Controllers/JSLogger.php on line 4.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+INFO - 2025-08-18 21:51:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-08-18 21:51:11 --> Session: Sessions is enabled, and one exists. Please don't $session->start();
+CRITICAL - 2025-08-18 21:51:11 --> ErrorException: Namespace declaration statement has to be the very first statement or after any declare call in the script
+[Method: POST, Route: log-js]
+in APPPATH/Controllers/JSLogger.php on line 4.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+CRITICAL - 2025-08-18 21:51:16 --> ErrorException: Namespace declaration statement has to be the very first statement or after any declare call in the script
+[Method: POST, Route: log-js]
+in APPPATH/Controllers/JSLogger.php on line 4.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+CRITICAL - 2025-08-18 21:51:16 --> ErrorException: Namespace declaration statement has to be the very first statement or after any declare call in the script
+[Method: POST, Route: log-js]
+in APPPATH/Controllers/JSLogger.php on line 4.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+CRITICAL - 2025-08-18 21:51:16 --> ErrorException: Namespace declaration statement has to be the very first statement or after any declare call in the script
+[Method: POST, Route: log-js]
+in APPPATH/Controllers/JSLogger.php on line 4.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+CRITICAL - 2025-08-18 21:51:16 --> ErrorException: Namespace declaration statement has to be the very first statement or after any declare call in the script
+[Method: POST, Route: log-js]
+in APPPATH/Controllers/JSLogger.php on line 4.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+CRITICAL - 2025-08-18 21:51:19 --> ErrorException: Namespace declaration statement has to be the very first statement or after any declare call in the script
+[Method: POST, Route: log-js]
+in APPPATH/Controllers/JSLogger.php on line 4.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+CRITICAL - 2025-08-18 21:51:19 --> ErrorException: Namespace declaration statement has to be the very first statement or after any declare call in the script
+[Method: POST, Route: log-js]
+in APPPATH/Controllers/JSLogger.php on line 4.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+CRITICAL - 2025-08-18 21:51:19 --> ErrorException: Namespace declaration statement has to be the very first statement or after any declare call in the script
+[Method: POST, Route: log-js]
+in APPPATH/Controllers/JSLogger.php on line 4.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+CRITICAL - 2025-08-18 21:51:19 --> ErrorException: Namespace declaration statement has to be the very first statement or after any declare call in the script
+[Method: POST, Route: log-js]
+in APPPATH/Controllers/JSLogger.php on line 4.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+CRITICAL - 2025-08-18 21:51:19 --> ErrorException: Namespace declaration statement has to be the very first statement or after any declare call in the script
+[Method: POST, Route: log-js]
+in APPPATH/Controllers/JSLogger.php on line 4.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+CRITICAL - 2025-08-18 21:51:20 --> ErrorException: Namespace declaration statement has to be the very first statement or after any declare call in the script
+[Method: POST, Route: log-js]
+in APPPATH/Controllers/JSLogger.php on line 4.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+CRITICAL - 2025-08-18 21:51:20 --> ErrorException: Namespace declaration statement has to be the very first statement or after any declare call in the script
+[Method: POST, Route: log-js]
+in APPPATH/Controllers/JSLogger.php on line 4.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+CRITICAL - 2025-08-18 21:51:20 --> ErrorException: Namespace declaration statement has to be the very first statement or after any declare call in the script
+[Method: POST, Route: log-js]
+in APPPATH/Controllers/JSLogger.php on line 4.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+CRITICAL - 2025-08-18 21:51:20 --> ErrorException: Namespace declaration statement has to be the very first statement or after any declare call in the script
+[Method: POST, Route: log-js]
+in APPPATH/Controllers/JSLogger.php on line 4.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+CRITICAL - 2025-08-18 21:51:20 --> ErrorException: Namespace declaration statement has to be the very first statement or after any declare call in the script
+[Method: POST, Route: log-js]
+in APPPATH/Controllers/JSLogger.php on line 4.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+INFO - 2025-08-18 21:51:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-08-18 21:51:20 --> Session: Sessions is enabled, and one exists. Please don't $session->start();
+CRITICAL - 2025-08-18 21:51:20 --> ErrorException: Namespace declaration statement has to be the very first statement or after any declare call in the script
+[Method: POST, Route: log-js]
+in APPPATH/Controllers/JSLogger.php on line 4.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
