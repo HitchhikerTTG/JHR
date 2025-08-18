@@ -30,7 +30,7 @@ $routes->match(['get', 'post'], 'form/create', 'Form::create');
 $routes->match(['get', 'post'], 'form/index', 'Form::index');
 $routes->match(['get','post'], 'stworzOkno','OknoJohari::stworzOkno');
 $routes->match(['get','post'], 'okno/(:segment)','OknoJohari::dodajDoOkna/$1');
-$routes->get('/', 'Home::index');
+// $routes->get('/', 'Home::index');
 $routes->post('stworzOkno', 'OknoJohari::stworzOkno');
 $routes->get('okno','OknoJohari::stworzOkno');
 $routes->get('polityka','OknoJohari::polityka');
