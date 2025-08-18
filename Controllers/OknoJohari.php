@@ -34,6 +34,16 @@ class OknoJohari extends BaseController
     $szablon = "class=\"landing-page sidebar-collapse\"";
     $data['szablon'] = $szablon;
 
+    // DEBUG: Sprawdź wszystkie dane POST
+    if ($this->request->getMethod() === 'post') {
+        log_message('debug', 'POST Data: ' . print_r($this->request->getPost(), true));
+        log_message('debug', 'Request Method: ' . $this->request->getMethod());
+        
+        $featureList = $this->request->getPost('feature_list');
+        log_message('debug', 'Feature List: ' . print_r($featureList, true));
+        log_message('debug', 'Feature List Count: ' . (is_array($featureList) ? count($featureList) : 'not array'));
+    }
+
     // Sprawdź czy to żądanie POST (formularz został wysłany)
     if ($this->request->getMethod() === 'post') {
         $rules = [

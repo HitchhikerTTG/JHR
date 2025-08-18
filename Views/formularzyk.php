@@ -19,7 +19,7 @@
 <div class="section">
 	<? $validation = \Config\Services::validation();?>
 
-	<? echo form_open(base_url() . '/stworzOkno'); ?>
+	<? echo form_open(base_url() . '/stworzOkno', ['onsubmit' => 'console.log("Formularz wysyłany!", this); return true;']); ?>
 	<?=csrf_field()?>
 
 		  <div class="row">
@@ -96,7 +96,7 @@
     	];
 
 //    echo form_submit('mysubmit', '<i class="material-icons">forward</i> Stwórz swoje okno Johari', $atrybutyPrzycisku); 
-	   ?>  <button type="submit" class="btn btn-primary btn-round enableOnInput btn-block" disabled='disabled'><i class="material-icons">forward</i> Stwórz swoje okno Johari</button> 
+	   ?>  <button type="submit" class="btn btn-primary btn-round enableOnInput btn-block" disabled="disabled" id="submitBtn"><i class="material-icons">forward</i> Stwórz swoje okno Johari</button> 
 <?    echo "</div></div>";
 
     echo form_close();
