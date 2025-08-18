@@ -86,12 +86,33 @@ $(document).ready(function() {
     // DEBUG: Sprawdź kliknięcie przycisku
     $('#submitBtn').on('click', function(e) {
         console.log('Przycisk kliknięty!');
+        console.log('Przycisk disabled:', $(this).prop('disabled'));
+        console.log('Przycisk attr disabled:', $(this).attr('disabled'));
+        console.log('Liczba wybranych cech:', $('input[name="feature_list[]"]:checked').length);
+        
         if ($(this).prop('disabled')) {
             console.log('Przycisk jest disabled - blokujemy wysyłanie');
             e.preventDefault();
             return false;
         }
         console.log('Przycisk nie jest disabled - formularz powinien się wysłać');
+    });
+    
+    // DEBUG: Sprawdź wysyłanie formularza
+    $('form').on('submit', function(e) {
+        console.log('Formularz submit event!');
+        console.log('Action:', $(this).attr('action'));
+        console.log('Method:', $(this).attr('method'));
+        console.log('Liczba wybranych cech:', $('input[name="feature_list[]"]:checked').length);
+        
+        var checkedCount = $('input[name="feature_list[]"]:checked').length;
+        if (checkedCount !== 8) {
+            console.log('Nieprawidłowa liczba cech - blokujemy wysyłanie');
+            e.preventDefault();
+            alert('Musisz wybrać dokładnie 8 cech!');
+            return false;
+        }
+        console.log('Formularz zostanie wysłany!');
     });
 });
 </script>

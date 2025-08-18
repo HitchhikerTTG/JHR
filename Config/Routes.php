@@ -26,10 +26,10 @@ $routes->setAutoRoute(true);
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-$routes->match(['get', 'post'], 'form/create', 'Form::create');
-$routes->match(['get', 'post'], 'form/index', 'Form::index');
-$routes->match(['get','post'], 'stworzOkno','OknoJohari::stworzOkno');
-$routes->match(['get','post'], 'okno/(:segment)','OknoJohari::dodajDoOkna/$1');
+$routes->match(['GET', 'POST'], 'form/create', 'Form::create');
+$routes->match(['GET', 'POST'], 'form/index', 'Form::index');
+$routes->match(['GET','POST'], 'stworzOkno','OknoJohari::stworzOkno');
+$routes->match(['GET','POST'], 'okno/(:segment)','OknoJohari::dodajDoOkna/$1');
 // $routes->get('/', 'Home::index');
 $routes->post('stworzOkno', 'OknoJohari::stworzOkno');
 $routes->get('okno','OknoJohari::stworzOkno');
@@ -41,4 +41,4 @@ $routes->get('wyswietlOkno/(:segment)/(:segment)','OknoJohari::wyswietlOkno/$1/$
 $routes->get('wyswietlOkno/(:segment)/(:segment)/(:num)', 'OknoJohari::wyswietlOkno/$1/$2/$3');
 $routes->get('testuje', 'Form::index');
 $routes->post('testuje', 'Form::index');
-$routes->match(['get', 'post'], '/tlumaczOkno/(:segment)/(:segment)', 'OknoJohari::tlumaczOkno/$1/$2');
+$routes->match(['GET', 'POST'], '/tlumaczOkno/(:segment)/(:segment)', 'OknoJohari::tlumaczOkno/$1/$2');
