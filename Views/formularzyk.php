@@ -19,7 +19,7 @@
 <div class="section">
 	<? $validation = \Config\Services::validation();?>
 
-	<? echo form_open('stworzOkno'); ?>
+	<? echo form_open(base_url() . '/stworzOkno'); ?>
 	<?=csrf_field()?>
 
 		  <div class="row">
