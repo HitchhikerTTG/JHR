@@ -47,12 +47,22 @@ class JSLogger extends BaseController
 
         // Zapisz log do pliku
         $logDir = WRITEPATH . 'logs/js/';
-        if (!is_dir($logDir) && !mkdir($logDir, 0755, true)) {
-            return $this->failServer('Cannot create log directory');
+        
+        // Sprawdź i utwórz katalog z lepszą obsługą błędów
+        if (!is_dir($logDir)) {
+            if (!mkdir($logDir, 0777, true)) {
+                // Spróbuj zapisać do głównego katalogu logs jako fallback
+                $logDir = WRITEPATH . 'logs/';
+                $logFile = $logDir . 'javascript-fallback-' . date('Y-m-d') . '.log';
+                if (!file_put_contents($logFile, $logLine, FILE_APPEND | LOCK_EX)) {
+                    return $this->failServer('Cannot create directory or write to fallback log');
+                }
+                return $this->response->setJSON(['status' => 'logged', 'fallback' => true]);
+            }
         }
 
         $logFile = $logDir . 'javascript-' . date('Y-m-d') . '.log';
-        if (@file_put_contents($logFile, $logLine, FILE_APPEND | LOCK_EX) === false) {
+        if (file_put_contents($logFile, $logLine, FILE_APPEND | LOCK_EX) === false) {
             return $this->failServer('Failed to write to log file');
         }
 
