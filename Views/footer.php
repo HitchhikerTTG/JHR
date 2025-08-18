@@ -58,24 +58,41 @@
 </script>
 <script>
 $(document).ready(function() {
+    console.log('JavaScript załadowany');  // DEBUG
+    
+    $('input[name="feature_list[]"]').on('change', function() {
+        var n = $('input[name="feature_list[]"]:checked').length;
+        console.log('Liczba wybranych cech:', n);  // DEBUG
+        var roznica = 8 - n;
+        var submitBtn = $('#submitBtn');
 
-$('input[name="feature_list[]"]').on('change', function() {
-    var n = $('input[name="feature_list[]"]:checked').length;
-    console.log('Liczba wybranych cech:', n);  // DEBUG
-    var roznica = 8 - n;
-
-    if (roznica == 0) {
-        $("span#info").text("Świetnie. Jeśli jesteś zadowolony z wybranych cech, stwórz swoje okno");
-        $('.enableOnInput').prop('disabled', false);
-    } else {
-        if (roznica > 0) {
-            $("span#info").text("Zaznaczyłeś / zaznaczyłaś już " + n + " cech. Zostało Ci do zaznaczenia jeszcze " + roznica);
+        if (roznica == 0) {
+            $("span#info").text("Świetnie. Jeśli jesteś zadowolony z wybranych cech, stwórz swoje okno");
+            submitBtn.prop('disabled', false);
+            submitBtn.removeAttr('disabled');
+            console.log('Przycisk odblokowany');  // DEBUG
         } else {
-            $("span#info").text("Zaznaczyłeś / zaznaczyłaś za dużo cech. Musisz odznaczyć " + (-roznica));
+            if (roznica > 0) {
+                $("span#info").text("Zaznaczyłeś / zaznaczyłaś już " + n + " cech. Zostało Ci do zaznaczenia jeszcze " + roznica);
+            } else {
+                $("span#info").text("Zaznaczyłeś / zaznaczyłaś za dużo cech. Musisz odznaczyć " + (-roznica));
+            }
+            submitBtn.prop('disabled', true);
+            submitBtn.attr('disabled', 'disabled');
+            console.log('Przycisk zablokowany');  // DEBUG
         }
-        $('.enableOnInput').prop('disabled', true);
-    }
-});
+    });
+
+    // DEBUG: Sprawdź kliknięcie przycisku
+    $('#submitBtn').on('click', function(e) {
+        console.log('Przycisk kliknięty!');
+        if ($(this).prop('disabled')) {
+            console.log('Przycisk jest disabled - blokujemy wysyłanie');
+            e.preventDefault();
+            return false;
+        }
+        console.log('Przycisk nie jest disabled - formularz powinien się wysłać');
+    });
 });
 </script>
 </html>

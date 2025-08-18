@@ -19,7 +19,7 @@
 <div class="section">
 	<? $validation = \Config\Services::validation();?>
 
-	<? echo form_open(base_url() . '/stworzOkno', ['onsubmit' => 'console.log("Formularz wysyłany!", this); return true;']); ?>
+	<? echo form_open(base_url() . 'stworzOkno', ['onsubmit' => 'console.log("Formularz wysyłany!", this); console.log("Action URL:", this.action); return true;']); ?>
 	<?=csrf_field()?>
 
 		  <div class="row">
