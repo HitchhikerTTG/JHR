@@ -57,12 +57,36 @@
    }
 </script>
 <script>
+// Funkcja do logowania do pliku na serwerze
+function logToFile(message, level = 'debug') {
+    var data = {
+        message: message,
+        level: level,
+        timestamp: new Date().toISOString(),
+        url: window.location.href,
+        userAgent: navigator.userAgent
+    };
+    
+    // Wysyłaj asynchronicznie, nie blokuj działania strony
+    fetch('<?= base_url() ?>/log-js', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: JSON.stringify(data)
+    }).catch(function(error) {
+        // W razie błędu zapisz lokalnie
+        console.log('Błąd logowania:', error, 'Oryginalny log:', message);
+    });
+}
+
 $(document).ready(function() {
-    console.log('JavaScript załadowany');  // DEBUG
+    logToFile('JavaScript załadowany');
     
     $('input[name="feature_list[]"]').on('change', function() {
         var n = $('input[name="feature_list[]"]:checked').length;
-        console.log('Liczba wybranych cech:', n);  // DEBUG
+        logToFile('Liczba wybranych cech: ' + n);
         var roznica = 8 - n;
         var submitBtn = $('#submitBtn');
 
@@ -70,7 +94,7 @@ $(document).ready(function() {
             $("span#info").text("Świetnie. Jeśli jesteś zadowolony z wybranych cech, stwórz swoje okno");
             submitBtn.prop('disabled', false);
             submitBtn.removeAttr('disabled');
-            console.log('Przycisk odblokowany');  // DEBUG
+            logToFile('Przycisk odblokowany');
         } else {
             if (roznica > 0) {
                 $("span#info").text("Zaznaczyłeś / zaznaczyłaś już " + n + " cech. Zostało Ci do zaznaczenia jeszcze " + roznica);
@@ -79,40 +103,40 @@ $(document).ready(function() {
             }
             submitBtn.prop('disabled', true);
             submitBtn.attr('disabled', 'disabled');
-            console.log('Przycisk zablokowany');  // DEBUG
+            logToFile('Przycisk zablokowany');
         }
     });
 
     // DEBUG: Sprawdź kliknięcie przycisku
     $('#submitBtn').on('click', function(e) {
-        console.log('Przycisk kliknięty!');
-        console.log('Przycisk disabled:', $(this).prop('disabled'));
-        console.log('Przycisk attr disabled:', $(this).attr('disabled'));
-        console.log('Liczba wybranych cech:', $('input[name="feature_list[]"]:checked').length);
+        logToFile('Przycisk kliknięty!');
+        logToFile('Przycisk disabled: ' + $(this).prop('disabled'));
+        logToFile('Przycisk attr disabled: ' + $(this).attr('disabled'));
+        logToFile('Liczba wybranych cech: ' + $('input[name="feature_list[]"]:checked').length);
         
         if ($(this).prop('disabled')) {
-            console.log('Przycisk jest disabled - blokujemy wysyłanie');
+            logToFile('Przycisk jest disabled - blokujemy wysyłanie', 'warning');
             e.preventDefault();
             return false;
         }
-        console.log('Przycisk nie jest disabled - formularz powinien się wysłać');
+        logToFile('Przycisk nie jest disabled - formularz powinien się wysłać');
     });
     
     // DEBUG: Sprawdź wysyłanie formularza
     $('form').on('submit', function(e) {
-        console.log('Formularz submit event!');
-        console.log('Action:', $(this).attr('action'));
-        console.log('Method:', $(this).attr('method'));
-        console.log('Liczba wybranych cech:', $('input[name="feature_list[]"]:checked').length);
+        logToFile('Formularz submit event!');
+        logToFile('Action: ' + $(this).attr('action'));
+        logToFile('Method: ' + $(this).attr('method'));
+        logToFile('Liczba wybranych cech: ' + $('input[name="feature_list[]"]:checked').length);
         
         var checkedCount = $('input[name="feature_list[]"]:checked').length;
         if (checkedCount !== 8) {
-            console.log('Nieprawidłowa liczba cech - blokujemy wysyłanie');
+            logToFile('Nieprawidłowa liczba cech - blokujemy wysyłanie', 'error');
             e.preventDefault();
             alert('Musisz wybrać dokładnie 8 cech!');
             return false;
         }
-        console.log('Formularz zostanie wysłany!');
+        logToFile('Formularz zostanie wysłany!');
     });
 });
 </script>
