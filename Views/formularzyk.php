@@ -107,25 +107,22 @@
 <p>Tworząc swoje okno Johari akceptujesz <a href="<?= site_url()?>/polityka" tareget="_blank">politykę prywatności serwisu</a>, w której jest napisane, że Twoja dana osobowa (mail) będzie wykorzystywana wyłącznie do identyfikowania Twojego okna, oraz to, że na Twój mail zostanie wysłana wiadomość z linkami do okna dla Ciebie i dla Twoich znajomych.  Na tym zakończone zostanie przetwarzanie Twoich danych. </p>
 </div>
 <script>
-$( document.body )
-  .click(function() {
-   // $( document.body ).append( $( "<div>" ) );
-    var n = $('input[type="checkbox"]:checked').length;
-    var roznica = 8-n;
-     
-    if (roznica==0){
-        $( "span#info" ).text( "Świetnie. Jeśli jesteś zadowolony z wybranych cech, stwórz swoje okno"); 
-    $('.enableOnInput').prop('disabled', false);
-    } else {
-        if (roznica>0){
-        $( "span#info" ).text( "Zaznaczyłeś / zaznaczyłaś już " + n + " cech. Zostało Ci do zaznaczenia jeszcze "+ roznica); }
-        else {
-        $( "span#info" ).text( "Zaznaczyłeś / zaznaczyłaś za dużo cech. Musisz odznaczyć  "+ (-roznica));
+$(document).ready(function() {
+    $('input[name="feature_list[]"]').on('change', function() {
+        var n = $('input[name="feature_list[]"]:checked').length;
+        var roznica = 8 - n;
+        
+        if (roznica == 0) {
+            $("span#info").text("Świetnie. Jeśli jesteś zadowolony z wybranych cech, stwórz swoje okno");
+            $('.enableOnInput').prop('disabled', false);
+        } else {
+            if (roznica > 0) {
+                $("span#info").text("Zaznaczyłeś / zaznaczyłaś już " + n + " cech. Zostało Ci do zaznaczenia jeszcze " + roznica);
+            } else {
+                $("span#info").text("Zaznaczyłeś / zaznaczyłaś za dużo cech. Musisz odznaczyć " + (-roznica));
+            }
+            $('.enableOnInput').prop('disabled', true);
         }
-            
-         $('.enableOnInput').prop('disabled', true);
-    } 
-
-  })
-
+    });
+});
 </script>
