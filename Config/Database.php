@@ -33,13 +33,13 @@ class Database extends Config
     public $default = [
         'DSN'      => '',
         'hostname' => 'localhost',
-        'username' => 'remedium_ci2',
-        'password' => 'D.j4bXRdcfc0HpDJjZa60',
-        'database' => 'remedium_ci2',
+        'username' => 'remedium_testujac',
+        'password' => 'wyzbaH-hawmij-5hykka',
+        'database' => 'remedium_joh_test',
         'DBDriver' => 'MySQLi',
         'DBPrefix' => '',
         'pConnect' => false,
-        'DBDebug'  => true, // Zawsze włączone dla debugowania
+        'DBDebug'  => (ENVIRONMENT !== 'production'),
         'charset'  => 'utf8',
         'DBCollat' => 'utf8_general_ci',
         'swapPre'  => '',
@@ -59,9 +59,9 @@ class Database extends Config
     public $tests = [
         'DSN'      => '',
         'hostname' => 'localhost',
-        'username' => 'remedium_ci2',
-        'password' => 'D.j4bXRdcfc0HpDJjZa60',
-        'database' => 'remedium_ci2',
+        'username' => 'remedium_testujac',
+        'password' => 'wyzbaH-hawmij-5hykka',
+        'database' => 'remedium_joh_test',
         'DBDriver' => 'SQLite3',
         'DBPrefix' => 'db_',  // Needed to ensure we're working correctly with prefixes live. DO NOT REMOVE FOR CI DEVS
         'pConnect' => false,
