@@ -1,6 +1,5 @@
-
 <?php
-
+#gdyż strasznie nie lubię jak ktoś zaczyna od pustej linii. Handluj z tym.
 namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
