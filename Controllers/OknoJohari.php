@@ -42,7 +42,7 @@ class OknoJohari extends BaseController
     $data['szablon'] = $szablon;
 
     // DEBUG: Sprawdź wszystkie dane POST
-    if ($this->request->getMethod() === 'post') {
+    if ($this->request->getMethod() === 'POST') {
         log_message('error', 'TO JEST POST REQUEST!');
         log_message('error', 'Wszystkie dane POST: ' . print_r($_POST, true));
         log_message('debug', 'POST Data: ' . print_r($this->request->getPost(), true));
@@ -55,7 +55,7 @@ class OknoJohari extends BaseController
     }
 
     // Sprawdź czy to żądanie POST (formularz został wysłany)
-    if ($this->request->getMethod() === 'post') {
+    if ($this->request->getMethod() === 'POST') {
         $rules = [
             'imie' => 'required|min_length[2]',
             'email' => 'required|valid_email',
@@ -261,7 +261,7 @@ class OknoJohari extends BaseController
         ];
 
 
-    if($this->request->getMethod()==='post'&&$this->validate($rules,$errors)){
+    if($this->request->getMethod()==='POST'&&$this->validate($rules,$errors)){
          $data['validation']=$this->validator;
 
         //Sprawdź, czy dla danego okna $hashokna są juz zapisane cechy od tego 
