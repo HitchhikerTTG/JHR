@@ -1,0 +1,59 @@
+
+# CodeIgniter 4 specific
+/writable/logs/*
+!/writable/logs/.gitkeep
+/writable/cache/*
+!/writable/cache/.gitkeep
+/writable/session/*
+!/writable/session/.gitkeep
+/writable/uploads/*
+!/writable/uploads/.gitkeep
+/writable/debugbar/*
+
+# Configuration files (zawierają wrażliwe dane)
+Config/App.php
+Config/Database.php
+Config/Email.php
+
+# Environment files
+.env
+.env.*
+
+# Cache and temporary files
+*.cache
+*.tmp
+*.temp
+
+# Logs
+*.log
+
+# System files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Backup files
+*.bak
+*.backup
+
+# Uploaded files (jeśli nie chcesz ich w repo)
+public/uploads/*
+!/public/uploads/.gitkeep
+
+# Composer dependencies (opcjonalnie - zależy czy chcesz vendor w repo)
+# /vendor/
+
+# Node modules (jeśli używasz npm/yarn)
+node_modules/
+
+# PHP specific
+*.phar
+
+# Attached assets (te pliki wydają się być tymczasowe)
+attached_assets/
