@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class OknoModel extends Model
 {
     protected $table = 'okna';
-    protected $allowedFields = ['hash', 'wlasciciel', 'nazwa', 'imie_wlasciciela', 'id_wlasciciela', 'id_zestaw_cech'];
+    protected $allowedFields = ['hash', 'wlasciciel', 'nazwa', 'kluczyk', 'imie_wlasciciela', 'id_zestaw_cech'];
     protected $primaryKey = "id";
     protected $useTimestamps = true;
     protected $dateFormat = 'datetime';

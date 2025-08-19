@@ -117,8 +117,9 @@ class OknoJohari extends BaseController
             $oknoResult = $oknoModel->save([
                 'nazwa' => $tytul,
                 'hash' => $hashOkna,
-                'id_wlasciciela' => $userId,
-                'imie_wlasciciela' => $imie
+                'wlasciciel' => $hashAutora,
+                'imie_wlasciciela' => $imie,
+                'id_zestaw_cech' => 2
             ]);
             log_message('debug', 'Wynik zapisu okna: ' . ($oknoResult ? 'SUCCESS' : 'FAILED'));
             
@@ -131,9 +132,9 @@ class OknoJohari extends BaseController
             log_message('debug', 'Zapisywanie cech - liczba: ' . count($featureList));
             foreach ($featureList as $cechaId) {
                 $cechyResult = $przypisaneCechyModel->save([
-                    'hash_okna' => $hashOkna,
-                    'id_cechy' => $cechaId,
-                    'hash_nadawcy' => $hashAutora
+                    'okno_johariego' => $hashOkna,
+                    'cecha' => $cechaId,
+                    'nadawca' => $hashAutora
                 ]);
                 log_message('debug', 'Cecha ' . $cechaId . ' zapisana: ' . ($cechyResult ? 'SUCCESS' : 'FAILED'));
                 
@@ -224,7 +225,7 @@ class OknoJohari extends BaseController
 
         //Sprawdź, czy dla danego okna $hashokna są juz zapisane cechy od tego 
 
-        $wybrane_cechy = $this->request->getPost('feature_list[]');  
+        $wybrane_cechy = $this->request->getPost('feature_list');  
 
         foreach ($wybrane_cechy as $cecha_do_zapisu) {
             $PrzypisaneCechyModel ->save ([
