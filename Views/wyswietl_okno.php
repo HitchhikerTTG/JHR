@@ -125,7 +125,7 @@ echo "<p>Nie ma cech, które są znane wszystkim. Twoje wrażenie i wrażenie Tw
 
 
 echo "<p>Jeśli chcesz jak najwięcej zrozumieć z tego ćwiczenia, poproś znajomych o wypełnienie Twojego okna podając im ten link:</p>";
-echo "<pre><a href=".base_url()."/okno/".$okno['hash'].">".base_url()."/okno/".$okno['hash']."</a></pre>";
+echo "<pre><a href=".base_url()."okno/".$okno['hash'].">".base_url()."okno/".$okno['hash']."</a></pre>";
 
 
 

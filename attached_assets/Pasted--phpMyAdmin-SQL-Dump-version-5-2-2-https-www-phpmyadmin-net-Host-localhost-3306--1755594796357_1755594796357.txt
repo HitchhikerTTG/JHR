@@ -1,0 +1,211 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.2
+-- https://www.phpmyadmin.net/
+--
+-- Host: localhost:3306
+-- Generation Time: Aug 19, 2025 at 11:13 AM
+-- Wersja serwera: 8.4.5-cll-lve
+-- Wersja PHP: 8.4.10
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Baza danych: `remedium_joh_test`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `cechy`
+--
+
+CREATE TABLE `cechy` (
+  `id` int UNSIGNED NOT NULL,
+  `cecha_pl` varchar(128) DEFAULT NULL,
+  `Opis` tinytext NOT NULL,
+  `id_zestaw_cech` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `okna`
+--
+
+CREATE TABLE `okna` (
+  `id` int UNSIGNED NOT NULL,
+  `hash` tinytext,
+  `wlasciciel` tinytext,
+  `nazwa` text,
+  `kluczyk` tinytext,
+  `imie_wlasciciela` varchar(60) NOT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `id_zestaw_cech` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `przypisane_cechy`
+--
+
+CREATE TABLE `przypisane_cechy` (
+  `id` int UNSIGNED NOT NULL,
+  `okno_johariego` tinytext,
+  `cecha` int DEFAULT NULL,
+  `nadawca` tinytext,
+  `created_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `testowa`
+--
+
+CREATE TABLE `testowa` (
+  `id` int NOT NULL,
+  `imie` text NOT NULL,
+  `email` text NOT NULL,
+  `tytul` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin2;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `translator_cech`
+--
+
+CREATE TABLE `translator_cech` (
+  `id` int NOT NULL,
+  `from_cecha_id` int NOT NULL,
+  `from_cecha_id_set` int NOT NULL,
+  `to_cecha_id` int NOT NULL,
+  `to_cecha_id_set` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `uzytkownicy`
+--
+
+CREATE TABLE `uzytkownicy` (
+  `id` int UNSIGNED NOT NULL,
+  `email` tinytext,
+  `name` varchar(126) NOT NULL,
+  `user_hash` tinytext
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `zestaw_cech`
+--
+
+CREATE TABLE `zestaw_cech` (
+  `id` int NOT NULL,
+  `Nazwa_zestawu` varchar(64) NOT NULL,
+  `Created_at` year NOT NULL,
+  `Opis` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Indeksy dla zrzutów tabel
+--
+
+--
+-- Indeksy dla tabeli `cechy`
+--
+ALTER TABLE `cechy`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeksy dla tabeli `okna`
+--
+ALTER TABLE `okna`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeksy dla tabeli `przypisane_cechy`
+--
+ALTER TABLE `przypisane_cechy`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeksy dla tabeli `testowa`
+--
+ALTER TABLE `testowa`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeksy dla tabeli `translator_cech`
+--
+ALTER TABLE `translator_cech`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeksy dla tabeli `uzytkownicy`
+--
+ALTER TABLE `uzytkownicy`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeksy dla tabeli `zestaw_cech`
+--
+ALTER TABLE `zestaw_cech`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT dla zrzuconych tabel
+--
+
+--
+-- AUTO_INCREMENT dla tabeli `cechy`
+--
+ALTER TABLE `cechy`
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT dla tabeli `okna`
+--
+ALTER TABLE `okna`
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT dla tabeli `przypisane_cechy`
+--
+ALTER TABLE `przypisane_cechy`
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT dla tabeli `testowa`
+--
+ALTER TABLE `testowa`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT dla tabeli `translator_cech`
+--
+ALTER TABLE `translator_cech`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT dla tabeli `uzytkownicy`
+--
+ALTER TABLE `uzytkownicy`
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

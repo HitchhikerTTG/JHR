@@ -6,9 +6,69 @@ use CodeIgniter\Config\BaseConfig;
 
 class Email extends BaseConfig
 {
-    public string $fromEmail  = '';
-    public string $fromName   = '';
+    public string $fromEmail = 'okno@johari.pl';
+    public string $fromName = 'Okno Johari';
     public string $recipients = '';
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function email(): array
+    {
+        // Sprawdź czy są ustawione dane Postmark
+        $postmarkToken = $_ENV['POSTMARK_API_TOKEN'] ?? '';
+
+        if (!empty($postmarkToken)) {
+            // Konfiguracja Postmark SMTP
+            return [
+                'userAgent'     => 'CodeIgniter',
+                'protocol'      => 'smtp',
+                'SMTPHost'      => 'smtp.postmarkapp.com',
+                'SMTPUser'      => $postmarkToken,
+                'SMTPPass'      => $postmarkToken,
+                'SMTPPort'      => 587,
+                'SMTPTimeout'   => 30,
+                'SMTPKeepAlive' => false,
+                'SMTPCrypto'    => 'tls',
+                'wordWrap'      => true,
+                'wrapChars'     => 76,
+                'mailType'      => 'html',
+                'charset'       => 'UTF-8',
+                'validate'      => false,
+                'priority'      => 3,
+                'CRLF'          => "\r\n",
+                'newline'       => "\r\n",
+                'BCCBatchMode'  => false,
+                'BCCBatchSize'  => 200,
+                'DSN'           => false,
+            ];
+        }
+
+        // Domyślna konfiguracja CodeIgniter (fallback)
+        return [
+            'userAgent' => 'CodeIgniter',
+            'protocol'  => 'mail', // 'mail', 'sendmail', or 'smtp'
+            'mailPath'  => '/usr/sbin/sendmail',
+            'SMTPHost'  => '',
+            'SMTPUser'  => '',
+            'SMTPPass'  => '',
+            'SMTPPort'  => 25,
+            'SMTPTimeout' => 5,
+            'SMTPKeepAlive' => false,
+            'SMTPCrypto' => 'tls',
+            'wordWrap'  => true,
+            'wrapChars' => 76,
+            'mailType'  => 'html', // 'text' or 'html'
+            'charset'   => 'UTF-8',
+            'validate'  => false,
+            'priority'  => 3, // 1, 2, 3, 4, 5
+            'CRLF'      => "\r\n",
+            'newline'   => "\r\n",
+            'BCCBatchMode' => false,
+            'BCCBatchSize' => 200,
+            'DSN'       => false,
+        ];
+    }
 
     /**
      * The "user agent"
@@ -18,7 +78,7 @@ class Email extends BaseConfig
     /**
      * The mail sending protocol: mail, sendmail, smtp
      */
-    public string $protocol = 'mail';
+    public string $protocol = 'smtp';
 
     /**
      * The server path to Sendmail.
@@ -26,9 +86,9 @@ class Email extends BaseConfig
     public string $mailPath = '/usr/sbin/sendmail';
 
     /**
-     * SMTP Server Hostname
+     * SMTP Server Address
      */
-    public string $SMTPHost = '';
+    public string $SMTPHost = 'smtp.postmarkapp.com';
 
     /**
      * SMTP Username
@@ -36,19 +96,19 @@ class Email extends BaseConfig
     public string $SMTPUser = '';
 
     /**
-     * SMTP Password
+     * SMTP Password - używamy Server API Token z Postmark
      */
     public string $SMTPPass = '';
 
     /**
      * SMTP Port
      */
-    public int $SMTPPort = 25;
+    public int $SMTPPort = 587;
 
     /**
      * SMTP Timeout (in seconds)
      */
-    public int $SMTPTimeout = 5;
+    public int $SMTPTimeout = 30;
 
     /**
      * Enable persistent SMTP connections
@@ -56,11 +116,7 @@ class Email extends BaseConfig
     public bool $SMTPKeepAlive = false;
 
     /**
-     * SMTP Encryption.
-     *
-     * @var string '', 'tls' or 'ssl'. 'tls' will issue a STARTTLS command
-     *             to the server. 'ssl' means implicit SSL. Connection on port
-     *             465 should set this to ''.
+     * SMTP Encryption. Either tls or ssl
      */
     public string $SMTPCrypto = 'tls';
 
@@ -77,7 +133,7 @@ class Email extends BaseConfig
     /**
      * Type of mail, either 'text' or 'html'
      */
-    public string $mailType = 'text';
+    public string $mailType = 'html';
 
     /**
      * Character set (utf-8, iso-8859-1, etc.)
@@ -95,12 +151,12 @@ class Email extends BaseConfig
     public int $priority = 3;
 
     /**
-     * Newline character. (Use “\r\n” to comply with RFC 822)
+     * Newline character. (Use "\r\n" to comply with RFC 822)
      */
     public string $CRLF = "\r\n";
 
     /**
-     * Newline character. (Use “\r\n” to comply with RFC 822)
+     * Newline character. (Use "\r\n" to comply with RFC 822)
      */
     public string $newline = "\r\n";
 

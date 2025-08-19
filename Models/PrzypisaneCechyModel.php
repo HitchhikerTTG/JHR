@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class PrzypisaneCechyModel extends Model
 {
     protected $table = 'przypisane_cechy';
-    protected $allowedFields = ['okno_johariego', 'cecha', 'nadawca', 'created_at'];
+    protected $allowedFields = ['okno_johariego', 'cecha', 'nadawca'];
     protected $primaryKey = "id";
     protected $useTimestamps = true;
     protected $dateFormat = 'datetime';
