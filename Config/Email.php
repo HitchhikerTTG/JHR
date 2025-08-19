@@ -13,16 +13,16 @@ class Email extends BaseConfig
     public function __construct()
     {
         parent::__construct();
-        
+
         // Załaduj dane z zmiennych środowiskowych
         $postmarkToken = $_ENV['POSTMARK_API_TOKEN'] ?? '';
         $fromEmail = $_ENV['POSTMARK_FROM_EMAIL'] ?? 'okno@johari.pl';
-        
+
         if (!empty($postmarkToken)) {
             $this->SMTPUser = $postmarkToken;
             $this->SMTPPass = $postmarkToken;
         }
-        
+
         if (!empty($fromEmail)) {
             $this->fromEmail = $fromEmail;
         }

@@ -38,7 +38,7 @@ class OknoJohari extends BaseController
     // BEZPIECZEŃSTWO - sprawdź IP i rate limiting
     $ipAddress = $this->request->getIPAddress();
     $userAgent = $this->request->getHeaderLine('User-Agent');
-    
+
     $cechyModel = model(CechyModel::class);
     $oknoModel = model(OknoModel::class);
     $uzytkownikModel = model(UzytkownicyModel::class);
@@ -72,23 +72,23 @@ class OknoJohari extends BaseController
 
     // Sprawdź czy to żądanie POST (formularz został wysłany)
     if ($this->request->getMethod() === 'POST') {
-        
+
         // RATE LIMITING - sprawdź czy użytkownik nie spamuje
         if (!$rateLimitModel->checkRateLimit($ipAddress, 'create_window', 3, 3600)) {
             $remainingTime = $rateLimitModel->getRemainingTime($ipAddress, 'create_window');
             log_message('warning', 'Rate limit exceeded for IP: ' . $ipAddress);
-            
+
             $this->validator->setError('general', 'Zbyt wiele prób tworzenia okien. Spróbuj ponownie za ' . ceil($remainingTime/60) . ' minut.');
-            
+
             // Loguj podejrzaną aktywność
             $suspiciousScore = $securityLogModel->calculateSuspiciousScore($ipAddress, $userAgent);
             $securityLogModel->logAction($ipAddress, $userAgent, 'rate_limit_exceeded', null, $suspiciousScore);
-            
+
             // Wyświetl formularz z błędem
             $data['features'] = $cechyModel->getFeaturesForNewWindows();
             $data['validation'] = $this->validator;
             $data['post_url'] = '#komunikaty';
-            
+
             return view('header')
                 . view('tresc', $data)
                 . view('ococho')
@@ -137,21 +137,21 @@ class OknoJohari extends BaseController
             $imie = $this->request->getPost('imie');
             $email = $this->request->getPost('email');
             $tytul = $this->request->getPost('tytul');
-            
+
             // BEZPIECZEŃSTWO - sprawdź czy to nie podejrzana aktywność
             $suspiciousScore = $securityLogModel->calculateSuspiciousScore($ipAddress, $userAgent, $email);
-            
+
             if ($suspiciousScore >= 5) {
                 log_message('warning', 'Podejrzana aktywność przy tworzeniu okna: IP=' . $ipAddress . ', Email=' . $email . ', Score=' . $suspiciousScore);
                 $securityLogModel->logAction($ipAddress, $userAgent, 'suspicious_window_creation', hash('ripemd160', $email), $suspiciousScore);
-                
+
                 $this->validator->setError('general', 'Wykryto podejrzaną aktywność. Twoje działanie zostało zarejestrowane.');
-                
+
                 // Wyświetl formularz z błędem
                 $data['features'] = $cechyModel->getFeaturesForNewWindows();
                 $data['validation'] = $this->validator;
                 $data['post_url'] = '#komunikaty';
-                
+
                 return view('header')
                     . view('tresc', $data)
                     . view('ococho')
@@ -159,7 +159,7 @@ class OknoJohari extends BaseController
                     . view('formularzyk', $data)
                     . view('footer');
             }
-            
+
             // Loguj normalną aktywność
             $securityLogModel->logAction($ipAddress, $userAgent, 'window_created', hash('ripemd160', $email), $suspiciousScore);
 
@@ -318,7 +318,7 @@ class OknoJohari extends BaseController
     }
 
     $data['validation']=Services::validation();
-    
+
     // Sprawdź jaki zestaw cech ma to okno
     $zestawCech = $toOkno['id_zestaw_cech'] ?? 1; // domyślnie 1 dla starych okien
     $data['features'] = $cechyModel->listFeatures($zestawCech);
@@ -344,12 +344,12 @@ class OknoJohari extends BaseController
 
 
     if($this->request->getMethod()==='POST'){
-        
+
         // RATE LIMITING - sprawdź czy użytkownik nie spamuje
         if (!$rateLimitModel->checkRateLimit($ipAddress, 'add_features', 5, 3600)) {
             $remainingTime = $rateLimitModel->getRemainingTime($ipAddress, 'add_features');
             log_message('warning', 'Rate limit exceeded for adding features, IP: ' . $ipAddress);
-            
+
             $this->validator->setError('general', 'Zbyt wiele prób dodawania cech. Spróbuj ponownie za ' . ceil($remainingTime/60) . ' minut.');
         } else {
         // Dodatkowa walidacja dla liczby cech
@@ -361,43 +361,43 @@ class OknoJohari extends BaseController
         $existingFeatures = $PrzypisaneCechyModel->where('okno_johariego', $hashOkna)
                                                  ->where('nadawca', $emailHash)
                                                  ->countAllResults();
-        
+
         $senderAlreadyExists = ($existingFeatures > 0);
-        
+
         if (!$validFeatureCount) {
             $this->validator->setError('feature_list', 'Musisz wybrać dokładnie 8 cech');
         }
-        
+
         if ($senderAlreadyExists) {
             $this->validator->setError('email', 'Wedle mojej najlepszej wiedzy, dla tego okna mam już zapisane cechy "podpisane" tym adresem email.');
         }
 
         if($this->validate($rules,$errors) && $validFeatureCount && !$senderAlreadyExists){
             $data['validation']=$this->validator;
-            
+
             // BEZPIECZEŃSTWO - sprawdź podejrzaną aktywność
             $email = $this->request->getPost('email');
             $suspiciousScore = $securityLogModel->calculateSuspiciousScore($ipAddress, $userAgent, $email);
-            
+
             if ($suspiciousScore >= 5) {
                 log_message('warning', 'Podejrzana aktywność przy dodawaniu cech: IP=' . $ipAddress . ', Email=' . $email);
                 $securityLogModel->logAction($ipAddress, $userAgent, 'suspicious_feature_add', hash('ripemd160', $email), $suspiciousScore);
-                
+
                 $this->validator->setError('general', 'Wykryto podejrzaną aktywność. Twoje działanie zostało zarejestrowane.');
-                
+
                 // Wyświetl formularz z błędem (kontynuuj poniżej z pozostałymi zmiennymi)
                 $data['features'] = $cechyModel->listFeatures($zestawCech);
                 $data['hashOkna'] = $hashOkna;
                 $data['zestaw_cech'] = $zestawCech;
                 $data['validation'] = $this->validator;
-                
+
                 return view('header')
                     . view('tresc',$data)
                     . view('ococho_dla_znajomych')
                     . view('formularz_dodaj_do_okna', $data)
                     . view('footer');
             }
-            
+
             // Loguj normalną aktywność
             $securityLogModel->logAction($ipAddress, $userAgent, 'features_added', hash('ripemd160', $email), $suspiciousScore);
 
@@ -486,7 +486,7 @@ class OknoJohari extends BaseController
 
     // Sprawdź zestaw cech okna
     $zestawCech = $oknoModel->getWindowFeatureSet($hashOkna, $hashWlasciciela);
-    
+
     // Delegacja analizy cech do modelu z uwzględnieniem zestawu cech
     $analizaCech = $oknoModel->analizyCechOkna($hashOkna, $hashWlasciciela, $zestawCech);
 
@@ -518,13 +518,17 @@ class OknoJohari extends BaseController
 
     public function slijMaila($adresat='wit@nirski.com', $hashOkna='35e1ae5e03a8cd91ffaebae43b7b402638bfa992'){
         log_message('info', 'TEST EMAIL - rozpoczynam wysyłanie do: ' . $adresat);
-        
+
         try {
             $email = \Config\Services::email();
 
-            $email->setFrom('okno@johari.pl', 'Okno Johari');
+            $email->setFrom($_ENV['POSTMARK_FROM_EMAIL'] ?? 'okno@johari.pl', 'Okno Johari');
             $email->setTo($adresat);
+
             $email->setSubject('TEST - Twoje Okno Johari - przydatne linki');
+
+            // Dodaj nagłówek Postmark dla strumienia wiadomości
+            $email->setHeader('X-PM-Message-Stream', 'outbound');
 
             $data = array(
                 'url_okna'=> 'https://johari.pl/wyswietlOkno/'.$hashOkna.'/'.hash('ripemd160',$adresat),
@@ -534,9 +538,9 @@ class OknoJohari extends BaseController
 
             $message = view('email/szablon.php',$data);
             $email->setMessage($message);
-            
+
             log_message('debug', 'Email config check - Host: ' . $email->SMTPHost);
-            
+
             if ($email->send()) {
                 log_message('info', 'TEST EMAIL - sukces wysyłania do: ' . $adresat);
                 echo "✅ Email wysłany pomyślnie do: " . $adresat . "<br>";
@@ -590,10 +594,13 @@ class OknoJohari extends BaseController
     {
         try {
             $email = \Config\Services::email();
-            
-            $email->setFrom('okno@johari.pl', 'Okno Johari');
+
+            $email->setFrom($_ENV['POSTMARK_FROM_EMAIL'] ?? 'okno@johari.pl', 'Okno Johari');
             $email->setTo($emailAdresat);
             $email->setSubject('Twoje Okno Johari - przydatne linki');
+
+            // Dodaj nagłówek Postmark dla strumienia wiadomości
+            $email->setHeader('X-PM-Message-Stream', 'outbound');
 
             $data = [
                 'imie' => $imie,
@@ -604,7 +611,7 @@ class OknoJohari extends BaseController
 
             $message = view('email/szablon', $data);
             $email->setMessage($message);
-            
+
             if ($email->send()) {
                 log_message('info', 'Email powitalny wysłany do: ' . $emailAdresat);
             } else {
