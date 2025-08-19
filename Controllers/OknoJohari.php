@@ -109,6 +109,7 @@ class OknoJohari extends BaseController
             if (!$existingUser) {
                 log_message('debug', 'Tworzenie nowego użytkownika');
                 $userResult = $uzytkownikModel->save([
+                    'imie' => $imie,
                     'email' => $email,
                     'hash' => $hashAutora
                 ]);
