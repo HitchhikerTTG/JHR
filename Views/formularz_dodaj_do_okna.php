@@ -11,7 +11,7 @@
 <div class="form-check">
 <?php 
 $liczbaCech = count($features ?? []);
-$komunikatCech = ($zestaw_cech == 1) ? "Wybierz 6 cech" : "Wybierz cechy";
+$komunikatCech = "Wybierz 8 cech";
 ?>
 <div id="komunikat" class="sticky-top"><span class="komunikat"><?= $komunikatCech ?>, które opisują <?= $ImieWlasciciela ?> (dostępne: <?= $liczbaCech ?> cech)</span></div>
 
@@ -91,8 +91,8 @@ $komunikatCech = ($zestaw_cech == 1) ? "Wybierz 6 cech" : "Wybierz cechy";
 
 <script>
 $(document).ready(function() {
-    // Ustal limit cech na podstawie zestawu
-    var limitCech = <?= ($zestaw_cech == 1) ? 6 : 8 ?>; // dla zestawu 1: 6 cech, dla zestawu 2: 8 cech
+    // Limit cech zawsze wynosi 8
+    var limitCech = 8;
     var komunikatBazowy = '<?= $komunikatCech ?>, które opisują <?= $ImieWlasciciela ?>';
 
     function updateButtonState() {
