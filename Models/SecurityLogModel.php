@@ -1,6 +1,5 @@
-
 <?php
-
+#i idę o zakład że to tu też się wykaszani
 namespace App\Models;
 
 use CodeIgniter\Model;

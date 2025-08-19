@@ -1,6 +1,5 @@
-
 <?php
-
+#serio, to wygląda na jakieś małe upośledzenie
 namespace App\Models;
 
 use CodeIgniter\Model;
