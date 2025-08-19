@@ -28,6 +28,10 @@ class OknoJohari extends BaseController
   {
     // PODSTAWOWE LOGOWANIE - sprawdź czy funkcja w ogóle się wykonuje
     log_message('error', 'FUNKCJA STWORZOKNO WYWOLANA - metoda: ' . $this->request->getMethod());
+    log_message('error', 'REQUEST METHOD w if: ' . ($this->request->getMethod() === 'post' ? 'TRUE' : 'FALSE'));
+    log_message('error', 'REQUEST METHOD dokładnie: [' . $this->request->getMethod() . ']');
+    log_message('error', 'Wszystkie dane $_POST: ' . print_r($_POST, true));
+    log_message('error', 'Wszystkie dane REQUEST: ' . print_r($_REQUEST, true));
     
     $cechyModel = model(CechyModel::class);
     $oknoModel = model(OknoModel::class);
