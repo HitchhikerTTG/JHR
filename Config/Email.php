@@ -10,6 +10,24 @@ class Email extends BaseConfig
     public string $fromName = 'Okno Johari';
     public string $recipients = '';
 
+    public function __construct()
+    {
+        parent::__construct();
+        
+        // Załaduj dane z zmiennych środowiskowych
+        $postmarkToken = $_ENV['POSTMARK_API_TOKEN'] ?? '';
+        $fromEmail = $_ENV['POSTMARK_FROM_EMAIL'] ?? 'okno@johari.pl';
+        
+        if (!empty($postmarkToken)) {
+            $this->SMTPUser = $postmarkToken;
+            $this->SMTPPass = $postmarkToken;
+        }
+        
+        if (!empty($fromEmail)) {
+            $this->fromEmail = $fromEmail;
+        }
+    }
+
     /**
      * The "user agent"
      */
@@ -18,7 +36,7 @@ class Email extends BaseConfig
     /**
      * The mail sending protocol: mail, sendmail, smtp
      */
-    public string $protocol = 'mail';
+    public string $protocol = 'smtp';
 
     /**
      * The server path to Sendmail.
@@ -28,7 +46,7 @@ class Email extends BaseConfig
     /**
      * SMTP Server Address
      */
-    public string $SMTPHost = '';
+    public string $SMTPHost = 'smtp.postmarkapp.com';
 
     /**
      * SMTP Username
@@ -36,19 +54,19 @@ class Email extends BaseConfig
     public string $SMTPUser = '';
 
     /**
-     * SMTP Password
+     * SMTP Password - używamy Server API Token z Postmark
      */
     public string $SMTPPass = '';
 
     /**
      * SMTP Port
      */
-    public int $SMTPPort = 25;
+    public int $SMTPPort = 587;
 
     /**
      * SMTP Timeout (in seconds)
      */
-    public int $SMTPTimeout = 5;
+    public int $SMTPTimeout = 30;
 
     /**
      * Enable persistent SMTP connections
@@ -58,7 +76,7 @@ class Email extends BaseConfig
     /**
      * SMTP Encryption. Either tls or ssl
      */
-    public string $SMTPCrypto = '';
+    public string $SMTPCrypto = 'tls';
 
     /**
      * Enable word-wrap
