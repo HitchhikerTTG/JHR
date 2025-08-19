@@ -83,61 +83,6 @@ function logToFile(message, level = 'debug') {
 
 $(document).ready(function() {
     logToFile('JavaScript załadowany');
-
-    $('input[name="feature_list[]"]').on('change', function() {
-        var n = $('input[name="feature_list[]"]:checked').length;
-        logToFile('Liczba wybranych cech: ' + n);
-        var roznica = 8 - n;
-        var submitBtn = $('#submitBtn');
-
-        if (roznica == 0) {
-            $("span#info").text("Świetnie. Jeśli jesteś zadowolony z wybranych cech, stwórz swoje okno");
-            submitBtn.prop('disabled', false);
-            submitBtn.removeAttr('disabled');
-            logToFile('Przycisk odblokowany');
-        } else {
-            if (roznica > 0) {
-                $("span#info").text("Zaznaczyłeś / zaznaczyłaś już " + n + " cech. Zostało Ci do zaznaczenia jeszcze " + roznica);
-            } else {
-                $("span#info").text("Zaznaczyłeś / zaznaczyłaś za dużo cech. Musisz odznaczyć " + (-roznica));
-            }
-            submitBtn.prop('disabled', true);
-            submitBtn.attr('disabled', 'disabled');
-            logToFile('Przycisk zablokowany');
-        }
-    });
-
-    // DEBUG: Sprawdź kliknięcie przycisku
-    $('#submitBtn').on('click', function(e) {
-        logToFile('Przycisk kliknięty!');
-        logToFile('Przycisk disabled: ' + $(this).prop('disabled'));
-        logToFile('Przycisk attr disabled: ' + $(this).attr('disabled'));
-        logToFile('Liczba wybranych cech: ' + $('input[name="feature_list[]"]:checked').length);
-
-        if ($(this).prop('disabled')) {
-            logToFile('Przycisk jest disabled - blokujemy wysyłanie', 'warning');
-            e.preventDefault();
-            return false;
-        }
-        logToFile('Przycisk nie jest disabled - formularz powinien się wysłać');
-    });
-
-    // DEBUG: Sprawdź wysyłanie formularza
-    $('form').on('submit', function(e) {
-        logToFile('Formularz submit event!');
-        logToFile('Action: ' + $(this).attr('action'));
-        logToFile('Method: ' + $(this).attr('method'));
-        logToFile('Liczba wybranych cech: ' + $('input[name="feature_list[]"]:checked').length);
-
-        var checkedCount = $('input[name="feature_list[]"]:checked').length;
-        if (checkedCount !== 8) {
-            logToFile('Nieprawidłowa liczba cech - blokujemy wysyłanie', 'error');
-            e.preventDefault();
-            alert('Musisz wybrać dokładnie 8 cech!');
-            return false;
-        }
-        logToFile('Formularz zostanie wysłany!');
-    });
 });
 </script>
 </html>
