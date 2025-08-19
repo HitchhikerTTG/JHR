@@ -140,6 +140,9 @@ class OknoJohari extends BaseController
                 if ($db->error()['code'] != 0) {
                     log_message('error', 'Błąd bazy danych: ' . $db->error()['message']);
                 }
+                
+                // Loguj ostatnie wykonane zapytanie SQL
+                log_message('debug', 'Ostatnie zapytanie SQL: ' . $db->getLastQuery());
             }
 
             // Zapisz wybrane cechy
