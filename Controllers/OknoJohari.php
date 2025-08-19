@@ -105,6 +105,13 @@ class OknoJohari extends BaseController
                     'hash' => $hashAutora
                 ]);
                 log_message('debug', 'Wynik zapisu użytkownika: ' . ($userResult ? 'SUCCESS' : 'FAILED'));
+                
+                if (!$userResult) {
+                    $userErrors = $uzytkownikModel->errors();
+                    log_message('error', 'Błędy zapisu użytkownika: ' . print_r($userErrors, true));
+                    // Można dodać obsługę błędu - np. przekierowanie z komunikatem
+                }
+                
                 $userId = $uzytkownikModel->getInsertID();
                 log_message('debug', 'ID nowego użytkownika: ' . $userId);
             } else {
@@ -119,13 +126,20 @@ class OknoJohari extends BaseController
                 'hash' => $hashOkna,
                 'wlasciciel' => $hashAutora,
                 'imie_wlasciciela' => $imie,
-                'id_zestaw_cech' => 2
+                'id_zestaw_cech' => 2,
+                'kluczyk' => $hashOkna // lub inny unikalny klucz
             ]);
             log_message('debug', 'Wynik zapisu okna: ' . ($oknoResult ? 'SUCCESS' : 'FAILED'));
             
             if (!$oknoResult) {
                 $oknoErrors = $oknoModel->errors();
                 log_message('error', 'Błędy zapisu okna: ' . print_r($oknoErrors, true));
+                
+                // Dodatkowe informacje o błędzie bazy danych
+                $db = \Config\Database::connect();
+                if ($db->error()['code'] != 0) {
+                    log_message('error', 'Błąd bazy danych: ' . $db->error()['message']);
+                }
             }
 
             // Zapisz wybrane cechy
@@ -227,14 +241,21 @@ class OknoJohari extends BaseController
 
         $wybrane_cechy = $this->request->getPost('feature_list');  
 
-        foreach ($wybrane_cechy as $cecha_do_zapisu) {
-            $PrzypisaneCechyModel ->save ([
-                'okno_johariego'=>$hashOkna,
-                'cecha'=> $cecha_do_zapisu,
-                'nadawca' => hash('ripemd160', $this->request->getPost('email')),
-
-            ]);
-
+        if (is_array($wybrane_cechy) && count($wybrane_cechy) > 0) {
+            foreach ($wybrane_cechy as $cecha_do_zapisu) {
+                $result = $PrzypisaneCechyModel->save([
+                    'okno_johariego' => $hashOkna,
+                    'cecha' => $cecha_do_zapisu,
+                    'nadawca' => hash('ripemd160', $this->request->getPost('email')),
+                ]);
+                
+                if (!$result) {
+                    $errors = $PrzypisaneCechyModel->errors();
+                    log_message('error', 'Błąd zapisu cechy ' . $cecha_do_zapisu . ': ' . print_r($errors, true));
+                }
+            }
+        } else {
+            log_message('error', 'Brak wybranych cech lub nieprawidłowy format danych');
         }
 
         $data['nadawcy']=$PrzypisaneCechyModel->nadawcyOkna($hashOkna);
