@@ -82,6 +82,8 @@ class OknoJohari extends BaseController
         }
 
         if ($this->validate($rules, $errors) && $validFeatureCount) {
+            log_message('debug', 'ZAPISYWANIE OKNA - ROZPOCZĘCIE');
+            
             // Dane są poprawne - zapisujemy okno
             $imie = $this->request->getPost('imie');
             $email = $this->request->getPost('email');
@@ -89,36 +91,59 @@ class OknoJohari extends BaseController
             
             $hashAutora = hash('ripemd160', $email);
             $hashOkna = hash('ripemd160', $tytul . $email);
+            
+            log_message('debug', 'Hash Autora: ' . $hashAutora);
+            log_message('debug', 'Hash Okna: ' . $hashOkna);
 
             // Sprawdź czy użytkownik już istnieje
             $existingUser = $uzytkownikModel->where('email', $email)->first();
             if (!$existingUser) {
-                $uzytkownikModel->save([
+                log_message('debug', 'Tworzenie nowego użytkownika');
+                $userResult = $uzytkownikModel->save([
                     'imie' => $imie,
                     'email' => $email,
                     'hash' => $hashAutora
                 ]);
+                log_message('debug', 'Wynik zapisu użytkownika: ' . ($userResult ? 'SUCCESS' : 'FAILED'));
                 $userId = $uzytkownikModel->getInsertID();
+                log_message('debug', 'ID nowego użytkownika: ' . $userId);
             } else {
                 $userId = $existingUser['id'];
+                log_message('debug', 'Używam istniejącego użytkownika ID: ' . $userId);
             }
 
             // Zapisz okno
-            $oknoModel->save([
+            log_message('debug', 'Zapisywanie okna');
+            $oknoResult = $oknoModel->save([
                 'nazwa' => $tytul,
                 'hash' => $hashOkna,
                 'id_wlasciciela' => $userId,
                 'imie_wlasciciela' => $imie
             ]);
+            log_message('debug', 'Wynik zapisu okna: ' . ($oknoResult ? 'SUCCESS' : 'FAILED'));
+            
+            if (!$oknoResult) {
+                $oknoErrors = $oknoModel->errors();
+                log_message('error', 'Błędy zapisu okna: ' . print_r($oknoErrors, true));
+            }
 
             // Zapisz wybrane cechy
+            log_message('debug', 'Zapisywanie cech - liczba: ' . count($featureList));
             foreach ($featureList as $cechaId) {
-                $przypisaneCechyModel->save([
+                $cechyResult = $przypisaneCechyModel->save([
                     'hash_okna' => $hashOkna,
                     'id_cechy' => $cechaId,
                     'hash_nadawcy' => $hashAutora
                 ]);
+                log_message('debug', 'Cecha ' . $cechaId . ' zapisana: ' . ($cechyResult ? 'SUCCESS' : 'FAILED'));
+                
+                if (!$cechyResult) {
+                    $cechyErrors = $przypisaneCechyModel->errors();
+                    log_message('error', 'Błędy zapisu cechy ' . $cechaId . ': ' . print_r($cechyErrors, true));
+                }
             }
+            
+            log_message('debug', 'ZAPISYWANIE OKNA - KONIEC');
 
             $zapisywaneOkno = [
                 'imie' => $imie,
@@ -131,6 +156,12 @@ class OknoJohari extends BaseController
             return view('header')
                 . view('formularz_nowe_okno_sukces', $zapisywaneOkno)
                 . view('footer');
+        } else {
+            // WALIDACJA NIE PRZESZŁA
+            log_message('debug', 'WALIDACJA NIEUDANA');
+            log_message('debug', 'Błędy walidacji: ' . print_r($this->validator->getErrors(), true));
+            log_message('debug', 'Liczba cech: ' . (is_array($featureList) ? count($featureList) : 'nie jest tablicą'));
+            log_message('debug', 'validFeatureCount: ' . ($validFeatureCount ? 'true' : 'false'));
         }
     }
 
