@@ -109,12 +109,6 @@
 </div>
 
 <script>
-    // Function to simulate logging to a file (or console in this case)
-    function logJS(level, message) {
-        console.log(`[${level.toUpperCase()}] ${message}`);
-        // In a real scenario, you might send this to a server or a dedicated logging service.
-    }
-
     // Function to update button state
     function updateButtonState() {
         const checkboxes = document.querySelectorAll('input[name="feature_list[]"]:checked');
@@ -122,20 +116,20 @@
         
         if (checkboxes.length === 8) {
             submitButton.disabled = false;
-            logJS('info', '8 features selected, submit button enabled.');
+            console.log('8 features selected, submit button enabled.');
         } else {
             submitButton.disabled = true;
-            logJS('info', checkboxes.length + ' features selected, submit button disabled.');
+            console.log(checkboxes.length + ' features selected, submit button disabled.');
         }
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-        logJS('info', 'Page loaded - formularzyk.php');
+        console.log('Page loaded - formularzyk.php');
 
         const features = <?= json_encode($features) ?>;
         let selectedFeatures = [];
 
-        logJS('info', 'Features loaded: ' + features.length + ' total features');
+        console.log('Features loaded: ' + features.length + ' total features');
 
         // Add event listener to all checkboxes
         const featureCheckboxes = document.querySelectorAll('input[name="feature_list[]"]');
@@ -144,7 +138,7 @@
         featureCheckboxes.forEach(checkbox => {
             if (checkbox.checked) {
                 selectedFeatures.push(checkbox.value);
-                logJS('info', 'Pre-checked feature found: ' + checkbox.value);
+                console.log('Pre-checked feature found: ' + checkbox.value);
             }
         });
 
@@ -154,17 +148,17 @@
                 if (this.checked) {
                     if (selectedFeatures.length < 8) {
                         selectedFeatures.push(currentFeatureId);
-                        logJS('info', 'Feature added: ' + currentFeatureId);
+                        console.log('Feature added: ' + currentFeatureId);
                     } else {
                         // If more than 8 are selected, uncheck the current one and log
                         this.checked = false;
-                        logJS('warning', 'Attempted to select more than 8 features. Max limit reached.');
+                        console.log('Attempted to select more than 8 features. Max limit reached.');
                     }
                 } else {
                     const index = selectedFeatures.indexOf(currentFeatureId);
                     if (index > -1) {
                         selectedFeatures.splice(index, 1);
-                        logJS('info', 'Feature removed: ' + currentFeatureId);
+                        console.log('Feature removed: ' + currentFeatureId);
                     }
                 }
                 updateButtonState();
@@ -177,21 +171,21 @@
 
     // Add logging to form submission
     document.getElementById('form-johari').addEventListener('submit', function(e) {
-        logJS('info', 'Form submission started');
+        console.log('Form submission started');
 
         const selectedFeatures = document.querySelectorAll('input[name="feature_list[]"]:checked');
         const featuresArray = Array.from(selectedFeatures).map(checkbox => checkbox.value);
 
-        logJS('info', 'Selected features count: ' + featuresArray.length + ', features: ' + featuresArray.join(','));
+        console.log('Selected features count: ' + featuresArray.length + ', features: ' + featuresArray.join(','));
 
         if (featuresArray.length !== 8) {
             e.preventDefault();
-            logJS('warning', 'Form submission blocked - wrong feature count: ' + featuresArray.length);
+            console.log('Form submission blocked - wrong feature count: ' + featuresArray.length);
             alert('Musisz wybrać dokładnie 8 cech!');
             return false;
         }
 
-        logJS('info', 'Form validation passed, submitting form');
+        console.log('Form validation passed, submitting form');
         return true;
     });
 </script>
