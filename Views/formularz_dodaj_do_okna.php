@@ -92,30 +92,43 @@ $komunikatCech = ($zestaw_cech == 1) ? "Wybierz 6 cech" : "Wybierz cechy";
 <script>
 $(document).ready(function() {
     // Ustal limit cech na podstawie zestawu
-    var limitCech = <?= ($zestaw_cech == 1) ? 6 : 'null' ?>;
+    var limitCech = <?= ($zestaw_cech == 1) ? 6 : 8 ?>; // dla zestawu 1: 6 cech, dla zestawu 2: 8 cech
     var komunikatBazowy = '<?= $komunikatCech ?>, które opisują <?= $ImieWlasciciela ?>';
 
-    $(document.body).on('click', 'input[type="checkbox"]', function() {
-        var n = $('input[type="checkbox"]:checked').length;
-
-        if (limitCech !== null) {
-            // Dla zestawu 1 - limit 6 cech
-            if (n >= limitCech) {
-                $('#komunikat .komunikat').text('Wybrano ' + limitCech + ' cech - możesz już wysłać formularz');
-                $('.enableOnInput').prop('disabled', false);
-            } else {
-                $('#komunikat .komunikat').text(komunikatBazowy + ' (' + n + '/' + limitCech + ')');
-                $('.enableOnInput').prop('disabled', true);
-            }
+    function updateButtonState() {
+        var n = $('input[name="feature_list[]"]:checked').length;
+        var roznica = limitCech - n;
+        
+        if (roznica == 0) {
+            $('#komunikat .komunikat').text('Wybrano ' + limitCech + ' cech - możesz już wysłać formularz');
+            $('.enableOnInput').prop('disabled', false);
+            $('.enableOnInput').removeAttr('disabled');
         } else {
-            // Dla zestawu 2 - bez limitu, ale minimum 1 cecha
-            if (n >= 1) {
-                $('#komunikat .komunikat').text('Wybrano ' + n + ' cech - możesz już wysłać formularz');
-                $('.enableOnInput').prop('disabled', false);
+            if (roznica > 0) {
+                $('#komunikat .komunikat').text('Zaznaczyłeś/zaznaczyłaś już ' + n + ' cech. Zostało Ci do zaznaczenia jeszcze ' + roznica);
             } else {
-                $('#komunikat .komunikat').text(komunikatBazowy);
-                $('.enableOnInput').prop('disabled', true);
+                $('#komunikat .komunikat').text('Zaznaczyłeś/zaznaczyłaś za dużo cech. Musisz odznaczyć ' + (-roznica));
             }
+            $('.enableOnInput').prop('disabled', true);
+            $('.enableOnInput').attr('disabled', 'disabled');
+        }
+    }
+
+    // Nasłuchuj zmian na checkboxach
+    $(document.body).on('change', 'input[name="feature_list[]"]', function() {
+        updateButtonState();
+    });
+
+    // Sprawdź stan na początku (dla przypadku gdy są już zaznaczone checkboxy)
+    updateButtonState();
+
+    // Zabezpieczenie przed wysłaniem formularza z nieprawidłową liczbą cech
+    $('form').on('submit', function(e) {
+        var checkedCount = $('input[name="feature_list[]"]:checked').length;
+        if (checkedCount !== limitCech) {
+            e.preventDefault();
+            alert('Musisz wybrać dokładnie ' + limitCech + ' cech!');
+            return false;
         }
     });
 });
