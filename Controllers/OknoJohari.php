@@ -517,30 +517,41 @@ class OknoJohari extends BaseController
     }
 
     public function slijMaila($adresat='wit@nirski.com', $hashOkna='35e1ae5e03a8cd91ffaebae43b7b402638bfa992'){
-        $email = \Config\Services::email();
+        log_message('info', 'TEST EMAIL - rozpoczynam wysyłanie do: ' . $adresat);
+        
+        try {
+            $email = \Config\Services::email();
 
-        $email->setFrom('okno@johari.pl', 'Okno Johari');
-        $email->setTo($adresat);
+            $email->setFrom('okno@johari.pl', 'Okno Johari');
+            $email->setTo($adresat);
+            $email->setSubject('TEST - Twoje Okno Johari - przydatne linki');
 
-        $email->setSubject('Twoje Okno Johari - przydatne linki');
+            $data = array(
+                'url_okna'=> 'https://johari.pl/wyswietlOkno/'.$hashOkna.'/'.hash('ripemd160',$adresat),
+                'url_znajomi'=> 'https://johari.pl/okno/'.$hashOkna,
+                'url_usun'=> '#',
+            );
 
-
-//        $this->email->from('techniczny@johari.pl', 'Okno Johari');
-//        $this->email->to($adresat);
-//        $this->email->subject('Twoje Okno Johari - przydatne linki');
-
-        $data = array(
-            'url_okna'=> 'https://johari.pl/wyswietlOkno/'.$hashOkna.'/'.hash('ripemd160',$adresat),
-            'url_znajomi'=> 'https://johari.pl/okno/'.$hashOkna,
-            'url_usun'=> '#',
-
-        );
-
-$message = view('email/szablon.php',$data);
-//echo $message;
-        $email->send();
-
-
+            $message = view('email/szablon.php',$data);
+            $email->setMessage($message);
+            
+            log_message('debug', 'Email config check - Host: ' . $email->SMTPHost);
+            
+            if ($email->send()) {
+                log_message('info', 'TEST EMAIL - sukces wysyłania do: ' . $adresat);
+                echo "✅ Email wysłany pomyślnie do: " . $adresat . "<br>";
+                echo "Sprawdź logi dla szczegółów.<br>";
+            } else {
+                log_message('error', 'TEST EMAIL - błąd wysyłania do: ' . $adresat);
+                log_message('error', 'Email debugger: ' . $email->printDebugger());
+                echo "❌ Błąd wysyłania emaila do: " . $adresat . "<br>";
+                echo "Szczegóły błędu w logach.<br>";
+                echo "Debug info: <pre>" . $email->printDebugger() . "</pre>";
+            }
+        } catch (\Exception $e) {
+            log_message('error', 'TEST EMAIL - wyjątek: ' . $e->getMessage());
+            echo "❌ Wyjątek podczas wysyłania: " . $e->getMessage() . "<br>";
+        }
     }
     public function tlumaczOkno($hashOkna, $hashWlasciciela) {
         // Sprawdź czy żądanie jest AJAX
