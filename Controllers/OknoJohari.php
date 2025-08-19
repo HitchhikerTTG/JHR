@@ -369,8 +369,11 @@ class OknoJohari extends BaseController
              . view('footer');
     }
 
-    // Delegacja analizy cech do modelu
-    $analizaCech = $oknoModel->analizyCechOkna($hashOkna, $hashWlasciciela);
+    // Sprawdź zestaw cech okna
+    $zestawCech = $oknoModel->getWindowFeatureSet($hashOkna, $hashWlasciciela);
+    
+    // Delegacja analizy cech do modelu z uwzględnieniem zestawu cech
+    $analizaCech = $oknoModel->analizyCechOkna($hashOkna, $hashWlasciciela, $zestawCech);
 
     $data['arena'] = $analizaCech['arena'];
     $data['prywatne'] = $analizaCech['prywatne'];
@@ -379,7 +382,6 @@ class OknoJohari extends BaseController
     $data['licznik'] = $analizaCech['licznik'];
 
     // Sprawdź czy okno wymaga tłumaczenia (tylko zestaw cech 1)
-    $zestawCech = $oknoModel->getWindowFeatureSet($hashOkna, $hashWlasciciela);
     $data['ma_tlumaczenie'] = ($zestawCech == 1);
     $data['hash_okna'] = $hashOkna;
     $data['hash_wlasciciela'] = $hashWlasciciela;
