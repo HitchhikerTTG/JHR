@@ -248,22 +248,44 @@ class OknoJohari extends BaseController
     $data['szablon'] = $szablon;
 
         $rules = [
-            'email' => 'required|valid_email|sprawdzNadawce[{okno}]',
+            'email' => 'required|valid_email',
+            'feature_list' => 'required',
+            'feature_list.*' => 'is_natural_no_zero'
         ];
         $errors = [
             'email'=>[
                 'required'=>"Email jest wymagany",
                 'valid_email'=>'Podaj proszę prawidłowy adres e-mail',
-                'sprawdzNadawce'=>'Wedle mojej najlepszej wiedzy, dla tego okna mam już zapisane cechy "podpisane" tym adresem email.',
-
+            ],
+            'feature_list' => [
+                'required' => 'Musisz wybrać dokładnie 8 cech'
             ]
         ];
 
 
-    if($this->request->getMethod()==='POST'&&$this->validate($rules,$errors)){
-         $data['validation']=$this->validator;
+    if($this->request->getMethod()==='POST'){
+        // Dodatkowa walidacja dla liczby cech
+        $featureList = $this->request->getPost('feature_list');
+        $validFeatureCount = ($featureList && is_array($featureList) && count($featureList) === 8);
 
-        //Sprawdź, czy dla danego okna $hashokna są juz zapisane cechy od tego
+        // Sprawdź czy nadawca już nie dodawał cech do tego okna
+        $emailHash = hash('ripemd160', $this->request->getPost('email'));
+        $existingFeatures = $PrzypisaneCechyModel->where('okno_johariego', $hashOkna)
+                                                 ->where('nadawca', $emailHash)
+                                                 ->countAllResults();
+        
+        $senderAlreadyExists = ($existingFeatures > 0);
+        
+        if (!$validFeatureCount) {
+            $this->validator->setError('feature_list', 'Musisz wybrać dokładnie 8 cech');
+        }
+        
+        if ($senderAlreadyExists) {
+            $this->validator->setError('email', 'Wedle mojej najlepszej wiedzy, dla tego okna mam już zapisane cechy "podpisane" tym adresem email.');
+        }
+
+        if($this->validate($rules,$errors) && $validFeatureCount && !$senderAlreadyExists){
+         $data['validation']=$this->validator;
 
         $wybrane_cechy = $this->request->getPost('feature_list');
 
@@ -301,6 +323,14 @@ class OknoJohari extends BaseController
         . view('dodane_sukces',$data)
         . view('footer');
 
+        } else {
+            // WALIDACJA NIE PRZESZŁA
+            log_message('debug', 'WALIDACJA DODAJ DO OKNA NIEUDANA');
+            log_message('debug', 'Błędy walidacji: ' . print_r($this->validator->getErrors(), true));
+            log_message('debug', 'Liczba cech: ' . (is_array($featureList) ? count($featureList) : 'nie jest tablicą'));
+            log_message('debug', 'validFeatureCount: ' . ($validFeatureCount ? 'true' : 'false'));
+            log_message('debug', 'senderAlreadyExists: ' . ($senderAlreadyExists ? 'true' : 'false'));
+        }
     }
 
 
