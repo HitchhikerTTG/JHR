@@ -238,8 +238,12 @@ class OknoJohari extends BaseController
     }
 
     $data['validation']=Services::validation();
-    $data['features'] = $cechyModel->listFeatures(2); // Tylko zestaw cech 2
+    
+    // Sprawdź jaki zestaw cech ma to okno
+    $zestawCech = $toOkno['id_zestaw_cech'] ?? 1; // domyślnie 1 dla starych okien
+    $data['features'] = $cechyModel->listFeatures($zestawCech);
     $data['hashOkna'] = $hashOkna;
+    $data['zestaw_cech'] = $zestawCech;
     $szablon ="class=\"landing-page sidebar-collapse\"";
     $data['szablon'] = $szablon;
 

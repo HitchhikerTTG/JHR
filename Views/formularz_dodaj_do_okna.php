@@ -9,7 +9,11 @@
     <? echo form_hidden('okno', $hashOkna); ?>
 <?php $licznik=0; ?>
 <div class="form-check">
-<div id="komunikat" class="sticky-top"><span id="info">Wybierz 8 cech z poniższego zestawu</span></div>
+<?php 
+$liczbaCech = count($features ?? []);
+$komunikatCech = ($zestaw_cech == 1) ? "Wybierz 6 cech" : "Wybierz cechy";
+?>
+<div id="komunikat" class="sticky-top"><span class="komunikat"><?= $komunikatCech ?>, które opisują <?= $ImieWlasciciela ?> (dostępne: <?= $liczbaCech ?> cech)</span></div>
 
 <div class="containter">
 
@@ -79,32 +83,40 @@
 <p>Twój mail posłuży wyłącznie do zweryfikowania, czy nie wskazywałaś / wskazywałeś już cech dla tego konkretnego okna. Dlaczego to sprawdzam? Aby nie zaburzać wyników okna (przez wielokrotne udzielanie odpowiedzi przez tę samą osobę). A niestety imię może się łatwo powtórzyć, a mail.. mail jest unikalny;-) Równocześnie - Twój mail nie zostaje zapisany do bazy, a do Ciebie nie będzie wysłany żaden mail. o</p>
     </div>
 </div>
-    
+
 <div class="row"><div class="col">
 
        <button type="submit" class="btn btn-primary btn-round enableOnInput btn-block" disabled='disabled'><i class="material-icons">forward</i> Dodaj cechy do okna znajomego</button></div></div>
 </form>
 
 <script>
-$( document.body )
-  .click(function() {
-   // $( document.body ).append( $( "<div>" ) );
-    var n = $('input[type="checkbox"]:checked').length;
-    var roznica = 8-n;
-     
-    if (roznica==0){
-        $( "span#info" ).text( "Świetnie. Jeśli jesteś zadowolony z wybranych cech, stwórz swoje okno"); 
-    $('.enableOnInput').prop('disabled', false);
-    } else {
-        if (roznica>0){
-        $( "span#info" ).text( "Zaznaczyłeś / zaznaczyłaś już " + n + " cech. Zostało Ci do zaznaczenia jeszcze "+ roznica); }
-        else {
-        $( "span#info" ).text( "Zaznaczyłeś / zaznaczyłaś za dużo cech. Musisz odznaczyć  "+ (-roznica));
+$(document).ready(function() {
+    // Ustal limit cech na podstawie zestawu
+    var limitCech = <?= ($zestaw_cech == 1) ? 6 : 'null' ?>;
+    var komunikatBazowy = '<?= $komunikatCech ?>, które opisują <?= $ImieWlasciciela ?>';
+
+    $(document.body).on('click', 'input[type="checkbox"]', function() {
+        var n = $('input[type="checkbox"]:checked').length;
+
+        if (limitCech !== null) {
+            // Dla zestawu 1 - limit 6 cech
+            if (n >= limitCech) {
+                $('#komunikat .komunikat').text('Wybrano ' + limitCech + ' cech - możesz już wysłać formularz');
+                $('.enableOnInput').prop('disabled', false);
+            } else {
+                $('#komunikat .komunikat').text(komunikatBazowy + ' (' + n + '/' + limitCech + ')');
+                $('.enableOnInput').prop('disabled', true);
+            }
+        } else {
+            // Dla zestawu 2 - bez limitu, ale minimum 1 cecha
+            if (n >= 1) {
+                $('#komunikat .komunikat').text('Wybrano ' + n + ' cech - możesz już wysłać formularz');
+                $('.enableOnInput').prop('disabled', false);
+            } else {
+                $('#komunikat .komunikat').text(komunikatBazowy);
+                $('.enableOnInput').prop('disabled', true);
+            }
         }
-            
-         $('.enableOnInput').prop('disabled', true);
-    } 
-
-  })
-
+    });
+});
 </script>
