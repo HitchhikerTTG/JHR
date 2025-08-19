@@ -26,6 +26,9 @@ class OknoJohari extends BaseController
 
   public function stworzOkno()
   {
+    // PODSTAWOWE LOGOWANIE - sprawdź czy funkcja w ogóle się wykonuje
+    log_message('error', 'FUNKCJA STWORZOKNO WYWOLANA - metoda: ' . $this->request->getMethod());
+    
     $cechyModel = model(CechyModel::class);
     $oknoModel = model(OknoModel::class);
     $uzytkownikModel = model(UzytkownicyModel::class);
@@ -36,6 +39,8 @@ class OknoJohari extends BaseController
 
     // DEBUG: Sprawdź wszystkie dane POST
     if ($this->request->getMethod() === 'post') {
+        log_message('error', 'TO JEST POST REQUEST!');
+        log_message('error', 'Wszystkie dane POST: ' . print_r($_POST, true));
         log_message('debug', 'POST Data: ' . print_r($this->request->getPost(), true));
         log_message('debug', 'Request Method: ' . $this->request->getMethod());
         
@@ -209,6 +214,9 @@ class OknoJohari extends BaseController
   }
 
   public function dodajDoOkna($hashOkna=false){
+    // PODSTAWOWE LOGOWANIE
+    log_message('error', 'FUNKCJA DODAJDOOKNA WYWOLANA - hash: ' . $hashOkna . ', metoda: ' . $this->request->getMethod());
+    
     // co zrobić, kiedy nie mam takiego okna - komunikat o błędzie - nie ma takiego okna i np. stwórz własne
 
     $oknoModel = model(OknoModel::class);
