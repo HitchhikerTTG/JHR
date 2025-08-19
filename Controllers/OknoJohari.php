@@ -6,6 +6,8 @@ use App\Models\CechyModel;
 use App\Models\OknoModel;
 use App\Models\UzytkownicyModel;
 use App\Models\PrzypisaneCechyModel;
+use App\Models\RateLimitModel;
+use App\Models\SecurityLogModel;
 
 class OknoJohari extends BaseController
 {
@@ -33,10 +35,24 @@ class OknoJohari extends BaseController
     log_message('error', 'Wszystkie dane $_POST: ' . print_r($_POST, true));
     log_message('error', 'Wszystkie dane REQUEST: ' . print_r($_REQUEST, true));
 
+    // BEZPIECZEŃSTWO - sprawdź IP i rate limiting
+    $ipAddress = $this->request->getIPAddress();
+    $userAgent = $this->request->getHeaderLine('User-Agent');
+    
     $cechyModel = model(CechyModel::class);
     $oknoModel = model(OknoModel::class);
     $uzytkownikModel = model(UzytkownicyModel::class);
     $przypisaneCechyModel = model(PrzypisaneCechyModel::class);
+    $rateLimitModel = model(RateLimitModel::class);
+    $securityLogModel = model(SecurityLogModel::class);
+
+    // Sprawdź czy IP jest zablokowane
+    if ($securityLogModel->isBlocked($ipAddress)) {
+        log_message('warning', 'Zablokowane IP próbuje utworzyć okno: ' . $ipAddress);
+        return view('header')
+             . view('error', ['horror' => 'Dostęp tymczasowo ograniczony. Spróbuj ponownie później.'])
+             . view('footer');
+    }
 
     $szablon = "class=\"landing-page sidebar-collapse\"";
     $data['szablon'] = $szablon;
@@ -56,6 +72,30 @@ class OknoJohari extends BaseController
 
     // Sprawdź czy to żądanie POST (formularz został wysłany)
     if ($this->request->getMethod() === 'POST') {
+        
+        // RATE LIMITING - sprawdź czy użytkownik nie spamuje
+        if (!$rateLimitModel->checkRateLimit($ipAddress, 'create_window', 3, 3600)) {
+            $remainingTime = $rateLimitModel->getRemainingTime($ipAddress, 'create_window');
+            log_message('warning', 'Rate limit exceeded for IP: ' . $ipAddress);
+            
+            $this->validator->setError('general', 'Zbyt wiele prób tworzenia okien. Spróbuj ponownie za ' . ceil($remainingTime/60) . ' minut.');
+            
+            // Loguj podejrzaną aktywność
+            $suspiciousScore = $securityLogModel->calculateSuspiciousScore($ipAddress, $userAgent);
+            $securityLogModel->logAction($ipAddress, $userAgent, 'rate_limit_exceeded', null, $suspiciousScore);
+            
+            // Wyświetl formularz z błędem
+            $data['features'] = $cechyModel->getFeaturesForNewWindows();
+            $data['validation'] = $this->validator;
+            $data['post_url'] = '#komunikaty';
+            
+            return view('header')
+                . view('tresc', $data)
+                . view('ococho')
+                . view('opis_nowe')
+                . view('formularzyk', $data)
+                . view('footer');
+        }
         $rules = [
             'imie' => 'required|min_length[2]',
             'email' => 'required|valid_email',
@@ -97,6 +137,31 @@ class OknoJohari extends BaseController
             $imie = $this->request->getPost('imie');
             $email = $this->request->getPost('email');
             $tytul = $this->request->getPost('tytul');
+            
+            // BEZPIECZEŃSTWO - sprawdź czy to nie podejrzana aktywność
+            $suspiciousScore = $securityLogModel->calculateSuspiciousScore($ipAddress, $userAgent, $email);
+            
+            if ($suspiciousScore >= 5) {
+                log_message('warning', 'Podejrzana aktywność przy tworzeniu okna: IP=' . $ipAddress . ', Email=' . $email . ', Score=' . $suspiciousScore);
+                $securityLogModel->logAction($ipAddress, $userAgent, 'suspicious_window_creation', hash('ripemd160', $email), $suspiciousScore);
+                
+                $this->validator->setError('general', 'Wykryto podejrzaną aktywność. Twoje działanie zostało zarejestrowane.');
+                
+                // Wyświetl formularz z błędem
+                $data['features'] = $cechyModel->getFeaturesForNewWindows();
+                $data['validation'] = $this->validator;
+                $data['post_url'] = '#komunikaty';
+                
+                return view('header')
+                    . view('tresc', $data)
+                    . view('ococho')
+                    . view('opis_nowe')
+                    . view('formularzyk', $data)
+                    . view('footer');
+            }
+            
+            // Loguj normalną aktywność
+            $securityLogModel->logAction($ipAddress, $userAgent, 'window_created', hash('ripemd160', $email), $suspiciousScore);
 
             $hashAutora = hash('ripemd160', $email);
             $hashOkna = hash('ripemd160', $tytul . $email);
@@ -179,6 +244,9 @@ class OknoJohari extends BaseController
 
             log_message('debug', 'ZAPISYWANIE OKNA - KONIEC');
 
+            // Wyślij email z linkami
+            $this->wyslijEmailPowitalny($email, $imie, $hashOkna, $hashAutora);
+
             $zapisywaneOkno = [
                 'imie' => $imie,
                 'tytul' => $tytul,
@@ -216,12 +284,24 @@ class OknoJohari extends BaseController
     // PODSTAWOWE LOGOWANIE
     log_message('error', 'FUNKCJA DODAJDOOKNA WYWOLANA - hash: ' . $hashOkna . ', metoda: ' . $this->request->getMethod());
 
-    // co zrobić, kiedy nie mam takiego okna - komunikat o błędzie - nie ma takiego okna i np. stwórz własne
+    // BEZPIECZEŃSTWO
+    $ipAddress = $this->request->getIPAddress();
+    $userAgent = $this->request->getHeaderLine('User-Agent');
 
     $oknoModel = model(OknoModel::class);
     $uzytkownikModel = model(UzytkownicyModel::class);
     $PrzypisaneCechyModel = model(PrzypisaneCechyModel::class);
     $cechyModel = model(CechyModel::class);
+    $rateLimitModel = model(RateLimitModel::class);
+    $securityLogModel = model(SecurityLogModel::class);
+
+    // Sprawdź czy IP jest zablokowane
+    if ($securityLogModel->isBlocked($ipAddress)) {
+        log_message('warning', 'Zablokowane IP próbuje dodać cechy: ' . $ipAddress);
+        return view('header')
+             . view('error', ['horror' => 'Dostęp tymczasowo ograniczony. Spróbuj ponownie później.'])
+             . view('footer');
+    }
     $toOkno = $oknoModel->where('hash', $hashOkna)->first();
 
     if ($toOkno['imie_wlasciciela']){
@@ -264,6 +344,14 @@ class OknoJohari extends BaseController
 
 
     if($this->request->getMethod()==='POST'){
+        
+        // RATE LIMITING - sprawdź czy użytkownik nie spamuje
+        if (!$rateLimitModel->checkRateLimit($ipAddress, 'add_features', 5, 3600)) {
+            $remainingTime = $rateLimitModel->getRemainingTime($ipAddress, 'add_features');
+            log_message('warning', 'Rate limit exceeded for adding features, IP: ' . $ipAddress);
+            
+            $this->validator->setError('general', 'Zbyt wiele prób dodawania cech. Spróbuj ponownie za ' . ceil($remainingTime/60) . ' minut.');
+        } else {
         // Dodatkowa walidacja dla liczby cech
         $featureList = $this->request->getPost('feature_list');
         $validFeatureCount = ($featureList && is_array($featureList) && count($featureList) === 8);
@@ -285,9 +373,35 @@ class OknoJohari extends BaseController
         }
 
         if($this->validate($rules,$errors) && $validFeatureCount && !$senderAlreadyExists){
-         $data['validation']=$this->validator;
+            $data['validation']=$this->validator;
+            
+            // BEZPIECZEŃSTWO - sprawdź podejrzaną aktywność
+            $email = $this->request->getPost('email');
+            $suspiciousScore = $securityLogModel->calculateSuspiciousScore($ipAddress, $userAgent, $email);
+            
+            if ($suspiciousScore >= 5) {
+                log_message('warning', 'Podejrzana aktywność przy dodawaniu cech: IP=' . $ipAddress . ', Email=' . $email);
+                $securityLogModel->logAction($ipAddress, $userAgent, 'suspicious_feature_add', hash('ripemd160', $email), $suspiciousScore);
+                
+                $this->validator->setError('general', 'Wykryto podejrzaną aktywność. Twoje działanie zostało zarejestrowane.');
+                
+                // Wyświetl formularz z błędem (kontynuuj poniżej z pozostałymi zmiennymi)
+                $data['features'] = $cechyModel->listFeatures($zestawCech);
+                $data['hashOkna'] = $hashOkna;
+                $data['zestaw_cech'] = $zestawCech;
+                $data['validation'] = $this->validator;
+                
+                return view('header')
+                    . view('tresc',$data)
+                    . view('ococho_dla_znajomych')
+                    . view('formularz_dodaj_do_okna', $data)
+                    . view('footer');
+            }
+            
+            // Loguj normalną aktywność
+            $securityLogModel->logAction($ipAddress, $userAgent, 'features_added', hash('ripemd160', $email), $suspiciousScore);
 
-        $wybrane_cechy = $this->request->getPost('feature_list');
+            $wybrane_cechy = $this->request->getPost('feature_list');
 
         if (is_array($wybrane_cechy) && count($wybrane_cechy) > 0) {
             foreach ($wybrane_cechy as $cecha_do_zapisu) {
@@ -331,6 +445,7 @@ class OknoJohari extends BaseController
             log_message('debug', 'validFeatureCount: ' . ($validFeatureCount ? 'true' : 'false'));
             log_message('debug', 'senderAlreadyExists: ' . ($senderAlreadyExists ? 'true' : 'false'));
         }
+        } // Koniec rate limiting check
     }
 
 
@@ -458,6 +573,36 @@ $message = view('email/szablon.php',$data);
         .view ('tresc', $data)
         .view ('polityka')
         .view ('footer');
+    }
+
+    private function wyslijEmailPowitalny($emailAdresat, $imie, $hashOkna, $hashAutora)
+    {
+        try {
+            $email = \Config\Services::email();
+            
+            $email->setFrom('okno@johari.pl', 'Okno Johari');
+            $email->setTo($emailAdresat);
+            $email->setSubject('Twoje Okno Johari - przydatne linki');
+
+            $data = [
+                'imie' => $imie,
+                'url_okna' => base_url('wyswietlOkno/' . $hashOkna . '/' . $hashAutora),
+                'url_znajomi' => base_url('okno/' . $hashOkna),
+                'url_usun' => '#',
+            ];
+
+            $message = view('email/szablon', $data);
+            $email->setMessage($message);
+            
+            if ($email->send()) {
+                log_message('info', 'Email powitalny wysłany do: ' . $emailAdresat);
+            } else {
+                log_message('error', 'Błąd wysyłania emaila do: ' . $emailAdresat);
+                log_message('error', 'Email debugger: ' . $email->printDebugger());
+            }
+        } catch (\Exception $e) {
+            log_message('error', 'Wyjątek podczas wysyłania emaila: ' . $e->getMessage());
+        }
     }
 }
 
