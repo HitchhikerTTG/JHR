@@ -522,7 +522,6 @@ class OknoJohari extends BaseController
         try {
             $email = \Config\Services::email();
 
-            $email->setFrom($_ENV['POSTMARK_FROM_EMAIL'] ?? 'okno@johari.pl', 'Okno Johari');
             $email->setTo($adresat);
 
             $email->setSubject('TEST - Twoje Okno Johari - przydatne linki');
@@ -532,7 +531,7 @@ class OknoJohari extends BaseController
 
             $data = array(
                 'url_okna'=> 'https://johari.pl/wyswietlOkno/'.$hashOkna.'/'.hash('ripemd160',$adresat),
-                'url_znajomi'=> 'https://johari.pl/okno/'.$hashOkna,
+                'url_znajomi'=> 'https://johari.testujac.pl/okno/'.$hashOkna,
                 'url_usun'=> '#',
             );
 
