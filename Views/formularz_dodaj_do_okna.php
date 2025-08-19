@@ -99,13 +99,13 @@ $(document).ready(function() {
         var n = $('input[name="feature_list[]"]:checked').length;
         var roznica = limitCech - n;
         
-        logToFile('Dodaj do okna - liczba wybranych cech: ' + n + ', limit: ' + limitCech);
+        console.log('Dodaj do okna - liczba wybranych cech: ' + n + ', limit: ' + limitCech);
         
         if (roznica == 0) {
             $('#komunikat .komunikat').text('Wybrano ' + limitCech + ' cech - możesz już wysłać formularz');
             $('.enableOnInput').prop('disabled', false);
             $('.enableOnInput').removeAttr('disabled');
-            logToFile('Przycisk odblokowany - formularz dodaj do okna');
+            console.log('Przycisk odblokowany - formularz dodaj do okna');
         } else {
             if (roznica > 0) {
                 $('#komunikat .komunikat').text('Zaznaczyłeś/zaznaczyłaś już ' + n + ' cech. Zostało Ci do zaznaczenia jeszcze ' + roznica);
@@ -114,7 +114,7 @@ $(document).ready(function() {
             }
             $('.enableOnInput').prop('disabled', true);
             $('.enableOnInput').attr('disabled', 'disabled');
-            logToFile('Przycisk zablokowany - formularz dodaj do okna');
+            console.log('Przycisk zablokowany - formularz dodaj do okna');
         }
     }
 
@@ -132,10 +132,10 @@ $(document).ready(function() {
         if (checkedCount !== limitCech) {
             e.preventDefault();
             alert('Musisz wybrać dokładnie ' + limitCech + ' cech!');
-            logToFile('Formularz zablokowany - nieprawidłowa liczba cech: ' + checkedCount + '/' + limitCech, 'warning');
+            console.log('Formularz zablokowany - nieprawidłowa liczba cech: ' + checkedCount + '/' + limitCech);
             return false;
         }
-        logToFile('Formularz wysyłany - poprawna liczba cech: ' + checkedCount);
+        console.log('Formularz wysyłany - poprawna liczba cech: ' + checkedCount);
     });
 });
 </script>
