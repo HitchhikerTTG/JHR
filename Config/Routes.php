@@ -45,3 +45,4 @@ $routes->match(['GET', 'POST'], '/tlumaczOkno/(:segment)/(:segment)', 'OknoJohar
 $routes->post('log-js', 'JSLogger::logMessage');
 $routes->get('migrate', 'Migrate::index');
 $routes->get('migrate/reset', 'Migrate::reset');
+$routes->get('debug/email-env', 'EmailEnvDebug::show');
