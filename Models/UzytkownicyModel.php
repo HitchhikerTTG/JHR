@@ -8,7 +8,7 @@ class UzytkownicyModel extends Model
 {
 
     protected $table = 'uzytkownicy';
-    protected $allowedFields = ['email', 'name', 'user_hash']; // Używamy rzeczywistych nazw kolumn
+    protected $allowedFields = ['name', 'email', 'user_hash']; // Używamy rzeczywistych nazw kolumn
     protected $primaryKey ="id";
 
     function czyJuzJest($sprawdzany_email){
