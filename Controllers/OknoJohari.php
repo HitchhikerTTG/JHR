@@ -42,6 +42,7 @@ class OknoJohari extends BaseController
         $featureList = $this->request->getPost('feature_list');
         log_message('debug', 'Feature List: ' . print_r($featureList, true));
         log_message('debug', 'Feature List Count: ' . (is_array($featureList) ? count($featureList) : 'not array'));
+        log_message('debug', 'Debug Feature Count: ' . $this->request->getPost('debug_feature_count'));
     }
 
     // Sprawdź czy to żądanie POST (formularz został wysłany)
@@ -74,11 +75,13 @@ class OknoJohari extends BaseController
 
         // Dodatkowa walidacja dla liczby cech
         $featureList = $this->request->getPost('feature_list');
-        if ($featureList && count($featureList) !== 8) {
+        $validFeatureCount = ($featureList && is_array($featureList) && count($featureList) === 8);
+        
+        if (!$validFeatureCount) {
             $this->validator->setError('feature_list', 'Musisz wybrać dokładnie 8 cech');
         }
 
-        if ($this->validate($rules, $errors) && (!$featureList || count($featureList) === 8)) {
+        if ($this->validate($rules, $errors) && $validFeatureCount) {
             // Dane są poprawne - zapisujemy okno
             $imie = $this->request->getPost('imie');
             $email = $this->request->getPost('email');

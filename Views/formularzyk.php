@@ -97,8 +97,6 @@
 
 //    echo form_submit('mysubmit', '<i class="material-icons">forward</i> Stwórz swoje okno Johari', $atrybutyPrzycisku);
 	   ?>  
-    <!-- Debug: Ukryte pole z liczbą zaznaczonych cech -->
-    <input type="hidden" name="debug_feature_count" id="debugFeatureCount" value="0">
     <button type="submit" class="btn btn-primary btn-round enableOnInput btn-block" disabled="disabled" id="submitBtn"><i class="material-icons">forward</i> Stwórz swoje okno Johari</button>
 <?    echo "</div></div>";
 
@@ -121,11 +119,6 @@
     function updateButtonState() {
         const checkboxes = document.querySelectorAll('input[name="feature_list[]"]:checked');
         const submitButton = document.getElementById('submitBtn');
-        const debugField = document.getElementById('debugFeatureCount');
-        
-        if (debugField) {
-            debugField.value = checkboxes.length;
-        }
         
         if (checkboxes.length === 8) {
             submitButton.disabled = false;
