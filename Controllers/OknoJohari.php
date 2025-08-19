@@ -93,11 +93,6 @@ class OknoJohari extends BaseController
         if ($this->validate($rules, $errors) && $validFeatureCount) {
             log_message('debug', 'ZAPISYWANIE OKNA - ROZPOCZĘCIE');
             
-            // Sprawdź dozwolone pola w modelach
-            log_message('debug', 'DOZWOLONE POLA OKNO MODEL: ' . print_r($oknoModel->getAllowedFields(), true));
-            log_message('debug', 'DOZWOLONE POLA CECHY MODEL: ' . print_r($przypisaneCechyModel->getAllowedFields(), true));
-            log_message('debug', 'DOZWOLONE POLA UZYTKOWNIK MODEL: ' . print_r($uzytkownikModel->getAllowedFields(), true));
-            
             // Dane są poprawne - zapisujemy okno
             $imie = $this->request->getPost('imie');
             $email = $this->request->getPost('email');
