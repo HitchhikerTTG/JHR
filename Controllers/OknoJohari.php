@@ -84,6 +84,11 @@ class OknoJohari extends BaseController
         if ($this->validate($rules, $errors) && $validFeatureCount) {
             log_message('debug', 'ZAPISYWANIE OKNA - ROZPOCZĘCIE');
             
+            // Sprawdź dozwolone pola w modelach
+            log_message('debug', 'DOZWOLONE POLA OKNO MODEL: ' . print_r($oknoModel->getAllowedFields(), true));
+            log_message('debug', 'DOZWOLONE POLA CECHY MODEL: ' . print_r($przypisaneCechyModel->getAllowedFields(), true));
+            log_message('debug', 'DOZWOLONE POLA UZYTKOWNIK MODEL: ' . print_r($uzytkownikModel->getAllowedFields(), true));
+            
             // Dane są poprawne - zapisujemy okno
             $imie = $this->request->getPost('imie');
             $email = $this->request->getPost('email');
@@ -121,14 +126,18 @@ class OknoJohari extends BaseController
 
             // Zapisz okno
             log_message('debug', 'Zapisywanie okna');
-            $oknoResult = $oknoModel->save([
+            $oknoData = [
                 'nazwa' => $tytul,
                 'hash' => $hashOkna,
                 'wlasciciel' => $hashAutora,
                 'imie_wlasciciela' => $imie,
                 'id_zestaw_cech' => 2,
-                'kluczyk' => $hashOkna // lub inny unikalny klucz
-            ]);
+                'kluczyk' => $hashOkna
+            ];
+            log_message('debug', 'DANE OKNA DO ZAPISU: ' . print_r($oknoData, true));
+            log_message('debug', 'Długości pól: nazwa=' . strlen($tytul) . ', hash=' . strlen($hashOkna) . ', wlasciciel=' . strlen($hashAutora) . ', imie=' . strlen($imie));
+            
+            $oknoResult = $oknoModel->save($oknoData);
             log_message('debug', 'Wynik zapisu okna: ' . ($oknoResult ? 'SUCCESS' : 'FAILED'));
             
             if (!$oknoResult) {
@@ -148,11 +157,14 @@ class OknoJohari extends BaseController
             // Zapisz wybrane cechy
             log_message('debug', 'Zapisywanie cech - liczba: ' . count($featureList));
             foreach ($featureList as $cechaId) {
-                $cechyResult = $przypisaneCechyModel->save([
+                $cechyData = [
                     'okno_johariego' => $hashOkna,
                     'cecha' => $cechaId,
                     'nadawca' => $hashAutora
-                ]);
+                ];
+                log_message('debug', 'DANE CECHY DO ZAPISU: ' . print_r($cechyData, true));
+                
+                $cechyResult = $przypisaneCechyModel->save($cechyData);
                 log_message('debug', 'Cecha ' . $cechaId . ' zapisana: ' . ($cechyResult ? 'SUCCESS' : 'FAILED'));
                 
                 if (!$cechyResult) {
@@ -246,15 +258,25 @@ class OknoJohari extends BaseController
 
         if (is_array($wybrane_cechy) && count($wybrane_cechy) > 0) {
             foreach ($wybrane_cechy as $cecha_do_zapisu) {
-                $result = $PrzypisaneCechyModel->save([
+                $cechyDataDodaj = [
                     'okno_johariego' => $hashOkna,
                     'cecha' => $cecha_do_zapisu,
                     'nadawca' => hash('ripemd160', $this->request->getPost('email')),
-                ]);
+                ];
+                log_message('debug', 'DODAJ DO OKNA - DANE CECHY: ' . print_r($cechyDataDodaj, true));
+                
+                $result = $PrzypisaneCechyModel->save($cechyDataDodaj);
                 
                 if (!$result) {
                     $errors = $PrzypisaneCechyModel->errors();
                     log_message('error', 'Błąd zapisu cechy ' . $cecha_do_zapisu . ': ' . print_r($errors, true));
+                    
+                    // Dodaj informacje o błędzie bazy danych
+                    $db = \Config\Database::connect();
+                    if ($db->error()['code'] != 0) {
+                        log_message('error', 'Błąd bazy danych w dodajDoOkna: ' . $db->error()['message']);
+                    }
+                    log_message('debug', 'Ostatnie zapytanie SQL w dodajDoOkna: ' . $db->getLastQuery());
                 }
             }
         } else {
