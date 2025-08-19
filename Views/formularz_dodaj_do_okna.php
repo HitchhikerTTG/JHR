@@ -90,52 +90,71 @@ $komunikatCech = "Wybierz 8 cech";
 </form>
 
 <script>
-$(document).ready(function() {
-    // Limit cech zawsze wynosi 8
-    var limitCech = 8;
-    var komunikatBazowy = '<?= $komunikatCech ?>, które opisują <?= $ImieWlasciciela ?>';
-
+    // Function to update button state and info message - identyczna jak w formularzyk.php
     function updateButtonState() {
-        var n = $('input[name="feature_list[]"]:checked').length;
-        var roznica = limitCech - n;
+        const checkboxes = document.querySelectorAll('input[name="feature_list[]"]:checked');
+        const submitButton = document.querySelector('.enableOnInput');
+        const komunikatSpan = document.querySelector('#komunikat .komunikat');
+        const count = checkboxes.length;
+        const roznica = 8 - count;
         
-        console.log('Dodaj do okna - liczba wybranych cech: ' + n + ', limit: ' + limitCech);
+        console.log('Dodaj do okna - liczba wybranych cech: ' + count + ', limit: 8');
         
-        if (roznica == 0) {
-            $('#komunikat .komunikat').text('Wybrano ' + limitCech + ' cech - możesz już wysłać formularz');
-            $('.enableOnInput').prop('disabled', false);
-            $('.enableOnInput').removeAttr('disabled');
+        if (roznica === 0) {
+            komunikatSpan.textContent = 'Wybrano 8 cech - możesz już wysłać formularz';
+            submitButton.disabled = false;
+            submitButton.removeAttribute('disabled');
             console.log('Przycisk odblokowany - formularz dodaj do okna');
         } else {
             if (roznica > 0) {
-                $('#komunikat .komunikat').text('Zaznaczyłeś/zaznaczyłaś już ' + n + ' cech. Zostało Ci do zaznaczenia jeszcze ' + roznica);
+                komunikatSpan.textContent = 'Zaznaczyłeś/zaznaczyłaś już ' + count + ' cech. Zostało Ci do zaznaczenia jeszcze ' + roznica;
             } else {
-                $('#komunikat .komunikat').text('Zaznaczyłeś/zaznaczyłaś za dużo cech. Musisz odznaczyć ' + (-roznica));
+                komunikatSpan.textContent = 'Zaznaczyłeś/zaznaczyłaś za dużo cech. Musisz odznaczyć ' + (-roznica);
             }
-            $('.enableOnInput').prop('disabled', true);
-            $('.enableOnInput').attr('disabled', 'disabled');
+            submitButton.disabled = true;
+            submitButton.setAttribute('disabled', 'disabled');
             console.log('Przycisk zablokowany - formularz dodaj do okna');
         }
     }
 
-    // Nasłuchuj zmian na checkboxach
-    $(document.body).on('change', 'input[name="feature_list[]"]', function() {
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('Page loaded - formularz_dodaj_do_okna.php');
+
+        // Add event listener to all checkboxes - identyczne jak w formularzyk.php
+        const featureCheckboxes = document.querySelectorAll('input[name="feature_list[]"]');
+        
+        featureCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                updateButtonState();
+            });
+        });
+
+        // Initial check of button state
         updateButtonState();
     });
 
-    // Sprawdź stan na początku (dla przypadku gdy są już zaznaczone checkboxy)
-    updateButtonState();
+    // Add logging to form submission - identyczne jak w formularzyk.php
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                console.log('Form submission started');
 
-    // Zabezpieczenie przed wysłaniem formularza z nieprawidłową liczbą cech
-    $('form').on('submit', function(e) {
-        var checkedCount = $('input[name="feature_list[]"]:checked').length;
-        if (checkedCount !== limitCech) {
-            e.preventDefault();
-            alert('Musisz wybrać dokładnie ' + limitCech + ' cech!');
-            console.log('Formularz zablokowany - nieprawidłowa liczba cech: ' + checkedCount + '/' + limitCech);
-            return false;
+                const selectedFeatures = document.querySelectorAll('input[name="feature_list[]"]:checked');
+                const featuresArray = Array.from(selectedFeatures).map(checkbox => checkbox.value);
+
+                console.log('Selected features count: ' + featuresArray.length + ', features: ' + featuresArray.join(','));
+
+                if (featuresArray.length !== 8) {
+                    e.preventDefault();
+                    console.log('Form submission blocked - wrong feature count: ' + featuresArray.length);
+                    alert('Musisz wybrać dokładnie 8 cech!');
+                    return false;
+                }
+
+                console.log('Form validation passed, submitting form');
+                return true;
+            });
         }
-        console.log('Formularz wysyłany - poprawna liczba cech: ' + checkedCount);
     });
-});
 </script>
