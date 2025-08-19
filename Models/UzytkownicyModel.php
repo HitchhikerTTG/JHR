@@ -8,14 +8,14 @@ class UzytkownicyModel extends Model
 {
 
     protected $table = 'uzytkownicy';
-    protected $allowedFields = ['imie', 'email', 'hash'];
+    protected $allowedFields = ['email', 'name', 'user_hash']; // Używamy rzeczywistych nazw kolumn
     protected $primaryKey ="id";
 
     function czyJuzJest($sprawdzany_email){
 
 
     $t = $this->where(['email'=>$sprawdzany_email])->countAllResults();
-    
+
     return ($t > 0);
 
     }

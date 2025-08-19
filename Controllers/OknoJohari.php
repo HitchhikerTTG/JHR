@@ -22,7 +22,7 @@ class OknoJohari extends BaseController
 
     }
 
-  
+
 
   public function stworzOkno()
   {
@@ -32,12 +32,12 @@ class OknoJohari extends BaseController
     log_message('error', 'REQUEST METHOD dokładnie: [' . $this->request->getMethod() . ']');
     log_message('error', 'Wszystkie dane $_POST: ' . print_r($_POST, true));
     log_message('error', 'Wszystkie dane REQUEST: ' . print_r($_REQUEST, true));
-    
+
     $cechyModel = model(CechyModel::class);
     $oknoModel = model(OknoModel::class);
     $uzytkownikModel = model(UzytkownicyModel::class);
     $przypisaneCechyModel = model(PrzypisaneCechyModel::class);
-    
+
     $szablon = "class=\"landing-page sidebar-collapse\"";
     $data['szablon'] = $szablon;
 
@@ -47,7 +47,7 @@ class OknoJohari extends BaseController
         log_message('error', 'Wszystkie dane POST: ' . print_r($_POST, true));
         log_message('debug', 'POST Data: ' . print_r($this->request->getPost(), true));
         log_message('debug', 'Request Method: ' . $this->request->getMethod());
-        
+
         $featureList = $this->request->getPost('feature_list');
         log_message('debug', 'Feature List: ' . print_r($featureList, true));
         log_message('debug', 'Feature List Count: ' . (is_array($featureList) ? count($featureList) : 'not array'));
@@ -85,22 +85,22 @@ class OknoJohari extends BaseController
         // Dodatkowa walidacja dla liczby cech
         $featureList = $this->request->getPost('feature_list');
         $validFeatureCount = ($featureList && is_array($featureList) && count($featureList) === 8);
-        
+
         if (!$validFeatureCount) {
             $this->validator->setError('feature_list', 'Musisz wybrać dokładnie 8 cech');
         }
 
         if ($this->validate($rules, $errors) && $validFeatureCount) {
             log_message('debug', 'ZAPISYWANIE OKNA - ROZPOCZĘCIE');
-            
+
             // Dane są poprawne - zapisujemy okno
             $imie = $this->request->getPost('imie');
             $email = $this->request->getPost('email');
             $tytul = $this->request->getPost('tytul');
-            
+
             $hashAutora = hash('ripemd160', $email);
             $hashOkna = hash('ripemd160', $tytul . $email);
-            
+
             log_message('debug', 'Hash Autora: ' . $hashAutora);
             log_message('debug', 'Hash Okna: ' . $hashOkna);
 
@@ -109,18 +109,18 @@ class OknoJohari extends BaseController
             if (!$existingUser) {
                 log_message('debug', 'Tworzenie nowego użytkownika');
                 $userResult = $uzytkownikModel->save([
-                    'imie' => $imie,
                     'email' => $email,
-                    'hash' => $hashAutora
+                    'name' => $imie,
+                    'user_hash' => $hashAutora
                 ]);
                 log_message('debug', 'Wynik zapisu użytkownika: ' . ($userResult ? 'SUCCESS' : 'FAILED'));
-                
+
                 if (!$userResult) {
                     $userErrors = $uzytkownikModel->errors();
                     log_message('error', 'Błędy zapisu użytkownika: ' . print_r($userErrors, true));
                     // Można dodać obsługę błędu - np. przekierowanie z komunikatem
                 }
-                
+
                 $userId = $uzytkownikModel->getInsertID();
                 log_message('debug', 'ID nowego użytkownika: ' . $userId);
             } else {
@@ -140,20 +140,20 @@ class OknoJohari extends BaseController
             ];
             log_message('debug', 'DANE OKNA DO ZAPISU: ' . print_r($oknoData, true));
             log_message('debug', 'Długości pól: nazwa=' . strlen($tytul) . ', hash=' . strlen($hashOkna) . ', wlasciciel=' . strlen($hashAutora) . ', imie=' . strlen($imie));
-            
+
             $oknoResult = $oknoModel->save($oknoData);
             log_message('debug', 'Wynik zapisu okna: ' . ($oknoResult ? 'SUCCESS' : 'FAILED'));
-            
+
             if (!$oknoResult) {
                 $oknoErrors = $oknoModel->errors();
                 log_message('error', 'Błędy zapisu okna: ' . print_r($oknoErrors, true));
-                
+
                 // Dodatkowe informacje o błędzie bazy danych
                 $db = \Config\Database::connect();
                 if ($db->error()['code'] != 0) {
                     log_message('error', 'Błąd bazy danych: ' . $db->error()['message']);
                 }
-                
+
                 // Loguj ostatnie wykonane zapytanie SQL
                 log_message('debug', 'Ostatnie zapytanie SQL: ' . $db->getLastQuery());
             }
@@ -167,16 +167,16 @@ class OknoJohari extends BaseController
                     'nadawca' => $hashAutora
                 ];
                 log_message('debug', 'DANE CECHY DO ZAPISU: ' . print_r($cechyData, true));
-                
+
                 $cechyResult = $przypisaneCechyModel->save($cechyData);
                 log_message('debug', 'Cecha ' . $cechaId . ' zapisana: ' . ($cechyResult ? 'SUCCESS' : 'FAILED'));
-                
+
                 if (!$cechyResult) {
                     $cechyErrors = $przypisaneCechyModel->errors();
                     log_message('error', 'Błędy zapisu cechy ' . $cechaId . ': ' . print_r($cechyErrors, true));
                 }
             }
-            
+
             log_message('debug', 'ZAPISYWANIE OKNA - KONIEC');
 
             $zapisywaneOkno = [
@@ -215,7 +215,7 @@ class OknoJohari extends BaseController
   public function dodajDoOkna($hashOkna=false){
     // PODSTAWOWE LOGOWANIE
     log_message('error', 'FUNKCJA DODAJDOOKNA WYWOLANA - hash: ' . $hashOkna . ', metoda: ' . $this->request->getMethod());
-    
+
     // co zrobić, kiedy nie mam takiego okna - komunikat o błędzie - nie ma takiego okna i np. stwórz własne
 
     $oknoModel = model(OknoModel::class);
@@ -259,9 +259,9 @@ class OknoJohari extends BaseController
     if($this->request->getMethod()==='POST'&&$this->validate($rules,$errors)){
          $data['validation']=$this->validator;
 
-        //Sprawdź, czy dla danego okna $hashokna są juz zapisane cechy od tego 
+        //Sprawdź, czy dla danego okna $hashokna są juz zapisane cechy od tego
 
-        $wybrane_cechy = $this->request->getPost('feature_list');  
+        $wybrane_cechy = $this->request->getPost('feature_list');
 
         if (is_array($wybrane_cechy) && count($wybrane_cechy) > 0) {
             foreach ($wybrane_cechy as $cecha_do_zapisu) {
@@ -271,13 +271,13 @@ class OknoJohari extends BaseController
                     'nadawca' => hash('ripemd160', $this->request->getPost('email')),
                 ];
                 log_message('debug', 'DODAJ DO OKNA - DANE CECHY: ' . print_r($cechyDataDodaj, true));
-                
+
                 $result = $PrzypisaneCechyModel->save($cechyDataDodaj);
-                
+
                 if (!$result) {
                     $errors = $PrzypisaneCechyModel->errors();
                     log_message('error', 'Błąd zapisu cechy ' . $cecha_do_zapisu . ': ' . print_r($errors, true));
-                    
+
                     // Dodaj informacje o błędzie bazy danych
                     $db = \Config\Database::connect();
                     if ($db->error()['code'] != 0) {
@@ -337,7 +337,7 @@ class OknoJohari extends BaseController
 
     // Delegacja analizy cech do modelu
     $analizaCech = $oknoModel->analizyCechOkna($hashOkna, $hashWlasciciela);
-    
+
     $data['arena'] = $analizaCech['arena'];
     $data['prywatne'] = $analizaCech['prywatne'];
     $data['wskazane'] = $analizaCech['wskazane'];
@@ -358,7 +358,7 @@ class OknoJohari extends BaseController
     public function beta(){
     $data['szablon']="class=\"profile-page sidebar-collapse\"";
     //$this->load->helper(array('url'));
-    return view('header') 
+    return view('header')
     . view('tresc',$data )
     . view('dev')
     . view('footer');
@@ -398,7 +398,7 @@ $message = view('email/szablon.php',$data);
         }
 
         $oknoModel = model(\App\Models\OknoModel::class);
-        
+
         // Sprawdź czy okno istnieje i ma stary zestaw cech
         $zestawCech = $oknoModel->getWindowFeatureSet($hashOkna, $hashWlasciciela);
         if ($zestawCech != 1) {
@@ -407,11 +407,11 @@ $message = view('email/szablon.php',$data);
 
         // Pobierz analizę cech
         $analizaCech = $oknoModel->analizyCechOkna($hashOkna, $hashWlasciciela);
-        
+
         // Przetłumacz okno
         $translatorModel = model(\App\Models\TranslatorCechModel::class);
         $przetlumaczonaWersja = $translatorModel->translateWindow($analizaCech, 1, 2);
-        
+
         return $this->response->setJSON(['tlumaczenie' => $przetlumaczonaWersja]);
     }
 
