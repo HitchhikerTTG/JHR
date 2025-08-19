@@ -74,5 +74,3 @@ class Migrate extends \CodeIgniter\Controller
         }
     }
 }
-    }
-}
