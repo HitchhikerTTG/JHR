@@ -96,7 +96,10 @@
     	];
 
 //    echo form_submit('mysubmit', '<i class="material-icons">forward</i> Stwórz swoje okno Johari', $atrybutyPrzycisku);
-	   ?>  <button type="submit" class="btn btn-primary btn-round enableOnInput btn-block" disabled="disabled" id="submitBtn"><i class="material-icons">forward</i> Stwórz swoje okno Johari</button>
+	   ?>  
+    <!-- Debug: Ukryte pole z liczbą zaznaczonych cech -->
+    <input type="hidden" name="debug_feature_count" id="debugFeatureCount" value="0">
+    <button type="submit" class="btn btn-primary btn-round enableOnInput btn-block" disabled="disabled" id="submitBtn"><i class="material-icons">forward</i> Stwórz swoje okno Johari</button>
 <?    echo "</div></div>";
 
     echo form_close();
@@ -118,6 +121,12 @@
     function updateButtonState() {
         const checkboxes = document.querySelectorAll('input[name="feature_list[]"]:checked');
         const submitButton = document.getElementById('submitBtn');
+        const debugField = document.getElementById('debugFeatureCount');
+        
+        if (debugField) {
+            debugField.value = checkboxes.length;
+        }
+        
         if (checkboxes.length === 8) {
             submitButton.disabled = false;
             logJS('info', '8 features selected, submit button enabled.');
@@ -137,6 +146,15 @@
 
         // Add event listener to all checkboxes
         const featureCheckboxes = document.querySelectorAll('input[name="feature_list[]"]');
+        
+        // Inicjalizuj selectedFeatures z już zaznaczonymi checkboxami (po błędzie walidacji)
+        featureCheckboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                selectedFeatures.push(checkbox.value);
+                logJS('info', 'Pre-checked feature found: ' + checkbox.value);
+            }
+        });
+
         featureCheckboxes.forEach(checkbox => {
             checkbox.addEventListener('change', function() {
                 const currentFeatureId = this.value;
