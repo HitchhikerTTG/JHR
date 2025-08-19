@@ -109,58 +109,39 @@
 </div>
 
 <script>
-    // Function to update button state
+    // Function to update button state and info message
     function updateButtonState() {
         const checkboxes = document.querySelectorAll('input[name="feature_list[]"]:checked');
         const submitButton = document.getElementById('submitBtn');
+        const infoSpan = document.getElementById('info');
+        const count = checkboxes.length;
+        const roznica = 8 - count;
         
-        if (checkboxes.length === 8) {
+        if (roznica === 0) {
+            infoSpan.textContent = 'Świetnie. Jeśli jesteś zadowolony z wybranych cech, stwórz swoje okno';
             submitButton.disabled = false;
+            submitButton.removeAttribute('disabled');
             console.log('8 features selected, submit button enabled.');
         } else {
+            if (roznica > 0) {
+                infoSpan.textContent = 'Zaznaczyłeś / zaznaczyłaś już ' + count + ' cech. Zostało Ci do zaznaczenia jeszcze ' + roznica;
+            } else {
+                infoSpan.textContent = 'Zaznaczyłeś / zaznaczyłaś za dużo cech. Musisz odznaczyć ' + (-roznica);
+            }
             submitButton.disabled = true;
-            console.log(checkboxes.length + ' features selected, submit button disabled.');
+            submitButton.setAttribute('disabled', 'disabled');
+            console.log(count + ' features selected, submit button disabled.');
         }
     }
 
     document.addEventListener('DOMContentLoaded', function() {
         console.log('Page loaded - formularzyk.php');
 
-        const features = <?= json_encode($features) ?>;
-        let selectedFeatures = [];
-
-        console.log('Features loaded: ' + features.length + ' total features');
-
         // Add event listener to all checkboxes
         const featureCheckboxes = document.querySelectorAll('input[name="feature_list[]"]');
         
-        // Inicjalizuj selectedFeatures z już zaznaczonymi checkboxami (po błędzie walidacji)
-        featureCheckboxes.forEach(checkbox => {
-            if (checkbox.checked) {
-                selectedFeatures.push(checkbox.value);
-                console.log('Pre-checked feature found: ' + checkbox.value);
-            }
-        });
-
         featureCheckboxes.forEach(checkbox => {
             checkbox.addEventListener('change', function() {
-                const currentFeatureId = this.value;
-                if (this.checked) {
-                    if (selectedFeatures.length < 8) {
-                        selectedFeatures.push(currentFeatureId);
-                        console.log('Feature added: ' + currentFeatureId);
-                    } else {
-                        // If more than 8 are selected, uncheck the current one and log
-                        this.checked = false;
-                        console.log('Attempted to select more than 8 features. Max limit reached.');
-                    }
-                } else {
-                    const index = selectedFeatures.indexOf(currentFeatureId);
-                    if (index > -1) {
-                        selectedFeatures.splice(index, 1);
-                        console.log('Feature removed: ' + currentFeatureId);
-                    }
-                }
                 updateButtonState();
             });
         });
