@@ -43,3 +43,5 @@ $routes->get('testuje', 'Form::index');
 $routes->post('testuje', 'Form::index');
 $routes->match(['GET', 'POST'], '/tlumaczOkno/(:segment)/(:segment)', 'OknoJohari::tlumaczOkno/$1/$2');
 $routes->post('log-js', 'JSLogger::logMessage');
+$routes->get('migrate', 'Migrate::index');
+$routes->get('migrate/reset', 'Migrate::reset');
