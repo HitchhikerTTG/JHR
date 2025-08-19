@@ -38,7 +38,8 @@ class Migrate extends \CodeIgniter\Controller
             $files = $migrate->findMigrations();
             echo "Znalezione pliki migracji:<br>";
             foreach ($files as $version => $file) {
-                echo "- $version: $file<br>";
+                $fileName = is_object($file) ? get_class($file) : $file;
+                echo "- $version: $fileName<br>";
             }
             echo "<br>";
             
