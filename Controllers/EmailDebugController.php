@@ -1,4 +1,3 @@
-
 <?php
 
 namespace App\Controllers;
@@ -7,7 +6,7 @@ use Config\Services;
 
 class EmailDebugController extends BaseController
 {
-    public function debugEmail($adresat = 'test@example.com', $hashOkna = '35e1ae5e03a8cd91ffaebae43b7b402638bfa992')
+    public function debugEmail($adresat = 'wit@nirski.com', $hashOkna = '35e1ae5e03a8cd91ffaebae43b7b402638bfa992')
     {
         echo "<h1>🔍 Debug procesu wysyłania emaila</h1>";
         echo "<style>
