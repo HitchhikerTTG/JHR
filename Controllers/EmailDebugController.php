@@ -83,8 +83,8 @@ class EmailDebugController extends BaseController
         echo "<div class='step'>";
         echo "<h2>👤 KROK 4: Ustawienie nadawcy</h2>";
         
-        $fromEmail = $_ENV['POSTMARK_FROM_EMAIL'] ?? 'okno@johari.pl';
-        $fromName = 'Okno Johari';
+        $fromEmail = $_ENV['POSTMARK_FROM_EMAIL'] ?? 'johari@testujac.pl';
+        $fromName = '[Testujac] Okno Johari';
         
         try {
             $email->setFrom($fromEmail, $fromName);
