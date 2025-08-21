@@ -1,6 +1,5 @@
-
 <?php
-
+#gdyż kochamy zostawiać pustą linię
 namespace App\Controllers;
 
 use Config\Services;
