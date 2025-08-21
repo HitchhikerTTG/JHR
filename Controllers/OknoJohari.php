@@ -591,15 +591,25 @@ class OknoJohari extends BaseController
 
     private function wyslijEmailPowitalny($emailAdresat, $imie, $hashOkna, $hashAutora)
     {
+        log_message('info', 'WYSYŁANIE EMAIL - START do: ' . $emailAdresat);
+        
         try {
             $email = \Config\Services::email();
 
-            $email->setFrom($_ENV['POSTMARK_FROM_EMAIL'] ?? 'okno@johari.pl', 'Okno Johari');
+            // Dodatkowe logowanie konfiguracji
+            log_message('debug', 'Email config - From: ' . env('POSTMARK_FROM_EMAIL', 'okno@johari.pl'));
+            log_message('debug', 'Email config - SMTP Host: ' . env('email.SMTPHost', 'smtp.postmarkapp.com'));
+            log_message('debug', 'Email config - SMTP Port: ' . env('email.SMTPPort', '587'));
+
+            $email->setFrom(env('POSTMARK_FROM_EMAIL', 'okno@johari.pl'), 'Okno Johari');
             $email->setTo($emailAdresat);
             $email->setSubject('Twoje Okno Johari - przydatne linki');
 
-            // Dodaj nagłówek Postmark dla strumienia wiadomości
+            // Dodaj nagłówki Postmark
             $email->setHeader('X-PM-Message-Stream', 'outbound');
+            $email->setHeader('X-PM-Tag', 'welcome-email');
+            
+            log_message('debug', 'Email headers ustawione');
 
             $data = [
                 'imie' => $imie,
@@ -610,16 +620,27 @@ class OknoJohari extends BaseController
 
             $message = view('email/szablon', $data);
             $email->setMessage($message);
+            
+            log_message('debug', 'Email message prepared, length: ' . strlen($message));
+            log_message('debug', 'Pre-send debugger: ' . $email->printDebugger());
 
             if ($email->send()) {
-                log_message('info', 'Email powitalny wysłany do: ' . $emailAdresat);
+                log_message('info', 'EMAIL WYSŁANY POMYŚLNIE do: ' . $emailAdresat);
+                log_message('debug', 'Post-send debugger: ' . $email->printDebugger());
             } else {
-                log_message('error', 'Błąd wysyłania emaila do: ' . $emailAdresat);
+                log_message('error', 'BŁĄD WYSYŁANIA EMAILA do: ' . $emailAdresat);
                 log_message('error', 'Email debugger: ' . $email->printDebugger());
+                
+                // Dodatkowe informacje o błędzie
+                $lastQuery = $email->printDebugger(['headers']);
+                log_message('error', 'Email headers debug: ' . $lastQuery);
             }
         } catch (\Exception $e) {
-            log_message('error', 'Wyjątek podczas wysyłania emaila: ' . $e->getMessage());
+            log_message('error', 'WYJĄTEK WYSYŁANIE EMAIL: ' . $e->getMessage());
+            log_message('error', 'Stack trace: ' . $e->getTraceAsString());
         }
+        
+        log_message('info', 'WYSYŁANIE EMAIL - KONIEC');
     }
 }
 
