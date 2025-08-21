@@ -189,17 +189,50 @@ class EmailDebugController extends BaseController
             }
         }
         
-        // Sprawdź czy wszystkie wymagane dane są ustawione
-        echo "<br><strong>Walidacja wymaganych pól:</strong><br>";
+        // Porównaj konfigurację obiektu vs zmienne środowiskowe
+        echo "<br><strong>Porównanie konfiguracji:</strong><br>";
+        $emailConfig = new \Config\Email();
+        
+        $comparison = [
+            'SMTP Host' => [
+                'Obiekt Config' => $emailConfig->SMTPHost ?? 'BRAK',
+                'env()' => env('email.SMTPHost') ?? 'BRAK'
+            ],
+            'SMTP Port' => [
+                'Obiekt Config' => $emailConfig->SMTPPort ?? 'BRAK',
+                'env()' => env('email.SMTPPort') ?? 'BRAK'
+            ],
+            'SMTP User' => [
+                'Obiekt Config' => $emailConfig->SMTPUser ? $this->maskString($emailConfig->SMTPUser) : 'BRAK',
+                'env()' => env('email.SMTPUser') ? $this->maskString(env('email.SMTPUser')) : 'BRAK'
+            ],
+            'From Email' => [
+                'Obiekt Config' => $emailConfig->fromEmail ?? 'BRAK',
+                'env()' => env('email.fromEmail') ?? 'BRAK'
+            ]
+        ];
+        
+        foreach ($comparison as $field => $values) {
+            echo "📋 <strong>{$field}:</strong><br>";
+            echo "&nbsp;&nbsp;Config: {$values['Obiekt Config']}<br>";
+            echo "&nbsp;&nbsp;env(): {$values['env()']}<br>";
+            if ($values['Obiekt Config'] !== $values['env()']) {
+                echo "&nbsp;&nbsp;⚠️ RÓŻNICA!<br>";
+            }
+            echo "<br>";
+        }
+        
+        // Sprawdź czy wszystkie wymagane dane są ustawione (używaj konfiguracji obiektu)
+        echo "<strong>Walidacja wymaganych pól (z obiektu Config):</strong><br>";
         $required = [
             'From Email' => $fromEmail,
-            'SMTP Host' => env('email.SMTPHost'),
-            'SMTP User' => env('email.SMTPUser'),
-            'SMTP Pass' => env('email.SMTPPass') ? '***SET***' : 'MISSING'
+            'SMTP Host' => $emailConfig->SMTPHost,
+            'SMTP User' => $emailConfig->SMTPUser,
+            'SMTP Pass' => $emailConfig->SMTPPass ? '***SET***' : 'MISSING'
         ];
         
         foreach ($required as $field => $value) {
-            if ($value) {
+            if ($value && $value !== 'MISSING') {
                 echo "✅ {$field}: OK<br>";
             } else {
                 echo "❌ {$field}: BRAK!<br>";
