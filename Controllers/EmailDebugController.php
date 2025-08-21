@@ -169,6 +169,44 @@ class EmailDebugController extends BaseController
         }
         echo "</div>";
 
+        // KROK 7.5: Sprawdzenie finalnej konfiguracji przed wysłaniem
+        echo "<div class='step info'>";
+        echo "<h2>🔍 KROK 7.5: Finalna konfiguracja przed wysłaniem</h2>";
+        
+        // Debug konfiguracji email obiektu
+        $reflection = new \ReflectionClass($email);
+        $properties = $reflection->getProperties();
+        
+        echo "<strong>Konfiguracja obiektu Email:</strong><br>";
+        foreach ($properties as $property) {
+            $property->setAccessible(true);
+            $value = $property->getValue($email);
+            if ($value !== null && !is_object($value) && !is_array($value)) {
+                if (strpos($property->getName(), 'pass') !== false || strpos($property->getName(), 'Pass') !== false) {
+                    $value = $this->maskString($value);
+                }
+                echo "📋 {$property->getName()}: {$value}<br>";
+            }
+        }
+        
+        // Sprawdź czy wszystkie wymagane dane są ustawione
+        echo "<br><strong>Walidacja wymaganych pól:</strong><br>";
+        $required = [
+            'From Email' => $fromEmail,
+            'SMTP Host' => env('email.SMTPHost'),
+            'SMTP User' => env('email.SMTPUser'),
+            'SMTP Pass' => env('email.SMTPPass') ? '***SET***' : 'MISSING'
+        ];
+        
+        foreach ($required as $field => $value) {
+            if ($value) {
+                echo "✅ {$field}: OK<br>";
+            } else {
+                echo "❌ {$field}: BRAK!<br>";
+            }
+        }
+        echo "</div>";
+
         // KROK 8: Wysyłanie (z opcją test/rzeczywiste)
         echo "<div class='step'>";
         echo "<h2>📤 KROK 8: Wysyłanie emaila</h2>";
@@ -184,17 +222,27 @@ class EmailDebugController extends BaseController
             $startTime = microtime(true);
             
             try {
-                log_message('info', 'DEBUG EMAIL START - adresat: ' . $adresat);
+                // Dodatkowy log przed wysłaniem
+                log_message('info', 'DEBUG EMAIL START - adresat: ' . $adresat . ', fromEmail: ' . $fromEmail);
+                
+                // Sprawdź debugger PRZED wysłaniem
+                echo "<strong>Pre-send debugger:</strong><br>";
+                echo "<pre>" . htmlspecialchars($email->printDebugger()) . "</pre>";
                 
                 if ($email->send()) {
                     $duration = round((microtime(true) - $startTime) * 1000, 2);
                     echo "<div class='success'>";
                     echo "✅ Email wysłany pomyślnie!<br>";
                     echo "📧 Adresat: {$adresat}<br>";
+                    echo "📧 Nadawca: {$fromEmail}<br>";
                     echo "⏱️ Czas wysyłania: {$duration}ms<br>";
                     echo "</div>";
                     
-                    log_message('info', 'DEBUG EMAIL SUCCESS - adresat: ' . $adresat . ', czas: ' . $duration . 'ms');
+                    // Post-send debugger
+                    echo "<strong>Post-send debugger:</strong><br>";
+                    echo "<pre>" . htmlspecialchars($email->printDebugger()) . "</pre>";
+                    
+                    log_message('info', 'DEBUG EMAIL SUCCESS - adresat: ' . $adresat . ', czas: ' . $duration . 'ms, fromEmail: ' . $fromEmail);
                 } else {
                     echo "<div class='error'>";
                     echo "❌ Błąd wysyłania emaila<br>";
@@ -202,7 +250,7 @@ class EmailDebugController extends BaseController
                     echo "<pre>" . htmlspecialchars($email->printDebugger()) . "</pre>";
                     echo "</div>";
                     
-                    log_message('error', 'DEBUG EMAIL FAILED - adresat: ' . $adresat);
+                    log_message('error', 'DEBUG EMAIL FAILED - adresat: ' . $adresat . ', fromEmail: ' . $fromEmail);
                     log_message('error', 'DEBUG EMAIL DEBUGGER: ' . $email->printDebugger());
                 }
             } catch (\Exception $e) {
@@ -211,7 +259,7 @@ class EmailDebugController extends BaseController
                 echo "📋 Ślad: <pre>" . htmlspecialchars($e->getTraceAsString()) . "</pre>";
                 echo "</div>";
                 
-                log_message('error', 'DEBUG EMAIL EXCEPTION: ' . $e->getMessage());
+                log_message('error', 'DEBUG EMAIL EXCEPTION: ' . $e->getMessage() . ', fromEmail: ' . $fromEmail);
             }
         }
         echo "</div>";
