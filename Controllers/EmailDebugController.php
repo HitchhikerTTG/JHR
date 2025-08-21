@@ -216,8 +216,15 @@ class EmailDebugController extends BaseController
             echo "📋 <strong>{$field}:</strong><br>";
             echo "&nbsp;&nbsp;Config: {$values['Obiekt Config']}<br>";
             echo "&nbsp;&nbsp;env(): {$values['env()']}<br>";
-            if ($values['Obiekt Config'] !== $values['env()']) {
+            
+            // Konwertuj do string dla porównania i ignoruj 'BRAK' vs null
+            $config_val = (string)($values['Obiekt Config'] ?? '');
+            $env_val = (string)($values['env()'] ?? '');
+            
+            if ($config_val !== $env_val && $config_val !== 'BRAK' && $env_val !== 'BRAK' && $config_val !== '' && $env_val !== '') {
                 echo "&nbsp;&nbsp;⚠️ RÓŻNICA!<br>";
+            } else if ($config_val === $env_val && $config_val !== 'BRAK' && $config_val !== '') {
+                echo "&nbsp;&nbsp;✅ ZGODNE<br>";
             }
             echo "<br>";
         }
@@ -409,7 +416,7 @@ class EmailDebugController extends BaseController
         
         $curl = curl_init();
         curl_setopt_array($curl, [
-            CURLOPT_URL => 'https://api.postmarkapp.com/messages/outbound?count=20',
+            CURLOPT_URL => 'https://api.postmarkapp.com/messages/outbound?count=20&offset=0',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_TIMEOUT => 10,
             CURLOPT_HTTPHEADER => [
@@ -445,22 +452,83 @@ class EmailDebugController extends BaseController
 
     private function showRecentEmailLogs()
     {
-        $logPath = WRITEPATH . 'logs/log-' . date('Y-m-d') . '.php';
-        if (file_exists($logPath)) {
-            $logContent = file_get_contents($logPath);
-            $lines = explode("\n", $logContent);
-            $emailLines = array_filter($lines, function($line) {
-                return stripos($line, 'email') !== false || stripos($line, 'DEBUG EMAIL') !== false;
-            });
-            
-            if (!empty($emailLines)) {
-                echo "📄 Ostatnie wpisy email:<br>";
-                echo "<pre>" . htmlspecialchars(implode("\n", array_slice($emailLines, -15))) . "</pre>";
-            } else {
-                echo "ℹ️ Brak wpisów email w dzisiejszych logach<br>";
+        echo "<h3>📋 Diagnostyka logów</h3>";
+        
+        $logDir = WRITEPATH . 'logs/';
+        $todayLog = $logDir . 'log-' . date('Y-m-d') . '.php';
+        $yesterdayLog = $logDir . 'log-' . date('Y-m-d', strtotime('-1 day')) . '.php';
+        
+        echo "📁 Katalog logów: <code>" . $logDir . "</code><br>";
+        echo "📄 Dzisiejszy log: <code>" . basename($todayLog) . "</code> - " . (file_exists($todayLog) ? "✅ istnieje (" . filesize($todayLog) . " B)" : "❌ nie istnieje") . "<br>";
+        echo "📄 Wczorajszy log: <code>" . basename($yesterdayLog) . "</code> - " . (file_exists($yesterdayLog) ? "✅ istnieje (" . filesize($yesterdayLog) . " B)" : "❌ nie istnieje") . "<br>";
+        
+        // Sprawdź permissions
+        if (is_writable($logDir)) {
+            echo "✅ Katalog logów jest zapisywalny<br>";
+        } else {
+            echo "❌ Katalog logów NIE jest zapisywalny!<br>";
+        }
+        
+        // Sprawdź ostatnie pliki logów
+        $logFiles = glob($logDir . 'log-*.php');
+        if ($logFiles) {
+            echo "<br>📂 Ostatnie pliki logów:<br>";
+            rsort($logFiles); // najnowsze na górze
+            foreach (array_slice($logFiles, 0, 5) as $file) {
+                echo "• " . basename($file) . " (" . filesize($file) . " B, " . date('Y-m-d H:i:s', filemtime($file)) . ")<br>";
+            }
+        }
+        
+        // Sprawdź wpisy email w ostatnich plikach
+        $emailLinesFound = [];
+        foreach (array_slice($logFiles ?? [], 0, 3) as $logFile) {
+            if (file_exists($logFile)) {
+                $logContent = file_get_contents($logFile);
+                $lines = explode("\n", $logContent);
+                $emailLines = array_filter($lines, function($line) {
+                    return stripos($line, 'email') !== false || 
+                           stripos($line, 'DEBUG EMAIL') !== false ||
+                           stripos($line, 'WYSYŁANIE EMAIL') !== false ||
+                           stripos($line, 'smtp') !== false;
+                });
+                
+                if (!empty($emailLines)) {
+                    $emailLinesFound[basename($logFile)] = array_slice($emailLines, -10); // ostatnie 10
+                }
+            }
+        }
+        
+        if (!empty($emailLinesFound)) {
+            echo "<br><h4>📧 Znalezione wpisy email:</h4>";
+            foreach ($emailLinesFound as $filename => $lines) {
+                echo "<strong>{$filename}:</strong><br>";
+                echo "<pre style='max-height: 200px; overflow-y: auto; font-size: 12px;'>" . htmlspecialchars(implode("\n", $lines)) . "</pre><br>";
             }
         } else {
-            echo "⚠️ Brak pliku logów na dziś<br>";
+            echo "<br>⚠️ <strong>Brak jakichkolwiek wpisów email w ostatnich logach!</strong><br>";
+            echo "To może oznaczać, że:<br>";
+            echo "• Funkcja wysyłania email nie jest wywoływana<br>";
+            echo "• Logi są zapisywane w innym miejscu<br>";
+            echo "• Logger nie jest skonfigurowany<br>";
+            
+            // Test zapisu logu
+            echo "<br>🧪 <strong>Test zapisu logu:</strong><br>";
+            $testMessage = 'TEST DEBUGGER EMAIL - ' . date('Y-m-d H:i:s');
+            if (log_message('debug', $testMessage)) {
+                echo "✅ log_message() działa<br>";
+                
+                // Sprawdź czy się pojawiło
+                if (file_exists($todayLog)) {
+                    $content = file_get_contents($todayLog);
+                    if (strpos($content, $testMessage) !== false) {
+                        echo "✅ Testowy wpis pojawił się w logu<br>";
+                    } else {
+                        echo "❌ Testowy wpis NIE pojawił się w logu<br>";
+                    }
+                }
+            } else {
+                echo "❌ log_message() nie działa<br>";
+            }
         }
     }
 
@@ -476,7 +544,7 @@ class EmailDebugController extends BaseController
         
         $curl = curl_init();
         curl_setopt_array($curl, [
-            CURLOPT_URL => 'https://api.postmarkapp.com/messages/outbound?count=10',
+            CURLOPT_URL => 'https://api.postmarkapp.com/messages/outbound?count=10&offset=0',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_TIMEOUT => 10,
             CURLOPT_HTTPHEADER => [
