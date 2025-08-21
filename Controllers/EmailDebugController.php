@@ -470,6 +470,112 @@ class EmailDebugController extends BaseController
         return substr($str, 0, 4) . '...' . substr($str, -4);
     }
 
+    private function checkPostmarkActivity($token)
+    {
+        echo "<h3>📊 Activity w ostatnich 24h</h3>";
+        
+        $curl = curl_init();
+        curl_setopt_array($curl, [
+            CURLOPT_URL => 'https://api.postmarkapp.com/messages/outbound?count=10',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT => 10,
+            CURLOPT_HTTPHEADER => [
+                'Accept: application/json',
+                'X-Postmark-Server-Token: ' . $token
+            ],
+        ]);
+
+        $response = curl_exec($curl);
+        $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        $error = curl_error($curl);
+        curl_close($curl);
+
+        if ($error) {
+            echo "❌ Błąd połączenia z API: {$error}<br>";
+        } elseif ($httpCode === 200) {
+            $data = json_decode($response, true);
+            if (isset($data['Messages']) && count($data['Messages']) > 0) {
+                echo "✅ Znaleziono " . count($data['Messages']) . " ostatnich wiadomości:<br>";
+                echo "<table border='1' style='border-collapse: collapse; width: 100%; margin-top: 10px;'>";
+                echo "<tr style='background: #f0f0f0;'><th>Data/Czas</th><th>Adresat</th><th>Temat</th><th>Status</th><th>Stream</th></tr>";
+                
+                foreach (array_slice($data['Messages'], 0, 5) as $msg) {
+                    $status = $msg['Status'] ?? 'Unknown';
+                    $statusColor = $status === 'Sent' ? '#28a745' : '#dc3545';
+                    
+                    echo "<tr>";
+                    echo "<td>" . date('Y-m-d H:i:s', strtotime($msg['ReceivedAt'] ?? '')) . "</td>";
+                    echo "<td>" . htmlspecialchars($msg['Recipients'][0] ?? 'N/A') . "</td>";
+                    echo "<td>" . htmlspecialchars(substr($msg['Subject'] ?? 'N/A', 0, 30)) . "...</td>";
+                    echo "<td style='color: {$statusColor}; font-weight: bold;'>" . $status . "</td>";
+                    echo "<td>" . ($msg['MessageStream'] ?? 'outbound') . "</td>";
+                    echo "</tr>";
+                }
+                echo "</table>";
+                
+                // Sprawdź czy są wiadomości w kolejce
+                $queued = array_filter($data['Messages'], function($msg) {
+                    return ($msg['Status'] ?? '') === 'Queued';
+                });
+                
+                if (count($queued) > 0) {
+                    echo "<div style='background: #fff3cd; padding: 10px; border-left: 4px solid #ffc107; margin-top: 10px;'>";
+                    echo "⚠️ <strong>Znaleziono " . count($queued) . " wiadomości w kolejce</strong><br>";
+                    echo "To może oznaczać, że serwer Postmark ma opóźnienia lub osiągnąłeś limit wysyłki.";
+                    echo "</div>";
+                }
+            } else {
+                echo "ℹ️ Brak ostatnich wiadomości w Activity<br>";
+            }
+        } else {
+            echo "❌ Nie można pobrać Activity (kod: {$httpCode})<br>";
+            if ($response) {
+                echo "📋 Odpowiedź API: " . htmlspecialchars($response) . "<br>";
+            }
+        }
+        
+        // Dodatkowe sprawdzenie limitów
+        echo "<br><h3>📈 Sprawdzenie limitów</h3>";
+        $this->checkPostmarkLimits($token);
+    }
+
+    private function checkPostmarkLimits($token)
+    {
+        // Sprawdź statystyki serwera
+        $curl = curl_init();
+        curl_setopt_array($curl, [
+            CURLOPT_URL => 'https://api.postmarkapp.com/deliverystats',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT => 10,
+            CURLOPT_HTTPHEADER => [
+                'Accept: application/json',
+                'X-Postmark-Server-Token: ' . $token
+            ],
+        ]);
+
+        $response = curl_exec($curl);
+        $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        curl_close($curl);
+
+        if ($httpCode === 200) {
+            $data = json_decode($response, true);
+            if ($data) {
+                echo "📊 Statystyki dostarczania:<br>";
+                echo "• Wysłane: " . ($data['DeliveryStats'][0]['Sent'] ?? 'N/A') . "<br>";
+                echo "• Dostarczone: " . ($data['DeliveryStats'][0]['Delivered'] ?? 'N/A') . "<br>";
+                echo "• Odrzucone: " . ($data['DeliveryStats'][0]['Bounced'] ?? 'N/A') . "<br>";
+                echo "• Spam: " . ($data['DeliveryStats'][0]['SpamComplaints'] ?? 'N/A') . "<br>";
+            }
+        } else {
+            echo "⚠️ Nie można pobrać statystyk dostarczania<br>";
+        }
+        
+        echo "<br><strong>💡 Sprawdź też:</strong><br>";
+        echo "• <a href='https://account.postmarkapp.com/servers' target='_blank'>Panel Postmark Activity</a><br>";
+        echo "• Czy nie osiągnąłeś dziennych/miesięcznych limitów<br>";
+        echo "• Czy Message Stream 'outbound' istnieje<br>";
+    }
+
     public function quickTest($adresat = 'test@blackhole.postmarkapp.com')
     {
         echo "<h1>⚡ Szybki test wysyłania emaila</h1>";
