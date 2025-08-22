@@ -645,29 +645,43 @@ class EmailDebugController extends BaseController
     }
 
     public function quickTest($adresat = 'test@blackhole.postmarkapp.com')
-    {
-        echo "<h1>⚡ Szybki test wysyłania emaila</h1>";
-        
-        try {
-            $email = Services::email();
-            $email->setFrom($_ENV['POSTMARK_FROM_EMAIL'] ?? 'okno@johari.pl', 'Quick Test Johari');
-            $email->setTo($adresat);
-            $email->setSubject('Quick Test - ' . date('Y-m-d H:i:s'));
-            $email->setHeader('X-PM-Message-Stream', 'outbound');
-            $email->setHeader('X-PM-Tag', 'quick-test');
-            $email->setMessage('<h1>Quick Test Email</h1><p>Wysłano: ' . date('Y-m-d H:i:s') . '</p>');
+{
+    echo "<h1>⚡ Szybki test wysyłania emaila</h1>";
+    
+    try {
+        $email = \Config\Services::email();
 
-            if ($email->send()) {
-                echo "✅ Email wysłany pomyślnie do: {$adresat}<br>";
-            } else {
-                echo "❌ Błąd wysyłania emaila:<br>";
-                echo "<pre>" . htmlspecialchars($email->printDebugger()) . "</pre>";
-            }
-        } catch (\Exception $e) {
-            echo "❌ Wyjątek: " . $e->getMessage() . "<br>";
+        // From najlepiej z Config\Email albo env()
+        $fromEmail = env('POSTMARK_FROM_EMAIL', 'okno@johari.pl');
+        $email->setFrom($fromEmail, 'Quick Test Johari');
+        $email->setTo($adresat);
+        $email->setSubject('Quick Test - ' . date('Y-m-d H:i:s'));
+        $email->setHeader('X-PM-Message-Stream', 'outbound');
+        $email->setHeader('X-PM-Tag', 'quick-test');
+        $email->setMessage('<h1>Quick Test Email</h1><p>Wysłano: ' . date('Y-m-d H:i:s') . '</p>');
+
+        if ($email->send(false)) {
+            echo "✅ Email wysłany pomyślnie do: {$adresat}<br>";
+        } else {
+            echo "❌ Błąd wysyłania emaila:<br>";
         }
+
+        // pokaż debug zawsze – nawet jeśli sukces
+        $debug = $email->printDebugger(['headers', 'subject', 'body']);
         
-        echo "<br><a href='" . base_url('emailDebug/debugEmail/' . urlencode($adresat)) . "'>🔍 Pełny debug</a> | ";
-        echo "<a href='" . base_url('emailDebug/postmarkStatus') . "'>📊 Status Postmark</a>";
+        // zamaskuj ewentualne tokeny/base64
+        $safeDebug = preg_replace('/(AUTH\s+(?:PLAIN|LOGIN)\s+)([A-Za-z0-9+\/=]+)/i', '$1[REDACTED]', $debug);
+        $safeDebug = preg_replace('/(334\s+[A-Za-z0-9+\/=]+)/i', '334 [REDACTED]', $safeDebug);
+
+        echo "<h3>SMTP Debug:</h3><pre style='background:#111;color:#0f0;padding:10px;overflow:auto;'>"
+            . htmlspecialchars($safeDebug)
+            . "</pre>";
+
+    } catch (\Exception $e) {
+        echo "❌ Wyjątek: " . $e->getMessage() . "<br>";
     }
+    
+    echo "<br><a href='" . base_url('emailDebug/debugEmail/' . urlencode($adresat)) . "'>🔍 Pełny debug</a> | ";
+    echo "<a href='" . base_url('emailDebug/postmarkStatus') . "'>📊 Status Postmark</a>";
+}
 }
