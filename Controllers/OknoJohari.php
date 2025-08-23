@@ -169,6 +169,24 @@ class OknoJohari extends BaseController
             log_message('debug', 'Hash Autora: ' . $hashAutora);
             log_message('debug', 'Hash Okna: ' . $hashOkna);
 
+            // SPRAWDŹ CZY OKNO JUŻ ISTNIEJE
+            if ($oknoModel->czyJuzJest($hashOkna)) {
+                log_message('warning', 'Próba utworzenia duplikatu okna: ' . $hashOkna);
+                $this->validator->setError('general', 'Okno o tej nazwie i adresie email już istnieje. Użyj innej nazwy lub sprawdź swoją skrzynką mailową.');
+                
+                // Wyświetl formularz z błędem
+                $data['features'] = $cechyModel->getFeaturesForNewWindows();
+                $data['validation'] = $this->validator;
+                $data['post_url'] = '#komunikaty';
+
+                return view('header')
+                    . view('tresc', $data)
+                    . view('ococho')
+                    . view('opis_nowe')
+                    . view('formularzyk', $data)
+                    . view('footer');
+            }
+
             // Sprawdź czy użytkownik już istnieje
             $existingUser = $uzytkownikModel->where('email', $email)->first();
             if (!$existingUser) {

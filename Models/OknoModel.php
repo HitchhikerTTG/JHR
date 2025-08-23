@@ -77,8 +77,9 @@ class OknoModel extends Model
     }
 
     function czyJuzJest($sprawdzany_hash){
-        $t = $this->where(['hash'=>$sprawdzany_hash])->countAllResults();
-        return ($t > 0);
+        $count = $this->where(['hash' => $sprawdzany_hash])->countAllResults();
+        log_message('debug', 'Sprawdzanie duplikatu okna ' . $sprawdzany_hash . ': znaleziono ' . $count . ' rekordów');
+        return ($count > 0);
     }
 
     public function getStatystyki()
