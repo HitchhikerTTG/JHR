@@ -244,8 +244,18 @@ class OknoJohari extends BaseController
 
             log_message('debug', 'ZAPISYWANIE OKNA - KONIEC');
 
-            // Wyślij email z linkami
-            $this->wyslijEmailPowitalny($email, $imie, $hashOkna, $hashAutora);
+            // Sprawdź czy email nie został już wysłany dla tego okna
+            $emailSent = $this->session->get('email_sent_' . $hashOkna);
+            if (!$emailSent) {
+                // Wyślij email z linkami
+                $this->wyslijEmailPowitalny($email, $imie, $hashOkna, $hashAutora);
+                
+                // Oznacz email jako wysłany w sesji
+                $this->session->set('email_sent_' . $hashOkna, true);
+                log_message('info', 'Email powitalny wysłany dla okna: ' . $hashOkna);
+            } else {
+                log_message('warning', 'Email powitalny już został wysłany dla okna: ' . $hashOkna);
+            }
 
             $zapisywaneOkno = [
                 'imie' => $imie,
@@ -255,9 +265,9 @@ class OknoJohari extends BaseController
                 'hash_autora' => $hashAutora
             ];
 
-            return view('header')
-                . view('formularz_nowe_okno_sukces', $zapisywaneOkno)
-                . view('footer');
+            // Zapisz dane do sesji i przekieruj (PRG pattern)
+            $this->session->setFlashdata('okno_sukces', $zapisywaneOkno);
+            return redirect()->to(base_url('okno/sukces/' . $hashOkna));
         } else {
             // WALIDACJA NIE PRZESZŁA
             log_message('debug', 'WALIDACJA NIEUDANA');
@@ -587,6 +597,19 @@ class OknoJohari extends BaseController
         .view ('tresc', $data)
         .view ('polityka')
         .view ('footer');
+    }
+
+    public function sukces($hashOkna = null)
+    {
+        $data = $this->session->getFlashdata('okno_sukces');
+        
+        if (!$data || !$hashOkna) {
+            return redirect()->to(base_url());
+        }
+        
+        return view('header')
+            . view('formularz_nowe_okno_sukces', $data)
+            . view('footer');
     }
 
     private function wyslijEmailPowitalny($emailAdresat, $imie, $hashOkna, $hashAutora)
